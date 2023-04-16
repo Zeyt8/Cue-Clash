@@ -14,6 +14,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private TMP_InputField _createLobbyNameInput;
     [SerializeField] private TMP_InputField _joinPrivateLobbyCodeInput;
     [SerializeField] private Toggle _privateLobbyToggle;
+    [SerializeField] private GameObject _lobbyPanel;
+    [SerializeField] private TextMeshProUGUI _lobbyCodeText;
 
     private Lobby _currentSelectedLobby;
 
@@ -39,6 +41,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
             await LobbyManagerCustom.JoinLobbyById(_currentSelectedLobby.Id);
             NetworkManager.Singleton.StartClient();
             _loadingPanel.gameObject.SetActive(false);
+            _lobbyPanel.SetActive(true);
         }
         catch (Exception e)
         {
@@ -54,21 +57,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
             await LobbyManagerCustom.JoinLobbyByCode(_joinPrivateLobbyCodeInput.text);
             NetworkManager.Singleton.StartClient();
             _loadingPanel.gameObject.SetActive(false);
-        }
-        catch (Exception e)
-        {
-            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
-        }
-    }
-
-    public async void QuickJoinLobby()
-    {
-        _loadingPanel.ShowLoad(LoadingType.JoiningRoom);
-        try
-        {
-            await LobbyManagerCustom.QuickJoinLobby();
-            NetworkManager.Singleton.StartClient();
-            _loadingPanel.gameObject.SetActive(false);
+            _lobbyPanel.SetActive(true);
         }
         catch (Exception e)
         {
@@ -83,8 +72,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
         {
             await LobbyManagerCustom.CreateLobby(_createLobbyNameInput.text, _privateLobbyToggle.isOn);
             NetworkManager.Singleton.StartHost();
-            NetworkManager.Singleton.SceneManager.LoadScene(_lobbySceneName, LoadSceneMode.Single);
             _loadingPanel.gameObject.SetActive(false);
+            _lobbyPanel.SetActive(true);
+            _lobbyCodeText.text = LobbyManagerCustom.JoinedLobby.LobbyCode;
         }
         catch (Exception e)
         {
@@ -95,5 +85,36 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public void SetCurrentSelectedLobby(Lobby lobby)
     {
         _currentSelectedLobby = lobby;
+    }
+
+    public async void LeaveLobby()
+    {
+        try
+        {
+            await LobbyManagerCustom.LeaveLobby();
+            _lobbyPanel.SetActive(false);
+        }
+        catch (Exception e)
+        {
+            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
+        }
+    }
+
+    public async void DeleteLobby()
+    {
+        try
+        {
+            await LobbyManagerCustom.DeleteLobby();
+            _lobbyPanel.SetActive(false);
+        }
+        catch (Exception e)
+        {
+            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
+        }
+    }
+
+    public void StartGame()
+    {
+        NetworkManager.Singleton.SceneManager.LoadScene(_lobbySceneName, LoadSceneMode.Single);
     }
 }

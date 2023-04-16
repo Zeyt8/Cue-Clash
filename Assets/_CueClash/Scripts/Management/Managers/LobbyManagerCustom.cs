@@ -62,7 +62,6 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
         {
             // For development, we want to use the development environment.
             var options = new InitializationOptions();
-            options.SetEnvironmentName("development");
             
             await UnityServices.InitializeAsync(options);
             
@@ -85,7 +84,7 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
 
     public static async Task CreateLobby(string lobbyName, bool isPrivate)
     {
-        int maxPlayers = 4;
+        int maxPlayers = 2;
         CreateLobbyOptions options = new CreateLobbyOptions
         {
             IsPrivate = isPrivate,

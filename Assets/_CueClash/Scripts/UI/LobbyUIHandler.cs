@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LobbyUIHandler : MonoBehaviour
 {
-    [SerializeField] private GameObject _lobbyItemListPrefab;
+    [SerializeField] private LobbyUIItem _lobbyItemListPrefab;
     [SerializeField] private Transform _lobbyListParent;
+
+    private List<LobbyUIItem> _lobbyUIItems = new List<LobbyUIItem>();
 
     private void OnEnable()
     {
@@ -20,6 +22,7 @@ public class LobbyUIHandler : MonoBehaviour
     public void AddSessionsToList(List<Lobby> lobbies)
     {
         ClearList();
+        _lobbyUIItems.Clear();
         foreach (Lobby lobby in lobbies)
         {
             AddSessionToList(lobby);
@@ -34,9 +37,19 @@ public class LobbyUIHandler : MonoBehaviour
         }
     }
 
+    public void DeselectAll()
+    {
+        foreach (LobbyUIItem lobbyUIItem in _lobbyUIItems)
+        {
+            lobbyUIItem.DeselectSession();
+        }
+    }
+
     private void AddSessionToList(Lobby lobby)
     {
         LobbyUIItem sessionItem = Instantiate(_lobbyItemListPrefab, _lobbyListParent).GetComponent<LobbyUIItem>();
+        sessionItem.LobbyUIHandler = this;
         sessionItem.SetInformation(lobby);
+        _lobbyUIItems.Add(sessionItem);
     }
 }
