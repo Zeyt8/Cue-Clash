@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using Unity.Netcode;
+using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine.SceneManagement;
 
@@ -11,11 +11,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private string _lobbySceneName;
     [Header("UI Elements")]
     [SerializeField] private LoadingPanel _loadingPanel;
-    [SerializeField] private TMP_InputField _createLobbyNameInput;
-    [SerializeField] private TMP_InputField _joinPrivateLobbyCodeInput;
-    [SerializeField] private Toggle _privateLobbyToggle;
-    [SerializeField] private GameObject _lobbyPanel;
-    [SerializeField] private TextMeshProUGUI _lobbyCodeText;
+    [SerializeField] private LobbyUIHandler _lobbyListPanel;
+    [SerializeField] private PlayerLobbyUIHandler _lobbyPanel;
 
     private Lobby _currentSelectedLobby;
 
@@ -39,9 +36,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
         try
         {
             await LobbyManagerCustom.JoinLobbyById(_currentSelectedLobby.Id);
-            NetworkManager.Singleton.StartClient();
             _loadingPanel.gameObject.SetActive(false);
-            _lobbyPanel.SetActive(true);
+            _lobbyPanel.gameObject.SetActive(true);
+            _lobbyPanel.SetCode(LobbyManagerCustom.JoinedLobby.LobbyCode);
+
+            NetworkManager.Singleton.StartClient();
         }
         catch (Exception e)
         {
@@ -54,10 +53,12 @@ public class MainMenuManager : Singleton<MainMenuManager>
         _loadingPanel.ShowLoad(LoadingType.JoiningRoom);
         try
         {
-            await LobbyManagerCustom.JoinLobbyByCode(_joinPrivateLobbyCodeInput.text);
-            NetworkManager.Singleton.StartClient();
+            await LobbyManagerCustom.JoinLobbyByCode(_lobbyListPanel.PrivateLobbyCode);
             _loadingPanel.gameObject.SetActive(false);
-            _lobbyPanel.SetActive(true);
+            _lobbyPanel.gameObject.SetActive(true);
+            _lobbyPanel.SetCode(LobbyManagerCustom.JoinedLobby.LobbyCode);
+
+            NetworkManager.Singleton.StartClient();
         }
         catch (Exception e)
         {
@@ -70,11 +71,12 @@ public class MainMenuManager : Singleton<MainMenuManager>
         _loadingPanel.ShowLoad(LoadingType.CreatingRoom);
         try
         {
-            await LobbyManagerCustom.CreateLobby(_createLobbyNameInput.text, _privateLobbyToggle.isOn);
-            NetworkManager.Singleton.StartHost();
+            await LobbyManagerCustom.CreateLobby(_lobbyListPanel.CreateLobbyName, _lobbyListPanel.IsPrivateLobby);
             _loadingPanel.gameObject.SetActive(false);
-            _lobbyPanel.SetActive(true);
-            _lobbyCodeText.text = LobbyManagerCustom.JoinedLobby.LobbyCode;
+            _lobbyPanel.gameObject.SetActive(true);
+            _lobbyPanel.SetCode(LobbyManagerCustom.JoinedLobby.LobbyCode);
+
+            NetworkManager.Singleton.StartHost();
         }
         catch (Exception e)
         {
@@ -92,7 +94,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
         try
         {
             await LobbyManagerCustom.LeaveLobby();
-            _lobbyPanel.SetActive(false);
+            NetworkManager.Singleton.Shutdown();
+            _lobbyPanel.gameObject.SetActive(false);
         }
         catch (Exception e)
         {
@@ -105,7 +108,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
         try
         {
             await LobbyManagerCustom.DeleteLobby();
-            _lobbyPanel.SetActive(false);
+            NetworkManager.Singleton.Shutdown();
+            _lobbyPanel.gameObject.SetActive(false);
         }
         catch (Exception e)
         {
@@ -113,8 +117,13 @@ public class MainMenuManager : Singleton<MainMenuManager>
         }
     }
 
-    public void StartGame()
+    public async void StartGame()
     {
         NetworkManager.Singleton.SceneManager.LoadScene(_lobbySceneName, LoadSceneMode.Single);
+    }
+
+    public void RefreshLobbyList()
+    {
+        LobbyManagerCustom.RefreshLobbyList();
     }
 }

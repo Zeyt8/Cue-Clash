@@ -227,6 +227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 245bb09874d54af428afd7dc8fef95ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LobbyUIHandler: {fileID: 0}
+  _image: {fileID: 5885121392653797040}
   _sessionNameText: {fileID: 5885121391598694982}
   _sessionPlayersText: {fileID: 6610955469722410815}
 --- !u!114 &7315620067494333424

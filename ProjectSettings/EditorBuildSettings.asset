@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_CueClash/_Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/_CueClash/_Scenes/Main Menu.unity
+    guid: 2bfe974617ad1114aa45227186458fe3
   m_configObjects: {}

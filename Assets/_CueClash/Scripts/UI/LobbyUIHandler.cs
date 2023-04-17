@@ -1,11 +1,19 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyUIHandler : MonoBehaviour
 {
+    public string CreateLobbyName => _createLobbyNameInput.text;
+    public string PrivateLobbyCode => _joinPrivateLobbyCodeInput.text;
+    public bool IsPrivateLobby => _privateLobbyToggle.isOn;
     [SerializeField] private LobbyUIItem _lobbyItemListPrefab;
     [SerializeField] private Transform _lobbyListParent;
+    [SerializeField] private TMP_InputField _createLobbyNameInput;
+    [SerializeField] private TMP_InputField _joinPrivateLobbyCodeInput;
+    [SerializeField] private Toggle _privateLobbyToggle;
 
     private List<LobbyUIItem> _lobbyUIItems = new List<LobbyUIItem>();
 

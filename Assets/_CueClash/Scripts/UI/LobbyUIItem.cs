@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class LobbyUIItem : MonoBehaviour
 {
     [HideInInspector] public LobbyUIHandler LobbyUIHandler;
+    [SerializeField] private Image _image;
     [SerializeField] private TextMeshProUGUI _sessionNameText;
     [SerializeField] private TextMeshProUGUI _sessionPlayersText;
 
     private Lobby _lobby;
-    private Image _image;
 
     public void SetInformation(Lobby lobby)
     {
