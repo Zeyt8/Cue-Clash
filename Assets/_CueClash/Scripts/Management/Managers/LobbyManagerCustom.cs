@@ -14,42 +14,33 @@ using UnityEngine;
 
 public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
 {
+    public static string PlayerName;
     public static Lobby JoinedLobby;
     public static event Action<List<Lobby>> OnLobbyListUpdated;
     public static event Action OnLobbyRefresh;
-    public static bool IsLobbyHost => _hostLobby != null;
+    public static event Action OnLobbyDisconnect;
+    public static bool IsLobbyHost { get; private set; }
 
-    private static Lobby _hostLobby;
+    private static ILobbyEvents _lobbyEvents;
     private float _heartbeatTimer;
-    private float _lobbyUpdateTimer;
     private float _lobbiesUpdateTimer;
 
     private void OnDisable()
     {
         OnLobbyListUpdated = null;
         OnLobbyRefresh = null;
+        OnLobbyDisconnect = null;
     }
 
     private async void Update()
     {
-        if (_hostLobby != null)
+        if (IsLobbyHost)
         {
             _heartbeatTimer += Time.deltaTime;
             if (_heartbeatTimer > 20)
             {
                 _heartbeatTimer = 0;
-                await LobbyService.Instance.SendHeartbeatPingAsync(_hostLobby.Id);
-            }
-        }
-
-        if (JoinedLobby != null)
-        {
-            _lobbyUpdateTimer += Time.deltaTime;
-            if (_lobbyUpdateTimer > 2)
-            {
-                _lobbyUpdateTimer = 0;
-
-                RefreshLobby();
+                await LobbyService.Instance.SendHeartbeatPingAsync(JoinedLobby.Id);
             }
         }
 
@@ -89,7 +80,7 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
 
     public static async Task CreateLobby(string lobbyName, bool isPrivate)
     {
-        int maxPlayers = 2;
+        int maxPlayers = 3;
         CreateLobbyOptions options = new CreateLobbyOptions
         {
             IsPrivate = isPrivate,
@@ -102,19 +93,24 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
         try
         {
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
-            _hostLobby = lobby;
             JoinedLobby = lobby;
+            IsLobbyHost = true;
+            await SubscribeToLobbyChanges();
             string relay = await CreateRelay();
-            lobby = await Lobbies.Instance.UpdateLobbyAsync(JoinedLobby.Id, new UpdateLobbyOptions
+            await Lobbies.Instance.UpdateLobbyAsync(JoinedLobby.Id, new UpdateLobbyOptions
             {
                 Data = new Dictionary<string, DataObject>
                 {
                     { "KEY_RELAY", new DataObject(DataObject.VisibilityOptions.Member, relay) }
                 }
             });
-            JoinedLobby = lobby;
         }
         catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            throw;
+        }
+        catch (RelayServiceException e)
         {
             Debug.Log(e);
             throw;
@@ -131,9 +127,15 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
         {
             Lobby lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId, options);
             JoinedLobby = lobby;
+            await SubscribeToLobbyChanges();
             await JoinRelay(JoinedLobby.Data["KEY_RELAY"].Value);
         }
         catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            throw;
+        }
+        catch (RelayServiceException e)
         {
             Debug.Log(e);
             throw;
@@ -150,9 +152,15 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
         {
             Lobby lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
             JoinedLobby = lobby;
+            await SubscribeToLobbyChanges();
             await JoinRelay(JoinedLobby.Data["KEY_RELAY"].Value);
         }
         catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            throw;
+        }
+        catch (RelayServiceException e)
         {
             Debug.Log(e);
             throw;
@@ -165,9 +173,15 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
         {
             Lobby lobby = await LobbyService.Instance.QuickJoinLobbyAsync();
             JoinedLobby = lobby;
+            await SubscribeToLobbyChanges();
             await JoinRelay(JoinedLobby.Data["KEY_RELAY"].Value);
         }
         catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            throw;
+        }
+        catch (RelayServiceException e)
         {
             Debug.Log(e);
             throw;
@@ -191,11 +205,10 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
     {
         try
         {
-            _hostLobby = await LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions
+            JoinedLobby = await LobbyService.Instance.UpdateLobbyAsync(JoinedLobby.Id, new UpdateLobbyOptions
             {
                 HostId = newHost.Id
             });
-            JoinedLobby = _hostLobby;
         }
         catch (LobbyServiceException e)
         {
@@ -208,8 +221,7 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
     {
         try
         {
-            await LobbyService.Instance.DeleteLobbyAsync(_hostLobby.Id);
-            _hostLobby = null;
+            await LobbyService.Instance.DeleteLobbyAsync(JoinedLobby.Id);
             JoinedLobby = null;
         }
         catch (LobbyServiceException e)
@@ -223,13 +235,6 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
     {
         List<Lobby> lobbies = await ListLobbies();
         OnLobbyListUpdated?.Invoke(lobbies);
-    }
-
-    public static async void RefreshLobby()
-    {
-        Lobby lobby = await LobbyService.Instance.GetLobbyAsync(JoinedLobby.Id);
-        JoinedLobby = lobby;
-        OnLobbyRefresh?.Invoke();
     }
 
     private static async Task<string> CreateRelay()
@@ -275,7 +280,7 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
             {
                 {
                     "PlayerName",
-                    new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, "Player" + UnityEngine.Random.Range(0, 100))
+                    new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, PlayerName)
                 }
             }
         };
@@ -305,6 +310,64 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
         {
             Debug.Log(e);
             throw;
+        }
+    }
+
+    private static async Task SubscribeToLobbyChanges()
+    {
+        LobbyEventCallbacks callbacks = new LobbyEventCallbacks();
+        callbacks.LobbyChanged += OnLobbyChanged;
+        callbacks.KickedFromLobby += OnKickedFromLobby;
+        callbacks.LobbyEventConnectionStateChanged += OnLobbyEventConnectionStateChanged;
+        try
+        {
+            _lobbyEvents = await Lobbies.Instance.SubscribeToLobbyEventsAsync(JoinedLobby.Id, callbacks);
+        }
+        catch (LobbyServiceException ex)
+        {
+            switch (ex.Reason)
+            {
+                case LobbyExceptionReason.AlreadySubscribedToLobby: Debug.LogWarning($"Already subscribed to lobby[{JoinedLobby.Id}]. We did not need to try and subscribe again. Exception Message: {ex.Message}"); break;
+                case LobbyExceptionReason.SubscriptionToLobbyLostWhileBusy: Debug.LogError($"Subscription to lobby events was lost while it was busy trying to subscribe. Exception Message: {ex.Message}"); throw;
+                case LobbyExceptionReason.LobbyEventServiceConnectionError: Debug.LogError($"Failed to connect to lobby events. Exception Message: {ex.Message}"); throw;
+                default: throw;
+            }
+        }
+    }
+
+    private async static void OnLobbyChanged(ILobbyChanges changes)
+    {
+        if (changes.LobbyDeleted)
+        {
+            OnLobbyDisconnect?.Invoke();
+            OnLobbyDisconnect = null;
+            RefreshLobbyList();
+        }
+        else
+        {
+            changes.ApplyToLobby(JoinedLobby);
+            JoinedLobby = await LobbyService.Instance.GetLobbyAsync(JoinedLobby.Id);
+            OnLobbyRefresh?.Invoke();
+        }
+    }
+
+    private static void OnKickedFromLobby()
+    {
+        OnLobbyDisconnect?.Invoke();
+        _lobbyEvents = null;
+        OnLobbyDisconnect = null;
+        RefreshLobbyList();
+    }
+
+    private static void OnLobbyEventConnectionStateChanged(LobbyEventConnectionState state)
+    {
+        switch (state)
+        {
+            case LobbyEventConnectionState.Unsubscribed: /* Update the UI if necessary, as the subscription has been stopped. */ break;
+            case LobbyEventConnectionState.Subscribing: /* Update the UI if necessary, while waiting to be subscribed. */ break;
+            case LobbyEventConnectionState.Subscribed: /* Update the UI if necessary, to show subscription is working. */ break;
+            case LobbyEventConnectionState.Unsynced: /* Update the UI to show connection problems. Lobby will attempt to reconnect automatically. */ break;
+            case LobbyEventConnectionState.Error: OnLobbyDisconnect?.Invoke(); break;
         }
     }
 }
