@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerObject : MonoBehaviour
 {
     [SerializeField] private InputHandler _inputHandler;
+    [SerializeField] private Animator _animator;
     private PlayerMovement _playerMovement;
 
     private void Awake()

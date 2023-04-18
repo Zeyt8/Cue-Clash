@@ -117,7 +117,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         }
     }
 
-    public async void StartGame()
+    public void StartGame()
     {
         NetworkManager.Singleton.SceneManager.LoadScene(_lobbySceneName, LoadSceneMode.Single);
     }
