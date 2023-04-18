@@ -27,8 +27,15 @@ public class Tweener : MonoBehaviour
     
     [SerializeField] private bool _loop;
     [SerializeField] private bool _pingpong;
-    [SerializeField] private bool _destroyOnFinish;
-    [SerializeField] private bool _destroyRootOnFinish;
+    [SerializeField] private FinishBehaviour _finishBehaviour;
+    [System.Flags]
+    public enum FinishBehaviour
+    {
+        Disable = 1,
+        Destroy = 2,
+        DisableRoot = 4,
+        DestroyRoot = 8
+    }
     [SerializeField] private GameObject _root;
 
     [SerializeField, Tooltip("If true the value to animate will be set to From on begin")] private bool _useStartingValue;
@@ -128,7 +135,7 @@ public class Tweener : MonoBehaviour
         {
             _tweenObject.setEase(EaseType);
         }
-        _tweenObject.setDestroyOnComplete(_destroyOnFinish);
+        _tweenObject.setDestroyOnComplete(_finishBehaviour.HasFlag(FinishBehaviour.Destroy));
         _tweenObject.setOnComplete(OnComplete);
         _tweenObject.setOnCompleteOnStart(_onCompleteOnStart);
         _tweenObject.setOnCompleteOnRepeat(_onCompleteOnRepeat);
@@ -222,9 +229,17 @@ public class Tweener : MonoBehaviour
     private void OnComplete()
     {
         _onComplete.Invoke();
-        if (_destroyRootOnFinish && _root != null)
+        if (_finishBehaviour.HasFlag(FinishBehaviour.DestroyRoot) && _root != null)
         {
             Destroy(_root);
+        }
+        else if (_finishBehaviour.HasFlag(FinishBehaviour.DisableRoot) && _root != null)
+        {
+            _root.SetActive(false);
+        }
+        else if (_finishBehaviour.HasFlag(FinishBehaviour.Disable))
+        {
+            gameObject.SetActive(false);
         }
     }
 }

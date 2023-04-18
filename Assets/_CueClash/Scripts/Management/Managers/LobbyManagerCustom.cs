@@ -65,10 +65,7 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
     {
         try
         {
-            // For development, we want to use the development environment.
-            var options = new InitializationOptions();
-            
-            await UnityServices.InitializeAsync(options);
+            await UnityServices.InitializeAsync();
             
             // To be able to use lobby with 2 local instances
 #if UNITY_EDITOR
@@ -83,6 +80,11 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
             Debug.Log(e);
             throw;
         }
+    }
+
+    public static void DisconnectFromServer()
+    {
+        AuthenticationService.Instance.SignOut();
     }
 
     public static async Task CreateLobby(string lobbyName, bool isPrivate)

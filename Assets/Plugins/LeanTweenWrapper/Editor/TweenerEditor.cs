@@ -20,8 +20,7 @@ public class TweenerEditor : Editor
 
     private SerializedProperty _loop;
     private SerializedProperty _pingpong;
-    private SerializedProperty _destroyOnFinish;
-    private SerializedProperty _destroyRootOnFinish;
+    private SerializedProperty _finishBehaviour;
     private SerializedProperty _root;
 
     private SerializedProperty _useStartingValue;
@@ -48,8 +47,7 @@ public class TweenerEditor : Editor
         _delay = serializedObject.FindProperty("_delay");
         _loop = serializedObject.FindProperty("_loop");
         _pingpong = serializedObject.FindProperty("_pingpong");
-        _destroyOnFinish = serializedObject.FindProperty("_destroyOnFinish");
-        _destroyRootOnFinish = serializedObject.FindProperty("_destroyRootOnFinish");
+        _finishBehaviour = serializedObject.FindProperty("_finishBehaviour");
         _root = serializedObject.FindProperty("_root");
         _useStartingValue = serializedObject.FindProperty("_useStartingValue");
         _endValueType = serializedObject.FindProperty("_endValueType");
@@ -83,9 +81,9 @@ public class TweenerEditor : Editor
         EditorGUILayout.LabelField("Animation Finish Settings", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(_loop);
         EditorGUILayout.PropertyField(_pingpong);
-        EditorGUILayout.PropertyField(_destroyOnFinish);
-        EditorGUILayout.PropertyField(_destroyRootOnFinish);
-        if (_destroyRootOnFinish.boolValue)
+        EditorGUILayout.PropertyField(_finishBehaviour);
+        if (_finishBehaviour.intValue == (int) Tweener.FinishBehaviour.DestroyRoot ||
+            _finishBehaviour.intValue == (int) Tweener.FinishBehaviour.DisableRoot)
         {
             EditorGUILayout.PropertyField(_root);
         }

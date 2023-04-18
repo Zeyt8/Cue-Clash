@@ -5,6 +5,7 @@ using Unity.Netcode;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine.SceneManagement;
+using Unity.Services.Core;
 
 public class MainMenuManager : Singleton<MainMenuManager>
 {
@@ -44,7 +45,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
         }
         catch (Exception e)
         {
-            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
+            if (_currentSelectedLobby == null)
+                _loadingPanel.ShowLoad(LoadingType.Error, "No lobby selected");
+            else
+                _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
         }
     }
 
@@ -62,7 +66,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
         }
         catch (Exception e)
         {
-            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
+            if (_lobbyListPanel.PrivateLobbyCode == "" || _lobbyListPanel.PrivateLobbyCode == null)
+                _loadingPanel.ShowLoad(LoadingType.Error, "Please enter a lobby code");
+            else
+                _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
         }
     }
 
@@ -80,7 +87,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
         }
         catch (Exception e)
         {
-            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
+            if (_lobbyListPanel.CreateLobbyName == "" || _lobbyListPanel.CreateLobbyName == null)
+                _loadingPanel.ShowLoad(LoadingType.Error, "Please enter a lobby name");
+            else
+                _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
         }
     }
 
@@ -125,5 +135,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public void RefreshLobbyList()
     {
         LobbyManagerCustom.RefreshLobbyList();
+    }
+
+    public void DisconnectFromServer()
+    {
+        LobbyManagerCustom.DisconnectFromServer();
     }
 }
