@@ -64,11 +64,13 @@ public class Tweener : MonoBehaviour
 
     private LTDescr _tweenObject;
     private RectTransform _rectTransform;
+    private Transform _transform;
     private Image _image;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+        _transform = GetComponent<Transform>();
         _image = GetComponent<Image>();
     }
 
@@ -175,55 +177,109 @@ public class Tweener : MonoBehaviour
     {
         if (_useStartingValue)
         {
-            _rectTransform.anchoredPosition = From;
+            if (_rectTransform != null)
+                _rectTransform.anchoredPosition = From;
+            else if (_transform != null)
+                _transform.position = From;
         }
 
-        Vector3 dest = _endValueType switch
+        if (_rectTransform != null)
         {
-            EndValueType.Absolute => To,
-            EndValueType.Relative => new Vector3(_rectTransform.anchoredPosition.x + To.x,
-                _rectTransform.anchoredPosition.y + To.y, To.z),
-            EndValueType.Scaled => new Vector3(_rectTransform.anchoredPosition.x * To.x,
-                _rectTransform.anchoredPosition.y * To.y, To.z),
-            _ => Vector3.zero
-        };
-        _tweenObject = LeanTween.move(_rectTransform, dest, _duration);
+            Vector3 dest = _endValueType switch
+            {
+                EndValueType.Absolute => To,
+                EndValueType.Relative => new Vector3(_rectTransform.anchoredPosition.x + To.x,
+                    _rectTransform.anchoredPosition.y + To.y, To.z),
+                EndValueType.Scaled => new Vector3(_rectTransform.anchoredPosition.x * To.x,
+                    _rectTransform.anchoredPosition.y * To.y, To.z),
+                _ => Vector3.zero
+            };
+            _tweenObject = LeanTween.move(_rectTransform, dest, _duration);
+        }
+        else if (_transform != null)
+        {
+            Vector3 dest = _endValueType switch
+            {
+                EndValueType.Absolute => To,
+                EndValueType.Relative => _transform.position + To,
+                EndValueType.Scaled => new Vector3(_transform.position.x * To.x,
+                    _transform.position.y * To.y, transform.position.z * To.z),
+                _ => Vector3.zero
+            };
+            _tweenObject = LeanTween.move(gameObject, dest, _duration);
+        }
     }
 
     private void Rotate()
     {
         if (_useStartingValue)
         {
-            _rectTransform.rotation = Quaternion.Euler(From);
+            if (_rectTransform != null)
+                _rectTransform.rotation = Quaternion.Euler(From);
+            else if (_transform != null)
+                _transform.rotation = Quaternion.Euler(From);
         }
 
-        Vector3 dest = _endValueType switch
+        if (_rectTransform != null)
         {
-            EndValueType.Absolute => To,
-            EndValueType.Relative => _rectTransform.rotation.eulerAngles + To,
-            EndValueType.Scaled => new Vector3(_rectTransform.anchoredPosition.x * To.x,
-                _rectTransform.anchoredPosition.y * To.y, To.z),
-            _ => Vector3.zero
-        };
-        _tweenObject = LeanTween.rotate(_rectTransform, dest, _duration);
+            Vector3 dest = _endValueType switch
+            {
+                EndValueType.Absolute => To,
+                EndValueType.Relative => _rectTransform.rotation.eulerAngles + To,
+                EndValueType.Scaled => new Vector3(_rectTransform.anchoredPosition.x * To.x,
+                    _rectTransform.anchoredPosition.y * To.y, To.z),
+                _ => Vector3.zero
+            };
+            _tweenObject = LeanTween.rotate(_rectTransform, dest, _duration);
+        }
+        else if (_transform != null)
+        {
+            Vector3 dest = _endValueType switch
+            {
+                EndValueType.Absolute => To,
+                EndValueType.Relative => _transform.rotation.eulerAngles + To,
+                EndValueType.Scaled => new Vector3(_transform.position.x * To.x,
+                    _transform.position.y * To.y, transform.position.z * To.z),
+                _ => Vector3.zero
+            };
+            _tweenObject = LeanTween.rotate(gameObject, dest, _duration);
+        }
     }
 
     private void Scale()
     {
         if (_useStartingValue)
         {
-            _rectTransform.localScale = From;
+            if (_rectTransform != null)
+                _rectTransform.localScale = From;
+            else if (_transform != null)
+                _transform.localScale = From;
         }
 
-        Vector3 dest = _endValueType switch
+        if (_rectTransform != null)
         {
-            EndValueType.Absolute => To,
-            EndValueType.Relative => _rectTransform.localScale + To,
-            EndValueType.Scaled => new Vector3(_rectTransform.anchoredPosition.x * To.x,
-                _rectTransform.anchoredPosition.y * To.y, To.z),
-            _ => Vector3.zero
-        };
-        _tweenObject = LeanTween.scale(ObjectToAnimate, dest, _duration);
+            Vector3 dest = _endValueType switch
+            {
+                EndValueType.Absolute => To,
+                EndValueType.Relative => _rectTransform.localScale + To,
+                EndValueType.Scaled => new Vector3(_rectTransform.anchoredPosition.x * To.x,
+                    _rectTransform.anchoredPosition.y * To.y, To.z),
+                _ => Vector3.zero
+            };
+            _tweenObject = LeanTween.scale(_rectTransform, dest, _duration);
+        }
+        else if (_transform != null)
+        {
+            Vector3 dest = _endValueType switch
+            {
+                EndValueType.Absolute => To,
+                EndValueType.Relative => _transform.localScale + To,
+                EndValueType.Scaled => new Vector3(_transform.position.x * To.x,
+                    _transform.position.y * To.y, transform.position.z * To.z),
+                _ => Vector3.zero
+            };
+            _tweenObject = LeanTween.scale(gameObject, dest, _duration);
+        }
     }
 
     private void OnComplete()
