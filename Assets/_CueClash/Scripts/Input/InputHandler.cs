@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
 {
     public Vector3 Movement { get; private set; }
-    public bool Jump { get; private set; }
+    public bool Jump { get; set; }
     public Vector2 Look { get; private set; }
     public bool Cue { get; private set; }
     public bool Attack { get; private set; }
