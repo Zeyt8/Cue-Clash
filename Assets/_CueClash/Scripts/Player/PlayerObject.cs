@@ -37,6 +37,8 @@ public class PlayerObject : NetworkBehaviour
 
     private void Update()
     {
+        if (!IsOwner) return;
+
         if (_inputHandler.Movement != Vector3.zero)
         {
             _animator.SetBool("Walking", true);
@@ -64,7 +66,7 @@ public class PlayerObject : NetworkBehaviour
 
     private void Shoot()
     {
-        if (_playerState != PlayerState.Ranged) return;
+        if (!IsOwner || _playerState != PlayerState.Ranged) return;
         _weapon.Shoot();
     }
 

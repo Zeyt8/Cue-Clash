@@ -1,7 +1,9 @@
 using Cinemachine;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera _cameraPrefab;
     [SerializeField] private Rigidbody _rigidbody;
@@ -46,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void FixedUpdate()
     {
+        if (!IsOwner) return;
         // apply movement
         _isGrounded = Physics.Raycast(_bottom.position, Vector3.down, 0.1f);
         if (_isGrounded)
