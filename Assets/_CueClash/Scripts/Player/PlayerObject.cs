@@ -25,7 +25,7 @@ public class PlayerObject : MonoBehaviour
 
     private void Update()
     {
-        _playerMovement.Move(_inputHandler.Movement);
+        _playerMovement.Move(_inputHandler);
     }
 
     private void SwitchWeapons()

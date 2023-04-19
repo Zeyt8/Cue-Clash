@@ -89,6 +89,15 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""730746a5-3b8f-4b0f-ab13-b75aeb0bc483"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -117,7 +126,7 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""751f7a1b-b495-4a4c-a2e9-35d05ff21f8b"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""K&M"",
@@ -128,7 +137,7 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""8f849f15-dcb7-40c8-b1f4-6eb44beb5e96"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""K&M"",
@@ -212,6 +221,17 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3b483d91-28b8-4475-992f-615287fc63af"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K&M"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -244,6 +264,7 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         m_Player_Parry = m_Player.FindAction("Parry", throwIfNotFound: true);
         m_Player_SwitchWeapons = m_Player.FindAction("Switch Weapons", throwIfNotFound: true);
         m_Player_SwitchAmmo = m_Player.FindAction("Switch Ammo", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -312,6 +333,7 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Parry;
     private readonly InputAction m_Player_SwitchWeapons;
     private readonly InputAction m_Player_SwitchAmmo;
+    private readonly InputAction m_Player_Jump;
     public struct PlayerActions
     {
         private @ControlSchemes m_Wrapper;
@@ -323,6 +345,7 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         public InputAction @Parry => m_Wrapper.m_Player_Parry;
         public InputAction @SwitchWeapons => m_Wrapper.m_Player_SwitchWeapons;
         public InputAction @SwitchAmmo => m_Wrapper.m_Player_SwitchAmmo;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -353,6 +376,9 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
             @SwitchAmmo.started += instance.OnSwitchAmmo;
             @SwitchAmmo.performed += instance.OnSwitchAmmo;
             @SwitchAmmo.canceled += instance.OnSwitchAmmo;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -378,6 +404,9 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
             @SwitchAmmo.started -= instance.OnSwitchAmmo;
             @SwitchAmmo.performed -= instance.OnSwitchAmmo;
             @SwitchAmmo.canceled -= instance.OnSwitchAmmo;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -413,5 +442,6 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         void OnParry(InputAction.CallbackContext context);
         void OnSwitchWeapons(InputAction.CallbackContext context);
         void OnSwitchAmmo(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }
