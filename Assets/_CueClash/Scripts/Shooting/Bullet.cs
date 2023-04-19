@@ -13,8 +13,12 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        GameObject limb = collision.gameObject;
-        limb.GetComponent<Limb>().TakeDamage();
+        GameObject collisionObject = collision.gameObject;
+        int damageGiven = 30;
+        if (collisionObject.TryGetComponent<Limb>(out Limb limb))
+        {
+            limb.TakeDamage(damageGiven);
+        }
         Destroy(gameObject);
     }
 }

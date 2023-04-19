@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Limb : MonoBehaviour
 {
+    [SerializeField]
     private int health = 100;
 
-    public void TakeDamage()
+    public void TakeDamage(int damage)
     {
-        health -= 30;
+        health -= damage;
         if(health <= 0)
         {
             Destroy(gameObject);
