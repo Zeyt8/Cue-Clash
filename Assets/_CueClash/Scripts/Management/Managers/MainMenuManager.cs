@@ -145,6 +145,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
         LobbyManagerCustom.DisconnectFromServer();
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     private void DisableLobbyMenu()
     {
         _lobbyPanel.gameObject.SetActive(false);
