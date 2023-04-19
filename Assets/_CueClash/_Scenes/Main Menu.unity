@@ -1256,7 +1256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c66b38996ca8714986edf02639b4bb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lobbySceneName: 
+  _lobbySceneName: _CueClash/_Scenes/MainScene
   _loadingPanel: {fileID: 860941815}
   _lobbyListPanel: {fileID: 447521230}
   _lobbyPanel: {fileID: 981541103}
@@ -4155,7 +4155,19 @@ MonoBehaviour:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 972265095}
     PlayerPrefab: {fileID: 0}
-    NetworkPrefabs: []
+    NetworkPrefabs:
+    - Override: 0
+      Prefab: {fileID: 4420032256838620905, guid: c3fa94e69eaaa024db0f0cdd1ef7f276,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 2853251532623805836, guid: 166f6851dbaa431439438ed2eb690b94,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0

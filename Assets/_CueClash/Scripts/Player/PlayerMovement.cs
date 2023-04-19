@@ -1,15 +1,9 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private bool _isGrounded = true;
-    private bool _needsToJump;
-    private Vector3 _movement;
-    private CinemachinePOV _pov;
-    [SerializeField] private CinemachineVirtualCamera _camera;
+    [SerializeField] private CinemachineVirtualCamera _cameraPrefab;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Transform _bottom;
     [SerializeField] private float _acceleration = 50f;
@@ -18,8 +12,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private float _fallAcceleration = 2.5f;
 
+    private bool _isGrounded = true;
+    private bool _needsToJump;
+    private Vector3 _movement;
+    private CinemachinePOV _pov;
+    private CinemachineVirtualCamera _camera;
+
     public void Start()
     {
+        _camera = Instantiate(_cameraPrefab, Vector3.zero, Quaternion.identity);
+        _camera.Follow = transform;
+        _camera.LookAt = transform;
         // set up aiming
         _pov = _camera.GetCinemachineComponent<CinemachinePOV>();
     }

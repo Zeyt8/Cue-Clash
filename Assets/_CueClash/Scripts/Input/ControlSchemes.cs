@@ -55,9 +55,18 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""Swing"",
                     ""type"": ""Button"",
                     ""id"": ""30da74e6-46f4-4a1b-bcd3-28e900bce244"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd4ae9c9-ad0f-4dca-83b6-3fb9c1ed9497"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -174,7 +183,7 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""K&M"",
-                    ""action"": ""Attack"",
+                    ""action"": ""Swing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -232,6 +241,17 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99b37b59-de11-475b-bc12-1a954a69302a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K&M"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -260,7 +280,8 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Cue = m_Player.FindAction("Cue", throwIfNotFound: true);
-        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Swing = m_Player.FindAction("Swing", throwIfNotFound: true);
+        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Parry = m_Player.FindAction("Parry", throwIfNotFound: true);
         m_Player_SwitchWeapons = m_Player.FindAction("Switch Weapons", throwIfNotFound: true);
         m_Player_SwitchAmmo = m_Player.FindAction("Switch Ammo", throwIfNotFound: true);
@@ -329,7 +350,8 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Cue;
-    private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Swing;
+    private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Parry;
     private readonly InputAction m_Player_SwitchWeapons;
     private readonly InputAction m_Player_SwitchAmmo;
@@ -341,7 +363,8 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Cue => m_Wrapper.m_Player_Cue;
-        public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Swing => m_Wrapper.m_Player_Swing;
+        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Parry => m_Wrapper.m_Player_Parry;
         public InputAction @SwitchWeapons => m_Wrapper.m_Player_SwitchWeapons;
         public InputAction @SwitchAmmo => m_Wrapper.m_Player_SwitchAmmo;
@@ -364,9 +387,12 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
             @Cue.started += instance.OnCue;
             @Cue.performed += instance.OnCue;
             @Cue.canceled += instance.OnCue;
-            @Attack.started += instance.OnAttack;
-            @Attack.performed += instance.OnAttack;
-            @Attack.canceled += instance.OnAttack;
+            @Swing.started += instance.OnSwing;
+            @Swing.performed += instance.OnSwing;
+            @Swing.canceled += instance.OnSwing;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
             @Parry.started += instance.OnParry;
             @Parry.performed += instance.OnParry;
             @Parry.canceled += instance.OnParry;
@@ -392,9 +418,12 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
             @Cue.started -= instance.OnCue;
             @Cue.performed -= instance.OnCue;
             @Cue.canceled -= instance.OnCue;
-            @Attack.started -= instance.OnAttack;
-            @Attack.performed -= instance.OnAttack;
-            @Attack.canceled -= instance.OnAttack;
+            @Swing.started -= instance.OnSwing;
+            @Swing.performed -= instance.OnSwing;
+            @Swing.canceled -= instance.OnSwing;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
             @Parry.started -= instance.OnParry;
             @Parry.performed -= instance.OnParry;
             @Parry.canceled -= instance.OnParry;
@@ -438,7 +467,8 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnCue(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+        void OnSwing(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);
         void OnSwitchWeapons(InputAction.CallbackContext context);
         void OnSwitchAmmo(InputAction.CallbackContext context);

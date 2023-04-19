@@ -1,24 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
-using TMPro;
 
-public class Weapon : MonoBehaviour
+public class Weapon : NetworkBehaviour
 {
     public Transform bulletSpawnPoint;
-    public GameObject bulletPrefab;
+    public NetworkObject bulletPrefab;
     public float bulletSpeed = 20;
     public int nrOfBullets = 10;
     public AmmoText ammoTextBox;
 
-    private void Update()
+    public void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && nrOfBullets > 0)
+        if (nrOfBullets > 0)
         {
-            var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            NetworkObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            bullet.Spawn();
             bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
             nrOfBullets--;
         }
-        ammoTextBox.UpdateAmmoText(nrOfBullets);
+        //ammoTextBox.UpdateAmmoText(nrOfBullets);
     }
 }

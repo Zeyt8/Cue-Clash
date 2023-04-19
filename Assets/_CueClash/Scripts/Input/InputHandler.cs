@@ -10,6 +10,7 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     public Vector2 Look { get; private set; }
     public bool Cue { get; private set; }
     public bool Attack { get; private set; }
+    public UnityEvent OnShootWeapon = new UnityEvent();
     public bool Parry { get; private set; }
     public UnityEvent OnSwitchedWeapons = new UnityEvent();
     public UnityEvent OnSwitchedAmmo = new UnityEvent();
@@ -66,7 +67,7 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
         }
     }
 
-    public void OnAttack(InputAction.CallbackContext context)
+    public void OnSwing(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -75,6 +76,14 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
         else if (context.canceled)
         {
             Attack = false;
+        }
+    }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnShootWeapon?.Invoke();
         }
     }
 
@@ -92,11 +101,17 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
 
     public void OnSwitchWeapons(InputAction.CallbackContext context)
     {
-        OnSwitchedWeapons.Invoke();
+        if (context.performed)
+        {
+            OnSwitchedWeapons.Invoke();
+        }
     }
 
     public void OnSwitchAmmo(InputAction.CallbackContext context)
     {
-        OnSwitchedAmmo.Invoke();
+        if (context.performed)
+        {
+            OnSwitchedAmmo.Invoke();
+        }
     }
 }
