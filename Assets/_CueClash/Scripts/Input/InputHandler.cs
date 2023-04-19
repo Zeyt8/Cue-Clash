@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
 {
     public Vector3 Movement { get; private set; }
+    public bool Jump { get; set; }
     public Vector2 Look { get; private set; }
     public bool Cue { get; private set; }
     public bool Attack { get; private set; }
@@ -34,6 +35,18 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     {
         Vector2 m = context.ReadValue<Vector2>();
         Movement = new Vector3(m.x, 0, m.y);
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Jump = true;
+        }
+        else if (context.canceled)
+        {
+            Jump = false;
+        }
     }
 
     public void OnLook(InputAction.CallbackContext context)
