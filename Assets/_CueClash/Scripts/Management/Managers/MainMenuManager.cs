@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MainMenuManager : Singleton<MainMenuManager>
 {
@@ -13,6 +12,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private LoadingPanel _loadingPanel;
     [SerializeField] private LobbyUIHandler _lobbyListPanel;
     [SerializeField] private PlayerLobbyUIHandler _lobbyPanel;
+    [SerializeField] private TMP_InputField _nameInput;
 
     private Lobby _currentSelectedLobby;
 
@@ -35,16 +35,21 @@ public class MainMenuManager : Singleton<MainMenuManager>
         _loadingPanel.ShowLoad(LoadingType.JoiningRoom);
         try
         {
+            LobbyManagerCustom.PlayerName = _nameInput.text == "" ? "Player" : _nameInput.text;
             await LobbyManagerCustom.JoinLobbyById(_currentSelectedLobby.Id);
             _loadingPanel.gameObject.SetActive(false);
             _lobbyPanel.gameObject.SetActive(true);
             _lobbyPanel.SetCode(LobbyManagerCustom.JoinedLobby.LobbyCode);
-
+            LobbyManagerCustom.OnLobbyDisconnect += DisableLobbyMenu;
+            
             NetworkManager.Singleton.StartClient();
         }
         catch (Exception e)
         {
-            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
+            if (_currentSelectedLobby == null)
+                _loadingPanel.ShowLoad(LoadingType.Error, "No lobby selected");
+            else
+                _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
         }
     }
 
@@ -53,16 +58,21 @@ public class MainMenuManager : Singleton<MainMenuManager>
         _loadingPanel.ShowLoad(LoadingType.JoiningRoom);
         try
         {
+            LobbyManagerCustom.PlayerName = _nameInput.text == "" ? "Player" : _nameInput.text;
             await LobbyManagerCustom.JoinLobbyByCode(_lobbyListPanel.PrivateLobbyCode);
             _loadingPanel.gameObject.SetActive(false);
             _lobbyPanel.gameObject.SetActive(true);
             _lobbyPanel.SetCode(LobbyManagerCustom.JoinedLobby.LobbyCode);
+            LobbyManagerCustom.OnLobbyDisconnect += DisableLobbyMenu;
 
             NetworkManager.Singleton.StartClient();
         }
         catch (Exception e)
         {
-            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
+            if (_lobbyListPanel.PrivateLobbyCode == "" || _lobbyListPanel.PrivateLobbyCode == null)
+                _loadingPanel.ShowLoad(LoadingType.Error, "Please enter a lobby code");
+            else
+                _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
         }
     }
 
@@ -71,16 +81,21 @@ public class MainMenuManager : Singleton<MainMenuManager>
         _loadingPanel.ShowLoad(LoadingType.CreatingRoom);
         try
         {
+            LobbyManagerCustom.PlayerName = _nameInput.text == "" ? "Player" : _nameInput.text;
             await LobbyManagerCustom.CreateLobby(_lobbyListPanel.CreateLobbyName, _lobbyListPanel.IsPrivateLobby);
             _loadingPanel.gameObject.SetActive(false);
             _lobbyPanel.gameObject.SetActive(true);
             _lobbyPanel.SetCode(LobbyManagerCustom.JoinedLobby.LobbyCode);
+            LobbyManagerCustom.OnLobbyDisconnect += DisableLobbyMenu;
 
             NetworkManager.Singleton.StartHost();
         }
         catch (Exception e)
         {
-            _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
+            if (_lobbyListPanel.CreateLobbyName == "" || _lobbyListPanel.CreateLobbyName == null)
+                _loadingPanel.ShowLoad(LoadingType.Error, "Please enter a lobby name");
+            else
+                _loadingPanel.ShowLoad(LoadingType.Error, e.Message);
         }
     }
 
@@ -93,9 +108,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     {
         try
         {
-            await LobbyManagerCustom.LeaveLobby();
             NetworkManager.Singleton.Shutdown();
-            _lobbyPanel.gameObject.SetActive(false);
+            await LobbyManagerCustom.LeaveLobby();
         }
         catch (Exception e)
         {
@@ -107,9 +121,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     {
         try
         {
-            await LobbyManagerCustom.DeleteLobby();
             NetworkManager.Singleton.Shutdown();
-            _lobbyPanel.gameObject.SetActive(false);
+            await LobbyManagerCustom.DeleteLobby();
         }
         catch (Exception e)
         {
@@ -125,5 +138,20 @@ public class MainMenuManager : Singleton<MainMenuManager>
     public void RefreshLobbyList()
     {
         LobbyManagerCustom.RefreshLobbyList();
+    }
+
+    public void DisconnectFromServer()
+    {
+        LobbyManagerCustom.DisconnectFromServer();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    private void DisableLobbyMenu()
+    {
+        _lobbyPanel.gameObject.SetActive(false);
     }
 }
