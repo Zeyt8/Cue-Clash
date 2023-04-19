@@ -22,6 +22,7 @@ public class PlayerMovement : NetworkBehaviour
 
     public void Start()
     {
+        if (!IsOwner) return;
         _camera = Instantiate(_cameraPrefab, Vector3.zero, Quaternion.identity);
         _camera.Follow = transform;
         _camera.LookAt = transform;
