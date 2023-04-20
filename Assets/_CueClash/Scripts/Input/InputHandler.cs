@@ -9,6 +9,7 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     public bool Jump { get; set; }
     public Vector2 Look { get; private set; }
     public bool Cue { get; private set; }
+    public UnityEvent OnCueRelease = new UnityEvent();
     public bool Attack { get; private set; }
     public UnityEvent OnShootWeapon = new UnityEvent();
     public bool Parry { get; private set; }
@@ -64,6 +65,7 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
         else if (context.canceled)
         {
             Cue = false;
+            OnCueRelease?.Invoke();
         }
     }
 

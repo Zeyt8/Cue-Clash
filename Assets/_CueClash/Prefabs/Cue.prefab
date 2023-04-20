@@ -128,6 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2540614641283864095}
   - component: {fileID: 2841383090700272331}
+  - component: {fileID: 556824433392414989}
   - component: {fileID: 4428826313299107627}
   m_Layer: 0
   m_Name: Cue
@@ -171,6 +172,20 @@ MonoBehaviour:
   bulletSpeed: 30
   nrOfBullets:
     m_InternalValue: 10
+--- !u!114 &556824433392414989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524275091023533007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c03afcbe1ff4c84ca4e51a62b714f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Charging: 0
+  _cueTop: {fileID: 5321926215105968284}
 --- !u!136 &4428826313299107627
 CapsuleCollider:
   m_ObjectHideFlags: 0

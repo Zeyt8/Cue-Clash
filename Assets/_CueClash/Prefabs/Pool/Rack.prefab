@@ -57,7 +57,7 @@ MonoBehaviour:
   _trigger: 2
   _useUnscaledTime: 1
   _duration: 2
-  _delay: 0
+  _delay: 1
   _loop: 0
   _pingpong: 0
   _finishBehaviour: 2
