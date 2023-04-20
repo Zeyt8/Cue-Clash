@@ -305,6 +305,11 @@ PrefabInstance:
       propertyPath: _ballNumber
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2961216237
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -693,6 +698,11 @@ PrefabInstance:
       propertyPath: _ballNumber
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2409142157
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -791,6 +801,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ballNumber
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3873267082
       objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
@@ -1148,6 +1163,11 @@ PrefabInstance:
       propertyPath: _ballNumber
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2580574768
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -1252,6 +1272,11 @@ PrefabInstance:
       propertyPath: _ballNumber
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3891217630
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -1351,6 +1376,11 @@ PrefabInstance:
       propertyPath: _ballNumber
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3489446159
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -1449,6 +1479,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ballNumber
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3322218737
       objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
@@ -1579,6 +1614,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ballNumber
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1691451845
       objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
@@ -1920,6 +1960,11 @@ PrefabInstance:
       propertyPath: _ballNumber
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4170843833
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -2029,6 +2074,11 @@ PrefabInstance:
       propertyPath: _8BallColor.r
       value: 0.9811321
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 826185364
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -2048,11 +2098,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8583831218643583677, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1652185031}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b09508bcba3949743ad25db8eb51bec9, type: 3}
 --- !u!1 &1174986158
 GameObject:
@@ -2396,6 +2442,11 @@ PrefabInstance:
       propertyPath: _ballNumber
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1176279056
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -2494,6 +2545,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ballNumber
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 55685153
       objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
@@ -2600,27 +2656,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2416938cab803c46a0fd25ccf5342dc, type: 3}
---- !u!1 &1652185030 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8583831218643583677, guid: b09508bcba3949743ad25db8eb51bec9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1066813147}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1652185031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1652185030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f73504fe409a64ab947c24f3b878eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AimRotationSpeedFactor: 0
-  whiteBall: {fileID: 1283630360}
-  aimAssist: {fileID: 12416397}
 --- !u!1001 &1778356209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2698,6 +2733,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ballNumber
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1709089863
       objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
@@ -2798,6 +2838,11 @@ PrefabInstance:
       propertyPath: _ballNumber
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1643368718
+      objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_CollisionDetection
@@ -2896,6 +2941,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ballNumber
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2629809716
       objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
@@ -3076,6 +3126,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ballNumber
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3236766634
       objectReference: {fileID: 0}
     - target: {fileID: 6273393237569153251, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
