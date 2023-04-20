@@ -23,7 +23,7 @@ public class Limb : NetworkBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }
