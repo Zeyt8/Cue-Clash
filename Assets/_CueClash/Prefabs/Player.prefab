@@ -84,7 +84,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7655944581683188695}
   - component: {fileID: 7701810450474349210}
-  - component: {fileID: 1611340034432691464}
+  - component: {fileID: 8753615738069100776}
   m_Layer: 0
   m_Name: Hand Aim
   m_TagString: Untagged
@@ -134,7 +134,7 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 1
   Interpolate: 1
---- !u!114 &1611340034432691464
+--- !u!114 &8753615738069100776
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,12 +143,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3703100188051548199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06b40a2abac5a584d89ce5e632c6a78c, type: 3}
+  m_Script: {fileID: 11500000, guid: f85f531ae59d46748879c5fd1f4e9319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followTransform: {fileID: 0}
-  _offset: {x: 0.3, y: -0.5, z: 0}
-  _flags: 3
 --- !u!1 &4047645346098738658
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +252,7 @@ MonoBehaviour:
   _weapon: {fileID: 4106709531280067315}
   _head: {fileID: 1228263484782683964}
   _headLookAt: {fileID: 507321190845774734}
-  _handAim: {fileID: 1611340034432691464}
+  _handController: {fileID: 8753615738069100776}
   _cameraPrefab: {fileID: 8997756811681192845, guid: 36f2692271dedf74ba55767b44ac1976,
     type: 3}
 --- !u!114 &2634331521379153681

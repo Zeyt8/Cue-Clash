@@ -14,7 +14,7 @@ public class FollowTransform : MonoBehaviour
     [SerializeField] private Vector3 _offset;
     [SerializeField] private FollowTransformFlags _flags;
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         if (_followTransform == null) return;
         if (_flags.HasFlag(FollowTransformFlags.Position))

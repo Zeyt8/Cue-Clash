@@ -17,7 +17,7 @@ public class PlayerObject : NetworkBehaviour
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Transform _head;
     [SerializeField] private FollowTransform _headLookAt;
-    [SerializeField] private FollowTransform _handAim;
+    [SerializeField] private PlayerHandController _handController;
     [Header("Prefabs")]
     [SerializeField] private CinemachineVirtualCamera _cameraPrefab;
 
@@ -38,7 +38,6 @@ public class PlayerObject : NetworkBehaviour
         _camera.LookAt = _head;
         _playerMovement.Camera = _camera;
         _headLookAt._followTransform = _camera.transform;
-        _handAim._followTransform = _camera.transform;
     }
 
     private void OnEnable()
@@ -59,14 +58,7 @@ public class PlayerObject : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if (_inputHandler.Movement != Vector3.zero)
-        {
-            _animator.SetBool("Walking", true);
-        }
-        else
-        {
-            _animator.SetBool("Walking", false);
-        }
+        _animator.SetBool("Walking", _inputHandler.Movement != Vector3.zero);
         _playerMovement.Move(_inputHandler);
 
         if (Input.GetKeyDown(KeyCode.L))
@@ -82,6 +74,19 @@ public class PlayerObject : NetworkBehaviour
                 _animator.SetInteger("Phase", 0);
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (!IsOwner) return;
+        Vector3 pos = transform.InverseTransformPoint(
+            _camera.transform.position +
+            _camera.transform.up * -0.5f +
+            _camera.transform.right * 0.3f
+        );
+        _handController.SetPosition(pos);
+        Quaternion rot = Quaternion.Inverse(transform.rotation) * _camera.transform.rotation;
+        _handController.SetRotation(rot);
     }
 
     private void Shoot()
