@@ -12,10 +12,13 @@ public enum PlayerState
 public class PlayerObject : NetworkBehaviour
 {
     [SerializeField] private InputHandler _inputHandler;
+    [Header("Children")]
     [SerializeField] private Animator _animator;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Transform _head;
     [SerializeField] private FollowTransform _headLookAt;
+    [SerializeField] private FollowTransform _handAim;
+    [Header("Prefabs")]
     [SerializeField] private CinemachineVirtualCamera _cameraPrefab;
 
     private PlayerMovement _playerMovement;
@@ -35,6 +38,7 @@ public class PlayerObject : NetworkBehaviour
         _camera.LookAt = _head;
         _playerMovement.Camera = _camera;
         _headLookAt._followTransform = _camera.transform;
+        _handAim._followTransform = _camera.transform;
     }
 
     private void OnEnable()

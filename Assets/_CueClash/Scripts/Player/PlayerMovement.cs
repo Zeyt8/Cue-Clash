@@ -19,6 +19,8 @@ public class PlayerMovement : NetworkBehaviour
     private Vector3 _movement;
     private CinemachinePOV _pov;
 
+    private Vector3 _goalVel = Vector3.zero;
+
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
@@ -40,7 +42,7 @@ public class PlayerMovement : NetworkBehaviour
 
         // character rotation on Y axis (align with camera)
         Quaternion rotation = Quaternion.Euler(0, _pov.m_HorizontalAxis.Value, 0);
-        _rigidbody.transform.rotation = rotation;
+        _rigidbody.transform.localRotation = rotation;
     }
 
     public void FixedUpdate()
@@ -48,32 +50,7 @@ public class PlayerMovement : NetworkBehaviour
         if (!IsOwner) return;
         // apply movement
         _isGrounded = Physics.Raycast(_bottom.position, Vector3.down, 0.1f);
-        if (_isGrounded)
-        {
-            _rigidbody.AddForce(_movement * _acceleration, ForceMode.Acceleration);
-        }
-        else
-        {
-            // apply full acceleration along direction of velocity, less on sideways
-            Vector3 forward = _rigidbody.velocity;
-            forward.y = 0;
-            forward = forward.normalized;
-            Vector3 sideways = Vector3.Cross(forward, Vector3.up);
-            float forwardComponent = Vector3.Dot(forward, _movement);
-            float sidewaysComponent = Vector3.Dot(sideways, _movement);
-            _rigidbody.AddForce(forwardComponent * _acceleration * forward, ForceMode.Acceleration);
-            _rigidbody.AddForce(sidewaysComponent * _accelerationAir * sideways, ForceMode.Acceleration);
-        }
-
-        // clamp velocity along XZ plane 
-        Vector3 velocity = _rigidbody.velocity;
-        float yYelocity = _rigidbody.velocity.y;
-        if (velocity.magnitude > _maxSpeed)
-        {
-            velocity = velocity.normalized * _maxSpeed;
-        }
-        velocity.y = yYelocity;
-        _rigidbody.velocity = velocity;
+        CharacterMove(_movement, !_isGrounded);
 
         // apply jump
         if (_needsToJump)
@@ -85,7 +62,39 @@ public class PlayerMovement : NetworkBehaviour
         // apply down force on the falling phase
         if (_rigidbody.velocity.y < 0)
         {
-            _rigidbody.AddForce(Vector3.down * _fallAcceleration, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector3.down * _fallAcceleration, ForceMode.Force);
+        }
+    }
+
+    private void CharacterMove(Vector3 moveInput, bool inAir)
+    {
+        
+        if (!inAir)
+        {
+            Vector3 goalVel = moveInput * _maxSpeed;
+            _goalVel = Vector3.MoveTowards(_goalVel, goalVel, _acceleration * Time.fixedDeltaTime);
+            Vector3 neededAccel = (_goalVel - _rigidbody.velocity) / Time.fixedDeltaTime;
+            neededAccel = Vector3.ClampMagnitude(neededAccel, 150);
+            _rigidbody.AddForce(Vector3.Scale(neededAccel, new Vector3(1, 0, 1)), ForceMode.Force);
+        }
+        else
+        {
+            Vector3 forward = _rigidbody.velocity;
+            forward.y = 0;
+            forward = forward.normalized;
+            Vector3 sideways = Vector3.Cross(forward, Vector3.up);
+            float forwardComponent = Vector3.Dot(forward, _movement);
+            float sidewaysComponent = Vector3.Dot(sideways, _movement);
+            _rigidbody.AddForce(forwardComponent * _acceleration * forward, ForceMode.Acceleration);
+            _rigidbody.AddForce(sidewaysComponent * _accelerationAir * sideways, ForceMode.Acceleration);
+            Vector3 velocity = _rigidbody.velocity;
+            float yYelocity = _rigidbody.velocity.y;
+            if (velocity.magnitude > _maxSpeed)
+            {
+                velocity = velocity.normalized * _maxSpeed;
+            }
+            velocity.y = yYelocity;
+            _rigidbody.velocity = velocity;
         }
     }
 }

@@ -146,8 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b40a2abac5a584d89ce5e632c6a78c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followTransform: {fileID: 2583292584185408685}
-  _offset: {x: 0.3, y: -0.5, z: -1}
+  _followTransform: {fileID: 0}
+  _offset: {x: 0.3, y: -0.5, z: 0}
   _flags: 3
 --- !u!1 &4047645346098738658
 GameObject:
@@ -255,6 +255,7 @@ MonoBehaviour:
   _weapon: {fileID: 4106709531280067315}
   _head: {fileID: 1228263484782683964}
   _headLookAt: {fileID: 507321190845774734}
+  _handAim: {fileID: 1611340034432691464}
   _cameraPrefab: {fileID: 8997756811681192845, guid: 36f2692271dedf74ba55767b44ac1976,
     type: 3}
 --- !u!114 &2634331521379153681
@@ -749,6 +750,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 2a6adfa3a6be86249953790792731fe9, type: 2}
+    - target: {fileID: 5866666021909216657, guid: efb8f014230563a4aaa134a3627cef4b,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7363479242261063072, guid: efb8f014230563a4aaa134a3627cef4b,
         type: 3}
       propertyPath: m_Layer
