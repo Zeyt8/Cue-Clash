@@ -33,9 +33,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "Swing",
                     "type": "Button",
                     "id": "30da74e6-46f4-4a1b-bcd3-28e900bce244",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "cd4ae9c9-ad0f-4dca-83b6-3fb9c1ed9497",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -63,6 +72,15 @@
                     "name": "Switch Ammo",
                     "type": "Button",
                     "id": "d0d86a67-92d7-48d9-a544-50012cf3e6e0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "730746a5-3b8f-4b0f-ab13-b75aeb0bc483",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -95,7 +113,7 @@
                 {
                     "name": "down",
                     "id": "751f7a1b-b495-4a4c-a2e9-35d05ff21f8b",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "K&M",
@@ -106,7 +124,7 @@
                 {
                     "name": "left",
                     "id": "8f849f15-dcb7-40c8-b1f4-6eb44beb5e96",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "K&M",
@@ -143,7 +161,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "K&M",
-                    "action": "Attack",
+                    "action": "Swing",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -188,6 +206,28 @@
                     "processors": "",
                     "groups": "K&M",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b483d91-28b8-4475-992f-615287fc63af",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "K&M",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "99b37b59-de11-475b-bc12-1a954a69302a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "K&M",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
