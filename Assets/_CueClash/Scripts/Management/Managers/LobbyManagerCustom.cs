@@ -80,7 +80,7 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
 
     public static async Task CreateLobby(string lobbyName, bool isPrivate)
     {
-        int maxPlayers = 3;
+        int maxPlayers = 2;
         CreateLobbyOptions options = new CreateLobbyOptions
         {
             IsPrivate = isPrivate,

@@ -6,9 +6,11 @@ using UnityEngine.InputSystem;
 public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
 {
     public Vector3 Movement { get; private set; }
+    public bool Jump { get; set; }
     public Vector2 Look { get; private set; }
     public bool Cue { get; private set; }
     public bool Attack { get; private set; }
+    public UnityEvent OnShootWeapon = new UnityEvent();
     public bool Parry { get; private set; }
     public UnityEvent OnSwitchedWeapons = new UnityEvent();
     public UnityEvent OnSwitchedAmmo = new UnityEvent();
@@ -36,6 +38,18 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
         Movement = new Vector3(m.x, 0, m.y);
     }
 
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Jump = true;
+        }
+        else if (context.canceled)
+        {
+            Jump = false;
+        }
+    }
+
     public void OnLook(InputAction.CallbackContext context)
     {
         Look = context.ReadValue<Vector2>();
@@ -53,7 +67,7 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
         }
     }
 
-    public void OnAttack(InputAction.CallbackContext context)
+    public void OnSwing(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -62,6 +76,14 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
         else if (context.canceled)
         {
             Attack = false;
+        }
+    }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnShootWeapon?.Invoke();
         }
     }
 
@@ -79,11 +101,17 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
 
     public void OnSwitchWeapons(InputAction.CallbackContext context)
     {
-        OnSwitchedWeapons.Invoke();
+        if (context.performed)
+        {
+            OnSwitchedWeapons.Invoke();
+        }
     }
 
     public void OnSwitchAmmo(InputAction.CallbackContext context)
     {
-        OnSwitchedAmmo.Invoke();
+        if (context.performed)
+        {
+            OnSwitchedAmmo.Invoke();
+        }
     }
 }

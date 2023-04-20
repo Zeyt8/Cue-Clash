@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3200246124382827856}
   - component: {fileID: 1055516695874230871}
   - component: {fileID: 5795424769840468343}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3249242415143356277}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 7469940640930028100}
   - component: {fileID: 237940593981475624}
   - component: {fileID: 1588496394469712114}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
