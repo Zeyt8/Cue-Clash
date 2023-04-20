@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 3858274366317601838}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8997756811681192845
 MonoBehaviour:
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2.68, z: 0.3}
+  m_FollowOffset: {x: 0, y: 0, z: 0.3}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

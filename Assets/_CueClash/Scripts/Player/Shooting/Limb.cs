@@ -1,17 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Limb : MonoBehaviour
+public class Limb : NetworkBehaviour
 {
     [SerializeField]
-    private NetworkVariable<int> health = new NetworkVariable<int>(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private int health = 100;
 
     public void TakeDamage(int damage)
     {
-        health.Value -= damage;
-        if(health.Value <= 0)
+        TakeDamageServerRpc(damage);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void TakeDamageServerRpc(int damage)
+    {
+        TakeDamageClientRpc(damage);
+    }
+
+    [ClientRpc]
+    private void TakeDamageClientRpc(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
         {
             Destroy(gameObject);
         }

@@ -6,13 +6,12 @@ public class Weapon : NetworkBehaviour
     public Transform bulletSpawnPoint;
     public NetworkObject bulletPrefab;
     public float bulletSpeed = 20;
-    public NetworkVariable<int> nrOfBullets = new NetworkVariable<int>(10, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    public AmmoText ammoTextBox;
+    public NetworkVariable<int> nrOfBullets = new NetworkVariable<int>(10, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     public void Shoot()
     {
         SpawnBulletServerRpc();
-        //ammoTextBox.UpdateAmmoText(nrOfBullets);
+        LevelManager.Instance.AmmoText.UpdateAmmoText(nrOfBullets.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -22,7 +21,7 @@ public class Weapon : NetworkBehaviour
         {
             NetworkObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
             bullet.Spawn();
-            bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPoint.forward * bulletSpeed;
+            bullet.GetComponent<Rigidbody>().AddForce(bulletSpawnPoint.forward * bulletSpeed, ForceMode.VelocityChange);
             nrOfBullets.Value--;
         }
     }

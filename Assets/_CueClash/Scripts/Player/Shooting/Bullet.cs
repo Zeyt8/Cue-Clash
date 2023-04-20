@@ -10,14 +10,19 @@ public class Bullet : NetworkBehaviour
         Destroy(gameObject, life);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        GameObject collisionObject = collision.gameObject;
+        GameObject collisionObject = other.gameObject;
         int damageGiven = 30;
         if (collisionObject.TryGetComponent<Limb>(out Limb limb))
         {
             limb.TakeDamage(damageGiven);
-            Destroy(gameObject);
         }
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(gameObject);
     }
 }

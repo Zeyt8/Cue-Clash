@@ -1,3 +1,4 @@
+using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -13,12 +14,27 @@ public class PlayerObject : NetworkBehaviour
     [SerializeField] private InputHandler _inputHandler;
     [SerializeField] private Animator _animator;
     [SerializeField] private Weapon _weapon;
+    [SerializeField] private Transform _head;
+    [SerializeField] private FollowTransform _headLookAt;
+    [SerializeField] private CinemachineVirtualCamera _cameraPrefab;
+
     private PlayerMovement _playerMovement;
     private PlayerState _playerState;
+    private CinemachineVirtualCamera _camera;
 
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner) return;
+        _camera = Instantiate(_cameraPrefab, Vector3.zero, Quaternion.identity);
+        _camera.Follow = _head;
+        _camera.LookAt = _head;
+        _playerMovement.Camera = _camera;
+        _headLookAt._followTransform = _camera.transform;
     }
 
     private void OnEnable()

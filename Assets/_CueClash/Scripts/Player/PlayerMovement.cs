@@ -1,11 +1,11 @@
 using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera _cameraPrefab;
+    [HideInInspector] public CinemachineVirtualCamera Camera;
+
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Transform _bottom;
     [SerializeField] private float _acceleration = 50f;
@@ -18,16 +18,12 @@ public class PlayerMovement : NetworkBehaviour
     private bool _needsToJump;
     private Vector3 _movement;
     private CinemachinePOV _pov;
-    private CinemachineVirtualCamera _camera;
 
-    public void Start()
+    public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
-        _camera = Instantiate(_cameraPrefab, Vector3.zero, Quaternion.identity);
-        _camera.Follow = transform;
-        _camera.LookAt = transform;
         // set up aiming
-        _pov = _camera.GetCinemachineComponent<CinemachinePOV>();
+        _pov = Camera.GetCinemachineComponent<CinemachinePOV>();
     }
 
     public void Move(InputHandler inputHandler)
