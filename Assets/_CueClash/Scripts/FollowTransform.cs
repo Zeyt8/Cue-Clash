@@ -14,8 +14,6 @@ public class FollowTransform : MonoBehaviour
     [SerializeField] private Vector3 _offset;
     [SerializeField] private FollowTransformFlags _flags;
 
-    private Vector3 _velocity;
-
     void FixedUpdate()
     {
         if (_followTransform == null) return;
