@@ -82,6 +82,7 @@ public class PlayerObject : NetworkBehaviour
                 _animator.SetInteger("Phase", 1);
                 _gun.Activate();
                 _cue.Deactivate();
+                _playerAnimations.PlayerState = PlayerState.Gun;
             }
             else
             {
@@ -89,6 +90,7 @@ public class PlayerObject : NetworkBehaviour
                 _animator.SetInteger("Phase", 0);
                 _gun.Deactivate();
                 _cue.Activate();
+                _playerAnimations.PlayerState = PlayerState.Billiard;
             }
         }
         
@@ -124,12 +126,14 @@ public class PlayerObject : NetworkBehaviour
             _playerState = PlayerState.Sword;
             _gun.Deactivate();
             _sword.Activate();
+            _playerAnimations.PlayerState = PlayerState.Sword;
         }
         else if (_playerState == PlayerState.Sword)
         {
             _playerState = PlayerState.Gun;
             _gun.Activate();
             _sword.Deactivate();
+            _playerAnimations.PlayerState = PlayerState.Gun;
         }
     }
 
