@@ -17,7 +17,7 @@ public class PlayerAnimations : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _cueOffset = _gunOffset;
+        //_cueOffset = _gunOffset;
     }
 
     private void LateUpdate()
@@ -29,9 +29,10 @@ public class PlayerAnimations : NetworkBehaviour
             Camera.transform.up * _cueOffset.y +
             Camera.transform.right * _cueOffset.x
         );
-        _handController.SetPosition(pos);
+        _handController.DesiredPosition = pos;
         Quaternion rot = Quaternion.Inverse(transform.rotation) * Camera.transform.rotation;
-        _handController.SetRotation(rot);
+        _handController.DesiredRotation = rot;
+        _handController.ViewOrigin = Camera.transform;
     }
 
     public void ChargeCue(float value)

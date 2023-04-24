@@ -16,10 +16,12 @@ public class PlayerIK : MonoBehaviour
         _animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
         _animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
         _animator.SetIKPosition(AvatarIKGoal.RightHand, _handAim.position);
+        _animator.SetIKRotation(AvatarIKGoal.RightHand, _handAim.rotation);
 
         _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
         _animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
         _animator.SetIKPosition(AvatarIKGoal.LeftHand, _handAim.position);
+        _animator.SetIKRotation(AvatarIKGoal.LeftHand, _handAim.rotation);
 
         _animator.SetLookAtWeight(1, 0, 1, 0, 0);
         _animator.SetLookAtPosition(_headLookAt.position);

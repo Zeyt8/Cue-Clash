@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 2841383090700272331}
   - component: {fileID: 556824433392414989}
   - component: {fileID: 4428826313299107627}
+  - component: {fileID: 6801149090623158063}
   m_Layer: 0
   m_Name: Cue
   m_TagString: Untagged
@@ -185,7 +186,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Charging: 0
+  CueForce: 0
   _cueTop: {fileID: 5321926215105968284}
+  _maxPower: 1000
 --- !u!136 &4428826313299107627
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -209,3 +212,15 @@ CapsuleCollider:
   m_Height: 0.014965363
   m_Direction: 1
   m_Center: {x: 0, y: -0.000057495898, z: 2.8376235e-10}
+--- !u!114 &6801149090623158063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524275091023533007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb1ad62d79eee346ac57dbe8d2a9ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

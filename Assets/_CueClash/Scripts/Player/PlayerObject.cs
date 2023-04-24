@@ -5,19 +5,17 @@ using UnityEngine;
 public enum PlayerState
 {
     Billiard,
-    Melee,
-    Ranged
+    Sword,
+    Gun
 }
 
 public class PlayerObject : NetworkBehaviour
 {
     [SerializeField] private InputHandler _inputHandler;
     [Header("Children")]
-    [SerializeField] private Weapon _weapon;
-    [SerializeField] private Cue _cue;
+    [SerializeField] private Transform _cueTransform;
     [SerializeField] private Transform _head;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private PlayerAnimations _playerAnimations;
+    [SerializeField] private Transform _animatorTransform;
     [SerializeField] private FollowTransform _headLookAt;
     [Header("Prefabs")]
     [SerializeField] private CinemachineVirtualCamera _cameraPrefab;
@@ -25,9 +23,21 @@ public class PlayerObject : NetworkBehaviour
     private PlayerMovement _playerMovement;
     private PlayerState _playerState = PlayerState.Billiard;
 
+    private Cue _cue;
+    private Gun _gun;
+    private Sword _sword;
+
+    private Animator _animator;
+    private PlayerAnimations _playerAnimations;
+
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
+        _animator = _animatorTransform.GetComponent<Animator>();
+        _playerAnimations = _animatorTransform.GetComponent<PlayerAnimations>();
+        _cue = _cueTransform.GetComponent<Cue>();
+        _gun = _cueTransform.GetComponent<Gun>();
+        _sword = _cueTransform.GetComponent<Sword>();
     }
 
     public override void OnNetworkSpawn()
@@ -68,13 +78,17 @@ public class PlayerObject : NetworkBehaviour
         {
             if (_playerState == PlayerState.Billiard)
             {
-                _playerState = PlayerState.Ranged;
+                _playerState = PlayerState.Gun;
                 _animator.SetInteger("Phase", 1);
+                _gun.Activate();
+                _cue.Deactivate();
             }
             else
             {
                 _playerState = PlayerState.Billiard;
                 _animator.SetInteger("Phase", 0);
+                _gun.Deactivate();
+                _cue.Activate();
             }
         }
         
@@ -98,13 +112,25 @@ public class PlayerObject : NetworkBehaviour
 
     private void Shoot()
     {
-        if (!IsOwner || _playerState != PlayerState.Ranged) return;
-        _weapon.Shoot();
+        if (!IsOwner || _playerState != PlayerState.Gun) return;
+        _gun.Shoot();
     }
 
     private void SwitchWeapons()
     {
-
+        if (!IsOwner) return;
+        if (_playerState == PlayerState.Gun)
+        {
+            _playerState = PlayerState.Sword;
+            _gun.Deactivate();
+            _sword.Activate();
+        }
+        else if (_playerState == PlayerState.Sword)
+        {
+            _playerState = PlayerState.Gun;
+            _gun.Activate();
+            _sword.Deactivate();
+        }
     }
 
     private void SwitchAmmo()
