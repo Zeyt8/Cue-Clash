@@ -107,6 +107,24 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse Position"",
+                    ""type"": ""Value"",
+                    ""id"": ""f19777d8-22fc-4494-b32b-900a556d6f9c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Aim Cue"",
+                    ""type"": ""Button"",
+                    ""id"": ""0f007ad9-149b-481e-84d1-db0ee01c368b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -252,6 +270,28 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4621155-dbf6-407c-98f3-07d62ebc98e0"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K&M"",
+                    ""action"": ""Mouse Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0bddcbe5-49a7-4db3-a91c-f2c8534fe5fc"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K&M"",
+                    ""action"": ""Aim Cue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -286,6 +326,8 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         m_Player_SwitchWeapons = m_Player.FindAction("Switch Weapons", throwIfNotFound: true);
         m_Player_SwitchAmmo = m_Player.FindAction("Switch Ammo", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_MousePosition = m_Player.FindAction("Mouse Position", throwIfNotFound: true);
+        m_Player_AimCue = m_Player.FindAction("Aim Cue", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -356,6 +398,8 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchWeapons;
     private readonly InputAction m_Player_SwitchAmmo;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_MousePosition;
+    private readonly InputAction m_Player_AimCue;
     public struct PlayerActions
     {
         private @ControlSchemes m_Wrapper;
@@ -369,6 +413,8 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         public InputAction @SwitchWeapons => m_Wrapper.m_Player_SwitchWeapons;
         public InputAction @SwitchAmmo => m_Wrapper.m_Player_SwitchAmmo;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
+        public InputAction @AimCue => m_Wrapper.m_Player_AimCue;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -405,6 +451,12 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
+            @AimCue.started += instance.OnAimCue;
+            @AimCue.performed += instance.OnAimCue;
+            @AimCue.canceled += instance.OnAimCue;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -436,6 +488,12 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
+            @AimCue.started -= instance.OnAimCue;
+            @AimCue.performed -= instance.OnAimCue;
+            @AimCue.canceled -= instance.OnAimCue;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -473,5 +531,7 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
         void OnSwitchWeapons(InputAction.CallbackContext context);
         void OnSwitchAmmo(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
+        void OnAimCue(InputAction.CallbackContext context);
     }
 }

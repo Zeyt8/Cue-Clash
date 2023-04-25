@@ -12,7 +12,6 @@ public class LevelManager : NetworkSingleton<LevelManager>
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 

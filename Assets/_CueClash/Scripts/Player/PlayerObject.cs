@@ -1,6 +1,7 @@
 using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum PlayerState
 {
@@ -29,6 +30,9 @@ public class PlayerObject : NetworkBehaviour
 
     private Animator _animator;
     private PlayerAnimations _playerAnimations;
+    private CinemachinePOV _pov;
+
+    private bool _aimCue;
 
     private void Awake()
     {
@@ -38,6 +42,8 @@ public class PlayerObject : NetworkBehaviour
         _cue = _cueTransform.GetComponent<Cue>();
         _gun = _cueTransform.GetComponent<Gun>();
         _sword = _cueTransform.GetComponent<Sword>();
+        _playerAnimations.PlayerState = PlayerState.Billiard;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void OnNetworkSpawn()
@@ -46,7 +52,8 @@ public class PlayerObject : NetworkBehaviour
         CinemachineVirtualCamera camera = Instantiate(_cameraPrefab, Vector3.zero, Quaternion.identity);
         camera.Follow = _head;
         camera.LookAt = _head;
-        _playerMovement.Camera = camera;
+        _pov = camera.GetCinemachineComponent<CinemachinePOV>();
+        _playerMovement.Pov = _pov;
         _headLookAt._followTransform = camera.transform;
         _playerAnimations.Camera = camera;
     }
@@ -57,6 +64,7 @@ public class PlayerObject : NetworkBehaviour
         _inputHandler.OnShootWeapon.AddListener(Shoot);
         _inputHandler.OnSwitchedWeapons.AddListener(SwitchWeapons);
         _inputHandler.OnSwitchedAmmo.AddListener(SwitchAmmo);
+        _inputHandler.AimCueStateChanged.AddListener(AimCueChangedState);
     }
 
     private void OnDisable()
@@ -65,6 +73,7 @@ public class PlayerObject : NetworkBehaviour
         _inputHandler.OnShootWeapon.RemoveListener(Shoot);
         _inputHandler.OnSwitchedWeapons.RemoveListener(SwitchWeapons);
         _inputHandler.OnSwitchedAmmo.RemoveListener(SwitchAmmo);
+        _inputHandler.AimCueStateChanged.RemoveListener(AimCueChangedState);
     }
 
     private void Update()
@@ -101,6 +110,14 @@ public class PlayerObject : NetworkBehaviour
             if (_inputHandler.Cue)
             {
                 _playerAnimations.ChargeCue(_cue.CueForce);
+            }
+            else if (_aimCue)
+            {
+                Vector2 pos = new Vector2(
+                    _inputHandler.MousePosition.x.Remap(0, Screen.width, -1, 1),
+                    _inputHandler.MousePosition.y.Remap(0, Screen.height, -1, 1)
+                );
+                _playerAnimations.AlignBilliardAim(pos);
             }
         }
     }
@@ -140,5 +157,20 @@ public class PlayerObject : NetworkBehaviour
     private void SwitchAmmo()
     {
 
+    }
+
+    private void AimCueChangedState(bool state)
+    {
+        if (state == true)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            _pov.enabled = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            _pov.enabled = true;
+        }
+        _aimCue = state;
     }
 }

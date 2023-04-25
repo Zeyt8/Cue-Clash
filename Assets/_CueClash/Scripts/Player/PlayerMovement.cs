@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [HideInInspector] public CinemachineVirtualCamera Camera;
+    [HideInInspector]
+    public CinemachinePOV Pov;
 
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Transform _bottom;
@@ -17,16 +18,8 @@ public class PlayerMovement : NetworkBehaviour
     private bool _isGrounded = true;
     private bool _needsToJump;
     private Vector3 _movement;
-    private CinemachinePOV _pov;
 
     private Vector3 _goalVel = Vector3.zero;
-
-    public override void OnNetworkSpawn()
-    {
-        if (!IsOwner) return;
-        // set up aiming
-        _pov = Camera.GetCinemachineComponent<CinemachinePOV>();
-    }
 
     public void Move(InputHandler inputHandler)
     {
@@ -41,7 +34,7 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         // character rotation on Y axis (align with camera)
-        Quaternion rotation = Quaternion.Euler(0, _pov.m_HorizontalAxis.Value, 0);
+        Quaternion rotation = Quaternion.Euler(0, Pov.m_HorizontalAxis.Value, 0);
         _rigidbody.transform.localRotation = rotation;
     }
 

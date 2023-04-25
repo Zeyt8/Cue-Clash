@@ -148,8 +148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DesiredPosition: {x: 0, y: 0, z: 0}
   DesiredRotation: {x: 0, y: 0, z: 0, w: 0}
-  ViewOrigin: {fileID: 0}
-  _cue: {fileID: 4382420099860307495}
 --- !u!1 &4047645346098738658
 GameObject:
   m_ObjectHideFlags: 0

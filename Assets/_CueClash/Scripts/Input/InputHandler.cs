@@ -15,6 +15,8 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     public bool Parry { get; private set; }
     public UnityEvent OnSwitchedWeapons = new UnityEvent();
     public UnityEvent OnSwitchedAmmo = new UnityEvent();
+    public Vector2 MousePosition { get; private set; }
+    public UnityEvent<bool> AimCueStateChanged = new UnityEvent<bool>();
 
     private ControlSchemes _playerControls;
 
@@ -48,6 +50,23 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
         else if (context.canceled)
         {
             Jump = false;
+        }
+    }
+
+    public void OnMousePosition(InputAction.CallbackContext context)
+    {
+        MousePosition = context.ReadValue<Vector2>();
+    }
+
+    public void OnAimCue(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            AimCueStateChanged?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            AimCueStateChanged?.Invoke(false);
         }
     }
 
