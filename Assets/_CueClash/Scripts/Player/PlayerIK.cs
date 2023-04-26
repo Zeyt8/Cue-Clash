@@ -2,26 +2,26 @@ using UnityEngine;
 
 public class PlayerIK : MonoBehaviour
 {
-    [SerializeField] private Transform _headLookAt;
-    [SerializeField] private Transform _handAim;
-    private Animator _animator;
+    [SerializeField] private Transform headLookAt;
+    [SerializeField] private Transform handAim;
+    private Animator animator;
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
     
     private void OnAnimatorIK(int layerIndex)
     {
-        _animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-        _animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-        _animator.SetIKPosition(AvatarIKGoal.RightHand, _handAim.position);
+        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+        animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+        animator.SetIKPosition(AvatarIKGoal.RightHand, handAim.position);
 
-        _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
-        _animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-        _animator.SetIKPosition(AvatarIKGoal.LeftHand, _handAim.position);
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+        animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+        animator.SetIKPosition(AvatarIKGoal.LeftHand, handAim.position);
 
-        _animator.SetLookAtWeight(1, 0, 1, 0, 0);
-        _animator.SetLookAtPosition(_headLookAt.position);
+        animator.SetLookAtWeight(1, 0, 1, 0, 0);
+        animator.SetLookAtPosition(headLookAt.position);
     }
 }

@@ -16,21 +16,21 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     public UnityEvent OnSwitchedWeapons = new UnityEvent();
     public UnityEvent OnSwitchedAmmo = new UnityEvent();
 
-    private ControlSchemes _playerControls;
+    private ControlSchemes playerControls;
 
     public void OnEnable()
     {
-        if (_playerControls == null)
+        if (playerControls == null)
         {
-            _playerControls = new ControlSchemes();
-            _playerControls.Player.SetCallbacks(this);
-            _playerControls.Player.Enable();
+            playerControls = new ControlSchemes();
+            playerControls.Player.SetCallbacks(this);
+            playerControls.Player.Enable();
         }
     }
 
     public void OnDisable()
     {
-        _playerControls.Player.Disable();
+        playerControls.Player.Disable();
     }
 
     public void OnMove(InputAction.CallbackContext context)

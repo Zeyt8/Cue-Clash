@@ -184,8 +184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c03afcbe1ff4c84ca4e51a62b714f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Charging: 0
-  _cueTop: {fileID: 5321926215105968284}
+  charging: 0
+  cueForce: 0
+  cueTop: {fileID: 5321926215105968284}
+  maxPower: 1000
 --- !u!136 &4428826313299107627
 CapsuleCollider:
   m_ObjectHideFlags: 0

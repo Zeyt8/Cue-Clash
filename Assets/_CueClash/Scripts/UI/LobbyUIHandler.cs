@@ -6,16 +6,16 @@ using UnityEngine.UI;
 
 public class LobbyUIHandler : MonoBehaviour
 {
-    public string CreateLobbyName => _createLobbyNameInput.text;
-    public string PrivateLobbyCode => _joinPrivateLobbyCodeInput.text;
-    public bool IsPrivateLobby => _privateLobbyToggle.isOn;
-    [SerializeField] private LobbyUIItem _lobbyItemListPrefab;
-    [SerializeField] private Transform _lobbyListParent;
-    [SerializeField] private TMP_InputField _createLobbyNameInput;
-    [SerializeField] private TMP_InputField _joinPrivateLobbyCodeInput;
-    [SerializeField] private Toggle _privateLobbyToggle;
+    public string CreateLobbyName => createLobbyNameInput.text;
+    public string PrivateLobbyCode => joinPrivateLobbyCodeInput.text;
+    public bool IsPrivateLobby => privateLobbyToggle.isOn;
+    [SerializeField] private LobbyUIItem lobbyItemListPrefab;
+    [SerializeField] private Transform lobbyListParent;
+    [SerializeField] private TMP_InputField createLobbyNameInput;
+    [SerializeField] private TMP_InputField joinPrivateLobbyCodeInput;
+    [SerializeField] private Toggle privateLobbyToggle;
 
-    private List<LobbyUIItem> _lobbyUIItems = new List<LobbyUIItem>();
+    private List<LobbyUIItem> lobbyUIItems = new List<LobbyUIItem>();
 
     private void OnEnable()
     {
@@ -30,7 +30,7 @@ public class LobbyUIHandler : MonoBehaviour
     public void AddSessionsToList(List<Lobby> lobbies)
     {
         ClearList();
-        _lobbyUIItems.Clear();
+        lobbyUIItems.Clear();
         foreach (Lobby lobby in lobbies)
         {
             AddSessionToList(lobby);
@@ -39,7 +39,7 @@ public class LobbyUIHandler : MonoBehaviour
     
     public void ClearList()
     {
-        foreach (Transform child in _lobbyListParent)
+        foreach (Transform child in lobbyListParent)
         {
             Destroy(child.gameObject);
         }
@@ -47,7 +47,7 @@ public class LobbyUIHandler : MonoBehaviour
 
     public void DeselectAll()
     {
-        foreach (LobbyUIItem lobbyUIItem in _lobbyUIItems)
+        foreach (LobbyUIItem lobbyUIItem in lobbyUIItems)
         {
             lobbyUIItem.DeselectSession();
         }
@@ -55,9 +55,9 @@ public class LobbyUIHandler : MonoBehaviour
 
     private void AddSessionToList(Lobby lobby)
     {
-        LobbyUIItem sessionItem = Instantiate(_lobbyItemListPrefab, _lobbyListParent).GetComponent<LobbyUIItem>();
-        sessionItem.LobbyUIHandler = this;
+        LobbyUIItem sessionItem = Instantiate(lobbyItemListPrefab, lobbyListParent).GetComponent<LobbyUIItem>();
+        sessionItem.lobbyUIHandler = this;
         sessionItem.SetInformation(lobby);
-        _lobbyUIItems.Add(sessionItem);
+        lobbyUIItems.Add(sessionItem);
     }
 }

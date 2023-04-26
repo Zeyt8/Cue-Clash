@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a3c5c4de5a53ea4d9a1d7c0d9050728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BallNumber: 0
-  ShowAim: 0
+  ballNumber: 0
+  showAim: 0
 --- !u!114 &5880082411298705766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,16 +165,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65c050494c48fb4094da40872375b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ballNumber: 0
-  _cueBallMeshFilter: {fileID: 8942311091316967924}
-  _cueBallRenderer: {fileID: 3412519211235735945}
-  _cueBallMesh: {fileID: 4300000, guid: ab3b6f09d53fb2944a87698f0b0ec580, type: 2}
+  ballNumber: 0
+  cueBallMeshFilter: {fileID: 8942311091316967924}
+  cueBallRenderer: {fileID: 3412519211235735945}
+  cueBallMesh: {fileID: 4300000, guid: ab3b6f09d53fb2944a87698f0b0ec580, type: 2}
   _8BallMesh: {fileID: 4300000, guid: 2f40e5bfa8d97bd498666f710e6a5ede, type: 2}
-  _fullBallMesh: {fileID: 4300000, guid: bf1bdf1bf5ad69d4fa675f5e126e46b7, type: 2}
-  _halfBallMesh: {fileID: 4300000, guid: c48d5744e3309e94a8bf8901db63dfc3, type: 2}
-  _cueBallColor: {r: 1, g: 1, b: 1, a: 1}
+  fullBallMesh: {fileID: 4300000, guid: bf1bdf1bf5ad69d4fa675f5e126e46b7, type: 2}
+  halfBallMesh: {fileID: 4300000, guid: c48d5744e3309e94a8bf8901db63dfc3, type: 2}
+  cueBallColor: {r: 1, g: 1, b: 1, a: 1}
   _8BallColor: {r: 0.016, g: 0.016, b: 0.016, a: 1}
-  _ballColors:
+  ballColors:
   - {r: 0.973, g: 0.661, b: 0.134, a: 1}
   - {r: 0.095, g: 0.136, b: 0.288, a: 1}
   - {r: 0.93, g: 0.115, b: 0.132, a: 1}

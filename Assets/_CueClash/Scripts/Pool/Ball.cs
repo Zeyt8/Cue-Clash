@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public int BallNumber;
-    public bool ShowAim;
+    public int ballNumber;
+    public bool showAim;
 
     protected Rigidbody body;
 

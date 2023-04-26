@@ -300,6 +300,16 @@ PrefabInstance:
       propertyPath: BallNumber
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: _ballNumber
@@ -693,6 +703,16 @@ PrefabInstance:
       propertyPath: BallNumber
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: _ballNumber
@@ -795,6 +815,16 @@ PrefabInstance:
     - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: BallNumber
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
@@ -1158,6 +1188,16 @@ PrefabInstance:
       propertyPath: BallNumber
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: _ballNumber
@@ -1267,6 +1307,16 @@ PrefabInstance:
       propertyPath: BallNumber
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: _ballNumber
@@ -1371,6 +1421,16 @@ PrefabInstance:
       propertyPath: BallNumber
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: _ballNumber
@@ -1473,6 +1533,16 @@ PrefabInstance:
     - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: BallNumber
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
@@ -1608,6 +1678,16 @@ PrefabInstance:
     - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: BallNumber
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
@@ -1953,6 +2033,16 @@ PrefabInstance:
     - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: BallNumber
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
       value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
@@ -2437,6 +2527,16 @@ PrefabInstance:
       propertyPath: BallNumber
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: _ballNumber
@@ -2539,6 +2639,16 @@ PrefabInstance:
     - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: BallNumber
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
@@ -2729,6 +2839,16 @@ PrefabInstance:
       propertyPath: BallNumber
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: _ballNumber
@@ -2831,6 +2951,16 @@ PrefabInstance:
     - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: BallNumber
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
@@ -2937,6 +3067,16 @@ PrefabInstance:
       propertyPath: BallNumber
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: _ballNumber
@@ -3030,12 +3170,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1a2c12f88aafb4ca813ddfdfdda4be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 3478174911159838345, guid: c3fa94e69eaaa024db0f0cdd1ef7f276,
+  playerPrefab: {fileID: 3478174911159838345, guid: c3fa94e69eaaa024db0f0cdd1ef7f276,
     type: 3}
-  _spawnPoints:
+  spawnPoints:
   - {fileID: 577968533}
   - {fileID: 817358766}
-  AmmoText: {fileID: 587686749}
+  ammoText: {fileID: 587686749}
 --- !u!114 &1901579901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3048,7 +3188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e8a6b0bc2408dd47bf6833db8e5a83b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _balls: []
+  balls: []
 --- !u!1001 &2141795694
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3120,6 +3260,16 @@ PrefabInstance:
     - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: BallNumber
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
+      propertyPath: ballNumber
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,

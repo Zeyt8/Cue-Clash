@@ -11,24 +11,24 @@ public enum LoadingType
 
 public class LoadingPanel : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
-    private bool _canClose = false;
+    [SerializeField] private TextMeshProUGUI text;
+    private bool canClose = false;
 
     private void ChangeType(LoadingType type, string customText = "")
     {
         switch (type)
         {
             case LoadingType.Connecting:
-                _text.text = "Connecting...";
+                text.text = "Connecting...";
                 break;
             case LoadingType.CreatingRoom:
-                _text.text = "Creating room...";
+                text.text = "Creating room...";
                 break;
             case LoadingType.JoiningRoom:
-                _text.text = "Joining room...";
+                text.text = "Joining room...";
                 break;
             case LoadingType.Error:
-                _text.text = customText;
+                text.text = customText;
                 break;
         }
     }
@@ -37,12 +37,12 @@ public class LoadingPanel : MonoBehaviour
     {
         ChangeType(type, customText);
         gameObject.SetActive(true);
-        _canClose = type == LoadingType.Error;
+        canClose = type == LoadingType.Error;
     }
 
     public void Close()
     {
-        if (_canClose)
+        if (canClose)
         {
             gameObject.SetActive(false);
         }

@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b40a2abac5a584d89ce5e632c6a78c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followTransform: {fileID: 0}
-  _offset: {x: 0, y: 0, z: 1}
-  _flags: 3
+  followTransform: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  flags: 0
 --- !u!114 &2463737089294285975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,14 +247,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4682058c8e6b72a4eaafd33f7574102d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputHandler: {fileID: 11400000, guid: afac99b334a327642bb34fa5cc8aabd1, type: 2}
-  _weapon: {fileID: 4106709531280067315}
-  _cue: {fileID: 1741015697985239349}
-  _head: {fileID: 1228263484782683964}
-  _animator: {fileID: 850866481572215372}
-  _playerAnimations: {fileID: 3317995571652075602}
-  _headLookAt: {fileID: 507321190845774734}
-  _cameraPrefab: {fileID: 8997756811681192845, guid: 36f2692271dedf74ba55767b44ac1976,
+  inputHandler: {fileID: 11400000, guid: afac99b334a327642bb34fa5cc8aabd1, type: 2}
+  weapon: {fileID: 4106709531280067315}
+  cue: {fileID: 1741015697985239349}
+  head: {fileID: 1228263484782683964}
+  animator: {fileID: 850866481572215372}
+  playerAnimations: {fileID: 3317995571652075602}
+  headLookAt: {fileID: 507321190845774734}
+  cameraPrefab: {fileID: 8997756811681192845, guid: 36f2692271dedf74ba55767b44ac1976,
     type: 3}
 --- !u!114 &2634331521379153681
 MonoBehaviour:
@@ -269,13 +269,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}
-  _rigidbody: {fileID: 3708542918496989591}
-  _bottom: {fileID: 4286077963596668474}
-  _acceleration: 50
-  _accelerationAir: 25
-  _maxSpeed: 5
-  _jumpForce: 5
-  _fallAcceleration: 2.5
+  rigidbody: {fileID: 3708542918496989591}
+  bottom: {fileID: 4286077963596668474}
+  acceleration: 50
+  accelerationAir: 25
+  maxSpeed: 5
+  jumpForce: 5
+  fallAcceleration: 2.5
 --- !u!54 &3708542918496989591
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -884,8 +884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d91194d44ce68ef4da4ed51b53fd0948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _headLookAt: {fileID: 2583292584185408685}
-  _handAim: {fileID: 7655944581683188695}
+  headLookAt: {fileID: 2583292584185408685}
+  handAim: {fileID: 7655944581683188695}
 --- !u!114 &4602908022382350445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,8 +912,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14be5a77326837247aa23cb1864c504a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
-  _handController: {fileID: 8753615738069100776}
+  camera: {fileID: 0}
+  handController: {fileID: 8753615738069100776}
 --- !u!4 &6714530980735492150 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: efb8f014230563a4aaa134a3627cef4b,

@@ -45,32 +45,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac7e1c9302dd7a4dbdc2afd07bded83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToAnimate: {fileID: 3004311801406807301}
-  _animationType: 0
-  EaseType: 17
-  _curve:
+  objectToAnimate: {fileID: 3004311801406807301}
+  animationType: 0
+  easeType: 17
+  curve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _trigger: 2
-  _useUnscaledTime: 1
-  _duration: 2
-  _delay: 1
-  _loop: 0
-  _pingpong: 0
-  _finishBehaviour: 2
-  _root: {fileID: 0}
-  _useStartingValue: 0
-  _endValueType: 1
-  From: {x: 0, y: 0, z: 0}
-  To: {x: 0, y: 5, z: 0}
-  FromColor: {r: 0, g: 0, b: 0, a: 0}
-  ToColor: {r: 0, g: 0, b: 0, a: 0}
-  _onCompleteOnStart: 0
-  _onCompleteOnRepeat: 0
-  _onComplete:
+  trigger: 2
+  useUnscaledTime: 1
+  duration: 2
+  delay: 1
+  loop: 0
+  pingpong: 0
+  finishBehaviour: 2
+  root: {fileID: 0}
+  useStartingValue: 0
+  endValueType: 1
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 0, y: 5, z: 0}
+  fromColor: {r: 0, g: 0, b: 0, a: 0}
+  toColor: {r: 0, g: 0, b: 0, a: 0}
+  onCompleteOnStart: 0
+  onCompleteOnRepeat: 0
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &7127584929994809329

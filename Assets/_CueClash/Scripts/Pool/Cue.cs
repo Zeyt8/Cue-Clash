@@ -2,23 +2,23 @@ using UnityEngine;
 
 public class Cue : MonoBehaviour
 {
-    public bool Charging;
-    public float CueForce = 0;
+    public bool charging;
+    public float cueForce = 0;
 
-    [SerializeField] private Transform _cueTop;
-    [SerializeField] private float _maxPower = 1000;
+    [SerializeField] private Transform cueTop;
+    [SerializeField] private float maxPower = 1000;
 
-    private Ball _ball;
-    private Vector3 _hitPoint;
+    private Ball ball;
+    private Vector3 hitPoint;
 
     private void Update()
     {
-        if (Charging)
+        if (charging)
         {
-            CueForce += 300 * Time.deltaTime;
-            if (CueForce > _maxPower)
+            cueForce += 300 * Time.deltaTime;
+            if (cueForce > maxPower)
             {
-                CueForce = _maxPower;
+                cueForce = maxPower;
             }
             ShootRay();
         }
@@ -26,19 +26,19 @@ public class Cue : MonoBehaviour
 
     public void Shoot()
     {
-        if (_ball)
+        if (ball)
         {
-            _ball.AddForce(_cueTop.transform.forward * CueForce, _hitPoint);
+            ball.AddForce(cueTop.transform.forward * cueForce, hitPoint);
         }
-        CueForce = 0;
+        cueForce = 0;
     }
 
     private void ShootRay()
     {
-        _ball = null;
-        if (!Physics.Raycast(_cueTop.transform.position, _cueTop.transform.forward, out RaycastHit hit)) return;
+        this.ball = null;
+        if (!Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit)) return;
         if (!hit.collider.gameObject.TryGetComponent(out Ball ball)) return;
-        _ball = ball;
-        _hitPoint = hit.point;
+        this.ball = ball;
+        hitPoint = hit.point;
     }
 }
