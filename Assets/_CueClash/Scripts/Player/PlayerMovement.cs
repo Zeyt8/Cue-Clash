@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [HideInInspector] public CinemachineVirtualCamera Camera;
+    [HideInInspector]
+    public CinemachinePOV pov;
 
     [SerializeField] private Rigidbody rigidbody;
     [SerializeField] private Transform bottom;
@@ -17,16 +18,8 @@ public class PlayerMovement : NetworkBehaviour
     private bool isGrounded = true;
     private bool needsToJump;
     private Vector3 movement;
-    private CinemachinePOV pov;
 
     private Vector3 goalVel = Vector3.zero;
-
-    public override void OnNetworkSpawn()
-    {
-        if (!IsOwner) return;
-        // set up aiming
-        pov = Camera.GetCinemachineComponent<CinemachinePOV>();
-    }
 
     public void Move(InputHandler inputHandler)
     {

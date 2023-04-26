@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Cue : MonoBehaviour
@@ -26,6 +27,21 @@ public class Cue : MonoBehaviour
 
     public void Shoot()
     {
+        StartCoroutine(ShootCoroutine());
+    }
+
+    private void ShootRay()
+    {
+        this.ball = null;
+        if (!Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.1f)) return;
+        if (!hit.collider.gameObject.TryGetComponent(out Ball ball)) return;
+        this.ball = ball;
+        hitPoint = hit.point;
+    }
+
+    private IEnumerator ShootCoroutine()
+    {
+        yield return new WaitForSeconds(0.3f);
         if (ball)
         {
             ball.AddForce(cueTop.transform.forward * cueForce, hitPoint);
@@ -33,12 +49,13 @@ public class Cue : MonoBehaviour
         cueForce = 0;
     }
 
-    private void ShootRay()
+    public void Activate()
     {
-        this.ball = null;
-        if (!Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit)) return;
-        if (!hit.collider.gameObject.TryGetComponent(out Ball ball)) return;
-        this.ball = ball;
-        hitPoint = hit.point;
+
+    }
+
+    public void Deactivate()
+    {
+
     }
 }

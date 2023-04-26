@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Weapon : NetworkBehaviour
+public class Gun : NetworkBehaviour
 {
     public Transform bulletSpawnPoint;
     public NetworkObject bulletPrefab;
@@ -24,5 +24,15 @@ public class Weapon : NetworkBehaviour
             bullet.GetComponent<Rigidbody>().AddForce(bulletSpawnPoint.forward * bulletSpeed, ForceMode.VelocityChange);
             nrOfBullets.Value--;
         }
+    }
+
+    public void Activate()
+    {
+
+    }
+
+    public void Deactivate()
+    {
+
     }
 }

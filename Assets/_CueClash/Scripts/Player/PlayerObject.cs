@@ -1,23 +1,22 @@
 using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum PlayerState
 {
     Billiard,
-    Melee,
-    Ranged
+    Sword,
+    Gun
 }
 
 public class PlayerObject : NetworkBehaviour
 {
     [SerializeField] private InputHandler inputHandler;
     [Header("Children")]
-    [SerializeField] private Weapon weapon;
-    [SerializeField] private Cue cue;
+    [SerializeField] private Transform cueTransform;
     [SerializeField] private Transform head;
-    [SerializeField] private Animator animator;
-    [SerializeField] private PlayerAnimations playerAnimations;
+    [SerializeField] private Transform animatorTransform;
     [SerializeField] private FollowTransform headLookAt;
     [Header("Prefabs")]
     [SerializeField] private CinemachineVirtualCamera cameraPrefab;
@@ -25,9 +24,26 @@ public class PlayerObject : NetworkBehaviour
     private PlayerMovement playerMovement;
     private PlayerState playerState = PlayerState.Billiard;
 
+    private Cue cue;
+    private Gun gun;
+    private Sword sword;
+
+    private Animator animator;
+    private PlayerAnimations playerAnimations;
+    private CinemachinePOV pov;
+
+    private bool aimCue;
+
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        animator = animatorTransform.GetComponent<Animator>();
+        playerAnimations = animatorTransform.GetComponent<PlayerAnimations>();
+        cue = cueTransform.GetComponent<Cue>();
+        gun = cueTransform.GetComponent<Gun>();
+        sword = cueTransform.GetComponent<Sword>();
+        playerAnimations.PlayerState = PlayerState.Billiard;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void OnNetworkSpawn()
@@ -36,7 +52,8 @@ public class PlayerObject : NetworkBehaviour
         CinemachineVirtualCamera camera = Instantiate(cameraPrefab, Vector3.zero, Quaternion.identity);
         camera.Follow = head;
         camera.LookAt = head;
-        playerMovement.Camera = camera;
+        pov = camera.GetCinemachineComponent<CinemachinePOV>();
+        playerMovement.pov = pov;
         headLookAt.followTransform = camera.transform;
         playerAnimations.camera = camera;
     }
@@ -47,6 +64,7 @@ public class PlayerObject : NetworkBehaviour
         inputHandler.OnShootWeapon.AddListener(Shoot);
         inputHandler.OnSwitchedWeapons.AddListener(SwitchWeapons);
         inputHandler.OnSwitchedAmmo.AddListener(SwitchAmmo);
+        inputHandler.AimCueStateChanged.AddListener(AimCueChangedState);
     }
 
     private void OnDisable()
@@ -55,6 +73,7 @@ public class PlayerObject : NetworkBehaviour
         inputHandler.OnShootWeapon.RemoveListener(Shoot);
         inputHandler.OnSwitchedWeapons.RemoveListener(SwitchWeapons);
         inputHandler.OnSwitchedAmmo.RemoveListener(SwitchAmmo);
+        inputHandler.AimCueStateChanged.RemoveListener(AimCueChangedState);
     }
 
     private void Update()
@@ -68,13 +87,19 @@ public class PlayerObject : NetworkBehaviour
         {
             if (playerState == PlayerState.Billiard)
             {
-                playerState = PlayerState.Ranged;
+                playerState = PlayerState.Gun;
                 animator.SetInteger("Phase", 1);
+                gun.Activate();
+                cue.Deactivate();
+                playerAnimations.PlayerState = PlayerState.Gun;
             }
             else
             {
                 playerState = PlayerState.Billiard;
                 animator.SetInteger("Phase", 0);
+                gun.Deactivate();
+                cue.Activate();
+                playerAnimations.PlayerState = PlayerState.Billiard;
             }
         }
         
@@ -85,6 +110,14 @@ public class PlayerObject : NetworkBehaviour
             if (inputHandler.Cue)
             {
                 playerAnimations.ChargeCue(cue.cueForce);
+            }
+            else if (aimCue)
+            {
+                Vector2 pos = new Vector2(
+                    inputHandler.MousePosition.x.Remap(0, Screen.width, -1, 1),
+                    inputHandler.MousePosition.y.Remap(0, Screen.height, -1, 1)
+                );
+                playerAnimations.AlignBilliardAim(pos);
             }
         }
     }
@@ -98,17 +131,46 @@ public class PlayerObject : NetworkBehaviour
 
     private void Shoot()
     {
-        if (!IsOwner || playerState != PlayerState.Ranged) return;
-        weapon.Shoot();
+        if (!IsOwner || playerState != PlayerState.Gun) return;
+        gun.Shoot();
     }
 
     private void SwitchWeapons()
     {
-
+        if (!IsOwner) return;
+        if (playerState == PlayerState.Gun)
+        {
+            playerState = PlayerState.Sword;
+            gun.Deactivate();
+            sword.Activate();
+            playerAnimations.PlayerState = PlayerState.Sword;
+        }
+        else if (playerState == PlayerState.Sword)
+        {
+            playerState = PlayerState.Gun;
+            gun.Activate();
+            sword.Deactivate();
+            playerAnimations.PlayerState = PlayerState.Gun;
+        }
     }
 
     private void SwitchAmmo()
     {
 
+    }
+
+    private void AimCueChangedState(bool state)
+    {
+        if (state == true)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            pov.enabled = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            pov.enabled = true;
+        }
+        aimCue = state;
     }
 }
