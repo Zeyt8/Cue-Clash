@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b40a2abac5a584d89ce5e632c6a78c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followTransform: {fileID: 0}
-  _offset: {x: 0, y: 0, z: 1}
-  _flags: 3
+  followTransform: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  flags: 0
 --- !u!114 &2463737089294285975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 7655944581683188695}
   - component: {fileID: 7701810450474349210}
   - component: {fileID: 8753615738069100776}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Hand Aim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,8 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f85f531ae59d46748879c5fd1f4e9319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DesiredPosition: {x: 0, y: 0, z: 0}
-  DesiredRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &4047645346098738658
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,12 +247,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4682058c8e6b72a4eaafd33f7574102d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputHandler: {fileID: 11400000, guid: afac99b334a327642bb34fa5cc8aabd1, type: 2}
-  _cueTransform: {fileID: 4382420099860307495}
-  _head: {fileID: 1228263484782683964}
-  _animatorTransform: {fileID: 6714530980735492150}
-  _headLookAt: {fileID: 507321190845774734}
-  _cameraPrefab: {fileID: 8997756811681192845, guid: 36f2692271dedf74ba55767b44ac1976,
+  inputHandler: {fileID: 11400000, guid: afac99b334a327642bb34fa5cc8aabd1, type: 2}
+  weapon: {fileID: 4106709531280067315}
+  cue: {fileID: 1741015697985239349}
+  head: {fileID: 1228263484782683964}
+  animator: {fileID: 850866481572215372}
+  playerAnimations: {fileID: 3317995571652075602}
+  headLookAt: {fileID: 507321190845774734}
+  cameraPrefab: {fileID: 8997756811681192845, guid: 36f2692271dedf74ba55767b44ac1976,
     type: 3}
 --- !u!114 &2634331521379153681
 MonoBehaviour:
@@ -269,13 +269,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}
-  _rigidbody: {fileID: 3708542918496989591}
-  _bottom: {fileID: 4286077963596668474}
-  _acceleration: 50
-  _accelerationAir: 25
-  _maxSpeed: 5
-  _jumpForce: 5
-  _fallAcceleration: 2.5
+  rigidbody: {fileID: 3708542918496989591}
+  bottom: {fileID: 4286077963596668474}
+  acceleration: 50
+  accelerationAir: 25
+  maxSpeed: 5
+  jumpForce: 5
+  fallAcceleration: 2.5
 --- !u!54 &3708542918496989591
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -463,31 +463,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6348104167911302665, guid: cb2e73e5ea2af2944b6b49b17f17d701,
-        type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7619685793701573032, guid: cb2e73e5ea2af2944b6b49b17f17d701,
-        type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 8524275091023533007, guid: cb2e73e5ea2af2944b6b49b17f17d701,
         type: 3}
       propertyPath: m_Name
       value: Cue
-      objectReference: {fileID: 0}
-    - target: {fileID: 8524275091023533007, guid: cb2e73e5ea2af2944b6b49b17f17d701,
-        type: 3}
-      propertyPath: m_Layer
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb2e73e5ea2af2944b6b49b17f17d701, type: 3}
+--- !u!114 &1741015697985239349 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 556824433392414989, guid: cb2e73e5ea2af2944b6b49b17f17d701,
+    type: 3}
+  m_PrefabInstance: {fileID: 2275276940972984376}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c03afcbe1ff4c84ca4e51a62b714f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4106709531280067315 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2841383090700272331, guid: cb2e73e5ea2af2944b6b49b17f17d701,
+    type: 3}
+  m_PrefabInstance: {fileID: 2275276940972984376}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f68f3dc990e4a2488377e5f9dad297b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4382420099860307495 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2540614641283864095, guid: cb2e73e5ea2af2944b6b49b17f17d701,
@@ -875,8 +884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d91194d44ce68ef4da4ed51b53fd0948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _headLookAt: {fileID: 2583292584185408685}
-  _handAim: {fileID: 7655944581683188695}
+  headLookAt: {fileID: 2583292584185408685}
+  handAim: {fileID: 7655944581683188695}
 --- !u!114 &4602908022382350445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -903,8 +912,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14be5a77326837247aa23cb1864c504a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
-  _handController: {fileID: 8753615738069100776}
+  camera: {fileID: 0}
+  handController: {fileID: 8753615738069100776}
 --- !u!4 &6714530980735492150 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: efb8f014230563a4aaa134a3627cef4b,

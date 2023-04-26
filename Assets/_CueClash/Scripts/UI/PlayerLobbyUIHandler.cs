@@ -5,23 +5,23 @@ using UnityEngine.UI;
 
 public class PlayerLobbyUIHandler : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _lobbyCodeText;
-    [SerializeField] private LobbyPlayerUIItem _playerUIItemPrefab;
-    [SerializeField] private Transform _content;
-    [SerializeField] private Button _startButton;
-    [SerializeField] private Button _leaveButton;
+    [SerializeField] private TextMeshProUGUI lobbyCodeText;
+    [SerializeField] private LobbyPlayerUIItem playerUIItemPrefab;
+    [SerializeField] private Transform content;
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button leaveButton;
 
     private void Start()
     {
         SetPlayers();
         if (!LobbyManagerCustom.IsLobbyHost)
         {
-            _startButton.gameObject.SetActive(false);
-            _leaveButton.onClick.AddListener(() => MainMenuManager.Instance.LeaveLobby());
+            startButton.gameObject.SetActive(false);
+            leaveButton.onClick.AddListener(() => MainMenuManager.Instance.LeaveLobby());
         }
         else
         {
-            _leaveButton.onClick.AddListener(() => MainMenuManager.Instance.DeleteLobby());
+            leaveButton.onClick.AddListener(() => MainMenuManager.Instance.DeleteLobby());
         }
     }
 
@@ -37,19 +37,19 @@ public class PlayerLobbyUIHandler : MonoBehaviour
 
     public void SetCode(string code)
     {
-        _lobbyCodeText.text = code;
+        lobbyCodeText.text = code;
     }
 
     public void SetPlayers()
     {
-        foreach (Transform child in _content)
+        foreach (Transform child in content)
         {
             Destroy(child.gameObject);
         }
 
         foreach (Player t in LobbyManagerCustom.JoinedLobby.Players)
         {
-            LobbyPlayerUIItem item = Instantiate(_playerUIItemPrefab, _content);
+            LobbyPlayerUIItem item = Instantiate(playerUIItemPrefab, content);
             item.SetInformation(t.Data["PlayerName"].Value);
         }
     }

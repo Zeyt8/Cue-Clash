@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : NetworkSingleton<LevelManager>
 {
-    [SerializeField] private NetworkObject _playerPrefab;
-    [SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private NetworkObject playerPrefab;
+    [SerializeField] private Transform[] spawnPoints;
 
     [Header("UI")]
-    public AmmoText AmmoText;
+    public AmmoText ammoText;
 
     private void Start()
     {
@@ -33,7 +33,7 @@ public class LevelManager : NetworkSingleton<LevelManager>
 
     private void LevelManager_OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
     {
-        NetworkObject no = Instantiate(_playerPrefab, _spawnPoints[clientId % (ulong)_spawnPoints.Length].position, Quaternion.identity);
+        NetworkObject no = Instantiate(playerPrefab, spawnPoints[clientId % (ulong)spawnPoints.Length].position, Quaternion.identity);
         no.SpawnWithOwnership(clientId);
     }
 }

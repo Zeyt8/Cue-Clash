@@ -11,7 +11,7 @@ public class Gun : NetworkBehaviour
     public void Shoot()
     {
         SpawnBulletServerRpc();
-        LevelManager.Instance.AmmoText.UpdateAmmoText(nrOfBullets.Value);
+        LevelManager.Instance.ammoText.UpdateAmmoText(nrOfBullets.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]

@@ -12,17 +12,17 @@ public enum PlayerState
 
 public class PlayerObject : NetworkBehaviour
 {
-    [SerializeField] private InputHandler _inputHandler;
+    [SerializeField] private InputHandler inputHandler;
     [Header("Children")]
     [SerializeField] private Transform _cueTransform;
     [SerializeField] private Transform _head;
     [SerializeField] private Transform _animatorTransform;
     [SerializeField] private FollowTransform _headLookAt;
     [Header("Prefabs")]
-    [SerializeField] private CinemachineVirtualCamera _cameraPrefab;
+    [SerializeField] private CinemachineVirtualCamera cameraPrefab;
 
-    private PlayerMovement _playerMovement;
-    private PlayerState _playerState = PlayerState.Billiard;
+    private PlayerMovement playerMovement;
+    private PlayerState playerState = PlayerState.Billiard;
 
     private Cue _cue;
     private Gun _gun;
@@ -80,12 +80,12 @@ public class PlayerObject : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        _animator.SetBool("Walking", _inputHandler.Movement != Vector3.zero);
-        _playerMovement.Move(_inputHandler);
+        animator.SetBool("Walking", inputHandler.Movement != Vector3.zero);
+        playerMovement.Move(inputHandler);
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            if (_playerState == PlayerState.Billiard)
+            if (playerState == PlayerState.Billiard)
             {
                 _playerState = PlayerState.Gun;
                 _animator.SetInteger("Phase", 1);
@@ -104,12 +104,12 @@ public class PlayerObject : NetworkBehaviour
         }
         
         // Start charging cue
-        if (_playerState == PlayerState.Billiard)
+        if (playerState == PlayerState.Billiard)
         {
-            _cue.Charging = _inputHandler.Cue;
-            if (_inputHandler.Cue)
+            cue.charging = inputHandler.Cue;
+            if (inputHandler.Cue)
             {
-                _playerAnimations.ChargeCue(_cue.CueForce);
+                playerAnimations.ChargeCue(cue.cueForce);
             }
             else if (_aimCue)
             {
@@ -124,9 +124,9 @@ public class PlayerObject : NetworkBehaviour
 
     private void HitWithCue()
     {
-        if (!IsOwner || _playerState != PlayerState.Billiard) return;
-        _cue.Shoot();
-        _playerAnimations.HitWithCue();
+        if (!IsOwner || playerState != PlayerState.Billiard) return;
+        cue.Shoot();
+        playerAnimations.HitWithCue();
     }
 
     private void Shoot()

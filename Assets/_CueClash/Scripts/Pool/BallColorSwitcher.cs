@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class BallColorSwitcher : MonoBehaviour
 {
-    [SerializeField] private int _ballNumber;
+    [SerializeField] private int ballNumber;
     [Header("Ball Meshes")]
-    [SerializeField] private MeshFilter _cueBallMeshFilter;
-    [SerializeField] private MeshRenderer _cueBallRenderer;
-    [SerializeField] private Mesh _cueBallMesh;
+    [SerializeField] private MeshFilter cueBallMeshFilter;
+    [SerializeField] private MeshRenderer cueBallRenderer;
+    [SerializeField] private Mesh cueBallMesh;
     [SerializeField] private Mesh _8BallMesh;
-    [SerializeField] private Mesh _fullBallMesh;
-    [SerializeField] private Mesh _halfBallMesh;
+    [SerializeField] private Mesh fullBallMesh;
+    [SerializeField] private Mesh halfBallMesh;
     [Header("Ball Colors")]
-    [SerializeField] private Color _cueBallColor = Color.white;
+    [SerializeField] private Color cueBallColor = Color.white;
     [SerializeField] private Color _8BallColor = new Color(0.016f, 0.016f, 0.016f);
-    [SerializeField] private Color[] _ballColors = new Color[]
+    [SerializeField] private Color[] ballColors = new Color[]
     {
         new Color(0.973f, 0.661f, 0.134f),
         new Color(0.095f, 0.136f, 0.288f),
@@ -28,32 +28,32 @@ public class BallColorSwitcher : MonoBehaviour
 
     private void Awake()
     {
-        SetBall(_ballNumber);
+        SetBall(ballNumber);
     }
 
     public void SetBall(int number)
     {
-        _ballNumber = number;
-        switch (_ballNumber)
+        ballNumber = number;
+        switch (ballNumber)
         {
             case 0:
-                _cueBallRenderer.material.color = _cueBallColor;
-                _cueBallMeshFilter.mesh = _cueBallMesh;
+                cueBallRenderer.material.color = cueBallColor;
+                cueBallMeshFilter.mesh = cueBallMesh;
                 break;
             case 8:
-                _cueBallRenderer.material.color = _8BallColor;
-                _cueBallMeshFilter.mesh = _8BallMesh;
+                cueBallRenderer.material.color = _8BallColor;
+                cueBallMeshFilter.mesh = _8BallMesh;
                 break;
             default:
-                if (_ballNumber > 8)
+                if (ballNumber > 8)
                 {
-                    _cueBallRenderer.material.color = _ballColors[_ballNumber - 9];
-                    _cueBallMeshFilter.mesh = _halfBallMesh;
+                    cueBallRenderer.material.color = ballColors[ballNumber - 9];
+                    cueBallMeshFilter.mesh = halfBallMesh;
                 }
                 else
                 {
-                    _cueBallRenderer.material.color = _ballColors[_ballNumber - 1];
-                    _cueBallMeshFilter.mesh = _fullBallMesh;
+                    cueBallRenderer.material.color = ballColors[ballNumber - 1];
+                    cueBallMeshFilter.mesh = fullBallMesh;
                 }
                 break;
         }

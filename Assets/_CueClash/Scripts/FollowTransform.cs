@@ -10,21 +10,21 @@ public enum FollowTransformFlags
 
 public class FollowTransform : MonoBehaviour
 {
-    public Transform _followTransform;
-    [SerializeField] private Vector3 _offset;
-    [SerializeField] private FollowTransformFlags _flags;
+    public Transform followTransform;
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private FollowTransformFlags flags;
 
     void LateUpdate()
     {
-        if (_followTransform == null) return;
-        if (_flags.HasFlag(FollowTransformFlags.Position))
+        if (followTransform == null) return;
+        if (flags.HasFlag(FollowTransformFlags.Position))
         {
-            Vector3 position = _followTransform.position + _followTransform.forward * _offset.z + _followTransform.up * _offset.y + _followTransform.right * _offset.x;
+            Vector3 position = followTransform.position + followTransform.forward * offset.z + followTransform.up * offset.y + followTransform.right * offset.x;
             transform.position = position;
         }
-        if (_flags.HasFlag(FollowTransformFlags.Rotation))
+        if (flags.HasFlag(FollowTransformFlags.Rotation))
         {
-            transform.rotation = _followTransform.rotation;
+            transform.rotation = followTransform.rotation;
         }
     }
 }

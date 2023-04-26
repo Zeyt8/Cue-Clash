@@ -3,23 +3,23 @@ using UnityEngine;
 
 public class Cue : MonoBehaviour
 {
-    public bool Charging;
-    public float CueForce = 0;
+    public bool charging;
+    public float cueForce = 0;
 
-    [SerializeField] private Transform _cueTop;
-    [SerializeField] private float _maxPower = 1000;
+    [SerializeField] private Transform cueTop;
+    [SerializeField] private float maxPower = 1000;
 
-    private Ball _ball;
-    private Vector3 _hitPoint;
+    private Ball ball;
+    private Vector3 hitPoint;
 
     private void Update()
     {
-        if (Charging)
+        if (charging)
         {
-            CueForce += 300 * Time.deltaTime;
-            if (CueForce > _maxPower)
+            cueForce += 300 * Time.deltaTime;
+            if (cueForce > maxPower)
             {
-                CueForce = _maxPower;
+                cueForce = maxPower;
             }
             ShootRay();
         }
@@ -44,9 +44,9 @@ public class Cue : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         if (_ball)
         {
-            _ball.AddForce(_cueTop.transform.forward * CueForce, _hitPoint);
+            ball.AddForce(cueTop.transform.forward * cueForce, hitPoint);
         }
-        CueForce = 0;
+        cueForce = 0;
     }
 
     public void Activate()

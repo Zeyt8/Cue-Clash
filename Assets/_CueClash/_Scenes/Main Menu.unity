@@ -1280,11 +1280,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c66b38996ca8714986edf02639b4bb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lobbySceneName: _CueClash/_Scenes/MainScene
-  _loadingPanel: {fileID: 860941815}
-  _lobbyListPanel: {fileID: 447521230}
-  _lobbyPanel: {fileID: 981541103}
-  _nameInput: {fileID: 20938158}
+  lobbySceneName: _CueClash/_Scenes/MainScene
+  loadingPanel: {fileID: 860941815}
+  lobbyListPanel: {fileID: 447521230}
+  lobbyPanel: {fileID: 981541103}
+  nameInput: {fileID: 20938158}
 --- !u!4 &282018850
 Transform:
   m_ObjectHideFlags: 0
@@ -1361,7 +1361,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 45
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1386,8 +1386,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 17.320507, z: -10}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.697527, z: 1.299}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2005,12 +2005,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1d7f95ec2556d3409adeba8d14af0ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lobbyItemListPrefab: {fileID: 3315512036071134237, guid: e587a678a106d0f40bade263806a9563,
+  lobbyItemListPrefab: {fileID: 3315512036071134237, guid: e587a678a106d0f40bade263806a9563,
     type: 3}
-  _lobbyListParent: {fileID: 1730449302}
-  _createLobbyNameInput: {fileID: 174286066}
-  _joinPrivateLobbyCodeInput: {fileID: 1039685603}
-  _privateLobbyToggle: {fileID: 650867689}
+  lobbyListParent: {fileID: 1730449302}
+  createLobbyNameInput: {fileID: 174286066}
+  joinPrivateLobbyCodeInput: {fileID: 1039685603}
+  privateLobbyToggle: {fileID: 650867689}
 --- !u!114 &447521231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2023,32 +2023,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac7e1c9302dd7a4dbdc2afd07bded83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToAnimate: {fileID: 447521226}
-  _animationType: 1
-  EaseType: 27
-  _curve:
+  objectToAnimate: {fileID: 447521226}
+  animationType: 1
+  easeType: 27
+  curve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _trigger: 1
-  _useUnscaledTime: 1
-  _duration: 0.5
-  _delay: 0
-  _loop: 0
-  _pingpong: 0
-  _finishBehaviour: 0
-  _root: {fileID: 0}
-  _useStartingValue: 1
-  _endValueType: 0
-  From: {x: 0, y: 0, z: 0}
-  To: {x: 1, y: 1, z: 1}
-  FromColor: {r: 0, g: 0, b: 0, a: 0}
-  ToColor: {r: 0, g: 0, b: 0, a: 0}
-  _onCompleteOnStart: 0
-  _onCompleteOnRepeat: 0
-  _onComplete:
+  trigger: 1
+  useUnscaledTime: 1
+  duration: 0.5
+  delay: 0
+  loop: 0
+  pingpong: 0
+  finishBehaviour: 0
+  root: {fileID: 0}
+  useStartingValue: 1
+  endValueType: 0
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 1, y: 1, z: 1}
+  fromColor: {r: 0, g: 0, b: 0, a: 0}
+  toColor: {r: 0, g: 0, b: 0, a: 0}
+  onCompleteOnStart: 0
+  onCompleteOnRepeat: 0
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &447521232
@@ -2063,32 +2063,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac7e1c9302dd7a4dbdc2afd07bded83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToAnimate: {fileID: 447521226}
-  _animationType: 1
-  EaseType: 26
-  _curve:
+  objectToAnimate: {fileID: 447521226}
+  animationType: 1
+  easeType: 26
+  curve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _trigger: 0
-  _useUnscaledTime: 1
-  _duration: 0.5
-  _delay: 0
-  _loop: 0
-  _pingpong: 0
-  _finishBehaviour: 1
-  _root: {fileID: 0}
-  _useStartingValue: 0
-  _endValueType: 0
-  From: {x: 0, y: 0, z: 0}
-  To: {x: 0, y: 0, z: 0}
-  FromColor: {r: 0, g: 0, b: 0, a: 0}
-  ToColor: {r: 0, g: 0, b: 0, a: 0}
-  _onCompleteOnStart: 0
-  _onCompleteOnRepeat: 0
-  _onComplete:
+  trigger: 0
+  useUnscaledTime: 1
+  duration: 0.5
+  delay: 0
+  loop: 0
+  pingpong: 0
+  finishBehaviour: 1
+  root: {fileID: 0}
+  useStartingValue: 0
+  endValueType: 0
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 0, y: 0, z: 0}
+  fromColor: {r: 0, g: 0, b: 0, a: 0}
+  toColor: {r: 0, g: 0, b: 0, a: 0}
+  onCompleteOnStart: 0
+  onCompleteOnRepeat: 0
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &474038849
@@ -3827,8 +3827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78640fbecbba9a44ea327d67cdc04a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sprite1: {fileID: 21300000, guid: e5a4b9cfc9d813240b046b38be22d269, type: 3}
-  _sprite2: {fileID: 21300000, guid: 0cf9eeb463eccb349934da067379e7eb, type: 3}
+  sprite1: {fileID: 21300000, guid: e5a4b9cfc9d813240b046b38be22d269, type: 3}
+  sprite2: {fileID: 21300000, guid: 0cf9eeb463eccb349934da067379e7eb, type: 3}
 --- !u!1 &860941811
 GameObject:
   m_ObjectHideFlags: 0
@@ -3920,7 +3920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb68c833a0eb30489efda632a4f1007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 1734087520}
+  text: {fileID: 1734087520}
 --- !u!114 &860941816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4313,12 +4313,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19a419068aa55a4483075b50969cac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lobbyCodeText: {fileID: 1361942109}
-  _playerUIItemPrefab: {fileID: 6126261406939763097, guid: 0542980da979cc340af5af404c818992,
+  lobbyCodeText: {fileID: 1361942109}
+  playerUIItemPrefab: {fileID: 6126261406939763097, guid: 0542980da979cc340af5af404c818992,
     type: 3}
-  _content: {fileID: 1336478451}
-  _startButton: {fileID: 1208200762}
-  _leaveButton: {fileID: 743408446}
+  content: {fileID: 1336478451}
+  startButton: {fileID: 1208200762}
+  leaveButton: {fileID: 743408446}
 --- !u!1 &997928328
 GameObject:
   m_ObjectHideFlags: 0
@@ -4412,32 +4412,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac7e1c9302dd7a4dbdc2afd07bded83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToAnimate: {fileID: 997928328}
-  _animationType: 1
-  EaseType: 27
-  _curve:
+  objectToAnimate: {fileID: 997928328}
+  animationType: 1
+  easeType: 27
+  curve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _trigger: 1
-  _useUnscaledTime: 1
-  _duration: 0.5
-  _delay: 0
-  _loop: 0
-  _pingpong: 0
-  _finishBehaviour: 0
-  _root: {fileID: 0}
-  _useStartingValue: 1
-  _endValueType: 0
-  From: {x: 0, y: 0, z: 0}
-  To: {x: 1, y: 1, z: 1}
-  FromColor: {r: 0, g: 0, b: 0, a: 0}
-  ToColor: {r: 0, g: 0, b: 0, a: 0}
-  _onCompleteOnStart: 0
-  _onCompleteOnRepeat: 0
-  _onComplete:
+  trigger: 1
+  useUnscaledTime: 1
+  duration: 0.5
+  delay: 0
+  loop: 0
+  pingpong: 0
+  finishBehaviour: 0
+  root: {fileID: 0}
+  useStartingValue: 1
+  endValueType: 0
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 1, y: 1, z: 1}
+  fromColor: {r: 0, g: 0, b: 0, a: 0}
+  toColor: {r: 0, g: 0, b: 0, a: 0}
+  onCompleteOnStart: 0
+  onCompleteOnRepeat: 0
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &997928333
@@ -4452,32 +4452,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac7e1c9302dd7a4dbdc2afd07bded83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToAnimate: {fileID: 997928328}
-  _animationType: 1
-  EaseType: 26
-  _curve:
+  objectToAnimate: {fileID: 997928328}
+  animationType: 1
+  easeType: 26
+  curve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _trigger: 0
-  _useUnscaledTime: 1
-  _duration: 0.5
-  _delay: 0
-  _loop: 0
-  _pingpong: 0
-  _finishBehaviour: 1
-  _root: {fileID: 0}
-  _useStartingValue: 0
-  _endValueType: 0
-  From: {x: 0, y: 0, z: 0}
-  To: {x: 0, y: 0, z: 0}
-  FromColor: {r: 0, g: 0, b: 0, a: 0}
-  ToColor: {r: 0, g: 0, b: 0, a: 0}
-  _onCompleteOnStart: 0
-  _onCompleteOnRepeat: 0
-  _onComplete:
+  trigger: 0
+  useUnscaledTime: 1
+  duration: 0.5
+  delay: 0
+  loop: 0
+  pingpong: 0
+  finishBehaviour: 1
+  root: {fileID: 0}
+  useStartingValue: 0
+  endValueType: 0
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 0, y: 0, z: 0}
+  fromColor: {r: 0, g: 0, b: 0, a: 0}
+  toColor: {r: 0, g: 0, b: 0, a: 0}
+  onCompleteOnStart: 0
+  onCompleteOnRepeat: 0
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1029507165
@@ -6070,32 +6070,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac7e1c9302dd7a4dbdc2afd07bded83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToAnimate: {fileID: 1569382092}
-  _animationType: 0
-  EaseType: 27
-  _curve:
+  objectToAnimate: {fileID: 1569382092}
+  animationType: 0
+  easeType: 27
+  curve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _trigger: 1
-  _useUnscaledTime: 1
-  _duration: 2
-  _delay: 0
-  _loop: 0
-  _pingpong: 0
-  _finishBehaviour: 0
-  _root: {fileID: 0}
-  _useStartingValue: 1
-  _endValueType: 0
-  From: {x: 0, y: 600, z: 0}
-  To: {x: 0, y: 0, z: 0}
-  FromColor: {r: 0, g: 0, b: 0, a: 0}
-  ToColor: {r: 0, g: 0, b: 0, a: 0}
-  _onCompleteOnStart: 0
-  _onCompleteOnRepeat: 0
-  _onComplete:
+  trigger: 1
+  useUnscaledTime: 1
+  duration: 2
+  delay: 0
+  loop: 0
+  pingpong: 0
+  finishBehaviour: 0
+  root: {fileID: 0}
+  useStartingValue: 1
+  endValueType: 0
+  from: {x: 0, y: 600, z: 0}
+  to: {x: 0, y: 0, z: 0}
+  fromColor: {r: 0, g: 0, b: 0, a: 0}
+  toColor: {r: 0, g: 0, b: 0, a: 0}
+  onCompleteOnStart: 0
+  onCompleteOnRepeat: 0
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1589912833
@@ -6192,32 +6192,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac7e1c9302dd7a4dbdc2afd07bded83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToAnimate: {fileID: 1589912833}
-  _animationType: 1
-  EaseType: 27
-  _curve:
+  objectToAnimate: {fileID: 1589912833}
+  animationType: 1
+  easeType: 27
+  curve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _trigger: 1
-  _useUnscaledTime: 1
-  _duration: 0.5
-  _delay: 0
-  _loop: 0
-  _pingpong: 0
-  _finishBehaviour: 0
-  _root: {fileID: 0}
-  _useStartingValue: 1
-  _endValueType: 0
-  From: {x: 0, y: 0, z: 0}
-  To: {x: 1, y: 1, z: 1}
-  FromColor: {r: 0, g: 0, b: 0, a: 0}
-  ToColor: {r: 0, g: 0, b: 0, a: 0}
-  _onCompleteOnStart: 0
-  _onCompleteOnRepeat: 0
-  _onComplete:
+  trigger: 1
+  useUnscaledTime: 1
+  duration: 0.5
+  delay: 0
+  loop: 0
+  pingpong: 0
+  finishBehaviour: 0
+  root: {fileID: 0}
+  useStartingValue: 1
+  endValueType: 0
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 1, y: 1, z: 1}
+  fromColor: {r: 0, g: 0, b: 0, a: 0}
+  toColor: {r: 0, g: 0, b: 0, a: 0}
+  onCompleteOnStart: 0
+  onCompleteOnRepeat: 0
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1589912838
@@ -6232,32 +6232,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac7e1c9302dd7a4dbdc2afd07bded83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToAnimate: {fileID: 1589912833}
-  _animationType: 1
-  EaseType: 26
-  _curve:
+  objectToAnimate: {fileID: 1589912833}
+  animationType: 1
+  easeType: 26
+  curve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _trigger: 0
-  _useUnscaledTime: 1
-  _duration: 0.5
-  _delay: 0
-  _loop: 0
-  _pingpong: 0
-  _finishBehaviour: 1
-  _root: {fileID: 0}
-  _useStartingValue: 0
-  _endValueType: 0
-  From: {x: 0, y: 0, z: 0}
-  To: {x: 0, y: 0, z: 0}
-  FromColor: {r: 0, g: 0, b: 0, a: 0}
-  ToColor: {r: 0, g: 0, b: 0, a: 0}
-  _onCompleteOnStart: 0
-  _onCompleteOnRepeat: 0
-  _onComplete:
+  trigger: 0
+  useUnscaledTime: 1
+  duration: 0.5
+  delay: 0
+  loop: 0
+  pingpong: 0
+  finishBehaviour: 1
+  root: {fileID: 0}
+  useStartingValue: 0
+  endValueType: 0
+  from: {x: 0, y: 0, z: 0}
+  to: {x: 0, y: 0, z: 0}
+  fromColor: {r: 0, g: 0, b: 0, a: 0}
+  toColor: {r: 0, g: 0, b: 0, a: 0}
+  onCompleteOnStart: 0
+  onCompleteOnRepeat: 0
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1616840585
@@ -7584,8 +7584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78640fbecbba9a44ea327d67cdc04a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sprite1: {fileID: 21300000, guid: 432df6cb7a2cc4b429e490b9ea9c40e8, type: 3}
-  _sprite2: {fileID: 21300000, guid: fe1b043e76c2c894098c942d95e3a1b3, type: 3}
+  sprite1: {fileID: 21300000, guid: 432df6cb7a2cc4b429e490b9ea9c40e8, type: 3}
+  sprite2: {fileID: 21300000, guid: fe1b043e76c2c894098c942d95e3a1b3, type: 3}
 --- !u!1 &2082698228
 GameObject:
   m_ObjectHideFlags: 0

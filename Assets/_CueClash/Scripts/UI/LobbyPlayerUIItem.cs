@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class LobbyPlayerUIItem : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _playerNameText;
+    [SerializeField] private TextMeshProUGUI playerNameText;
 
     public void SetInformation(string playerName)
     {
-        _playerNameText.text = playerName;
+        playerNameText.text = playerName;
     }
 }

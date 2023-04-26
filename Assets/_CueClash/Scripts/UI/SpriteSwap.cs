@@ -3,28 +3,28 @@ using UnityEngine.UI;
 
 public class SpriteSwap : MonoBehaviour
 {
-    [SerializeField] private Sprite _sprite1;
-    [SerializeField] private Sprite _sprite2;
+    [SerializeField] private Sprite sprite1;
+    [SerializeField] private Sprite sprite2;
 
-    private bool _isSprite1 = true;
-    private Image _image;
+    private bool isSprite1 = true;
+    private Image image;
 
     public void Awake()
     {
-        _image = GetComponent<Image>();
+        image = GetComponent<Image>();
     }
 
     public void Swap()
     {
-        if (_isSprite1)
+        if (isSprite1)
         {
-            _image.sprite = _sprite2;
-            _isSprite1 = false;
+            image.sprite = sprite2;
+            isSprite1 = false;
         }
         else
         {
-            _image.sprite = _sprite1;
-            _isSprite1 = true;
+            image.sprite = sprite1;
+            isSprite1 = true;
         }
     }
 }

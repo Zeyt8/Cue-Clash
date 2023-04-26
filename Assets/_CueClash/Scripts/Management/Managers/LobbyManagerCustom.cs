@@ -21,9 +21,9 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
     public static event Action OnLobbyDisconnect;
     public static bool IsLobbyHost { get; private set; }
 
-    private static ILobbyEvents _lobbyEvents;
-    private float _heartbeatTimer;
-    private float _lobbiesUpdateTimer;
+    private static ILobbyEvents LobbyEvents;
+    private float heartbeatTimer;
+    private float lobbiesUpdateTimer;
 
     private void OnDisable()
     {
@@ -36,18 +36,18 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
     {
         if (IsLobbyHost)
         {
-            _heartbeatTimer += Time.deltaTime;
-            if (_heartbeatTimer > 20)
+            heartbeatTimer += Time.deltaTime;
+            if (heartbeatTimer > 20)
             {
-                _heartbeatTimer = 0;
+                heartbeatTimer = 0;
                 await LobbyService.Instance.SendHeartbeatPingAsync(JoinedLobby.Id);
             }
         }
 
-        _lobbiesUpdateTimer += Time.deltaTime;
-        if (UnityServices.State == ServicesInitializationState.Initialized && _lobbiesUpdateTimer > 30)
+        lobbiesUpdateTimer += Time.deltaTime;
+        if (UnityServices.State == ServicesInitializationState.Initialized && lobbiesUpdateTimer > 30)
         {
-            _lobbiesUpdateTimer = 0;
+            lobbiesUpdateTimer = 0;
             RefreshLobbyList();
         }
     }
@@ -321,7 +321,7 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
         callbacks.LobbyEventConnectionStateChanged += OnLobbyEventConnectionStateChanged;
         try
         {
-            _lobbyEvents = await Lobbies.Instance.SubscribeToLobbyEventsAsync(JoinedLobby.Id, callbacks);
+            LobbyEvents = await Lobbies.Instance.SubscribeToLobbyEventsAsync(JoinedLobby.Id, callbacks);
         }
         catch (LobbyServiceException ex)
         {
@@ -354,7 +354,7 @@ public class LobbyManagerCustom : Singleton<LobbyManagerCustom>
     private static void OnKickedFromLobby()
     {
         OnLobbyDisconnect?.Invoke();
-        _lobbyEvents = null;
+        LobbyEvents = null;
         OnLobbyDisconnect = null;
         RefreshLobbyList();
     }
