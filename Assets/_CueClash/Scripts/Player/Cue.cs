@@ -32,17 +32,17 @@ public class Cue : MonoBehaviour
 
     private void ShootRay()
     {
-        _ball = null;
-        if (!Physics.Raycast(_cueTop.transform.position, _cueTop.transform.forward, out RaycastHit hit, 0.1f)) return;
+        this.ball = null;
+        if (!Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.1f)) return;
         if (!hit.collider.gameObject.TryGetComponent(out Ball ball)) return;
-        _ball = ball;
-        _hitPoint = hit.point;
+        this.ball = ball;
+        hitPoint = hit.point;
     }
 
     private IEnumerator ShootCoroutine()
     {
         yield return new WaitForSeconds(0.3f);
-        if (_ball)
+        if (ball)
         {
             ball.AddForce(cueTop.transform.forward * cueForce, hitPoint);
         }

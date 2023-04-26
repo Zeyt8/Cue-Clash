@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     [HideInInspector]
-    public CinemachinePOV Pov;
+    public CinemachinePOV pov;
 
     [SerializeField] private Rigidbody rigidbody;
     [SerializeField] private Transform bottom;
@@ -18,7 +18,6 @@ public class PlayerMovement : NetworkBehaviour
     private bool isGrounded = true;
     private bool needsToJump;
     private Vector3 movement;
-    public CinemachinePOV pov;
 
     private Vector3 goalVel = Vector3.zero;
 

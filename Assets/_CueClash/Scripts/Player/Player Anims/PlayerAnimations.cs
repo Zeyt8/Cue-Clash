@@ -7,29 +7,29 @@ public class PlayerAnimations : NetworkBehaviour
 {
     public PlayerState PlayerState
     {
-        get => _playerState;
+        get => playerState;
         set
         {
             switch (value)
             {
                 case PlayerState.Billiard:
-                    _handController.DesiredPosition = _billiardOffset;
+                    handController.desiredPosition = billiardOffset;
                     break;
             }
-            _playerState = value;
+            playerState = value;
         }
     }
 
-    [HideInInspector] public CinemachineVirtualCamera Camera;
+    [HideInInspector] public CinemachineVirtualCamera camera;
 
-    [SerializeField] private PlayerHandController _handController;
+    [SerializeField] private PlayerHandController handController;
 
-    private Coroutine _hitWithCueRoutine;
+    private Coroutine hitWithCueRoutine;
 
-    private readonly Vector3 _gunOffset = new Vector3(0.3f, -0.5f, 0.1f);
-    private readonly Vector3 _billiardOffset = new Vector3(0.3f, 1.6f, 0.1f);
+    private readonly Vector3 gunOffset = new Vector3(0.3f, -0.5f, 0.1f);
+    private readonly Vector3 billiardOffset = new Vector3(0.3f, 1.6f, 0.1f);
 
-    private PlayerState _playerState = PlayerState.Billiard;
+    private PlayerState playerState = PlayerState.Billiard;
 
     private void LateUpdate()
     {
@@ -37,40 +37,40 @@ public class PlayerAnimations : NetworkBehaviour
         if (PlayerState != PlayerState.Billiard)
         {
             Vector3 pos = transform.InverseTransformPoint(
-                Camera.transform.position +
-                Camera.transform.forward * _gunOffset.z +
-                Camera.transform.up * _gunOffset.y +
-                Camera.transform.right * _gunOffset.x
+                camera.transform.position +
+                camera.transform.forward * gunOffset.z +
+                camera.transform.up * gunOffset.y +
+                camera.transform.right * gunOffset.x
             );
-            _handController.DesiredPosition = pos;
-            Quaternion rot = Quaternion.Inverse(transform.rotation) * Camera.transform.rotation;
-            _handController.DesiredRotation = rot;
+            handController.desiredPosition = pos;
+            Quaternion rot = Quaternion.Inverse(transform.rotation) * camera.transform.rotation;
+            handController.desiredRotation = rot;
         }
     }
 
     public void AlignBilliardAim(Vector2 pos)
     {
-        _handController.DesiredPosition.x = pos.x + _billiardOffset.x;
-        _handController.DesiredPosition.y = pos.y + _billiardOffset.y;
-        Debug.DrawRay(transform.TransformPoint(_billiardOffset + new Vector3(0, 0, 2)), Vector3.up, Color.red);
-        _handController.DesiredRotation = Quaternion.LookRotation(
-            transform.TransformPoint(_billiardOffset + new Vector3(0, 0, 2)) - transform.TransformPoint(_handController.DesiredPosition)
+        handController.desiredPosition.x = pos.x + billiardOffset.x;
+        handController.desiredPosition.y = pos.y + billiardOffset.y;
+        Debug.DrawRay(transform.TransformPoint(billiardOffset + new Vector3(0, 0, 2)), Vector3.up, Color.red);
+        handController.desiredRotation = Quaternion.LookRotation(
+            transform.TransformPoint(billiardOffset + new Vector3(0, 0, 2)) - transform.TransformPoint(handController.desiredPosition)
             );
     }
 
     public void ChargeCue(float value)
     {
-        if (_hitWithCueRoutine != null)
+        if (hitWithCueRoutine != null)
         {
-            StopCoroutine(_hitWithCueRoutine);
-            _hitWithCueRoutine = null;
+            StopCoroutine(hitWithCueRoutine);
+            hitWithCueRoutine = null;
         }
-        _handController.DesiredPosition.z = _billiardOffset.z - 0.1f * Mathf.Sqrt(value) * 0.3f;
+        handController.desiredPosition.z = billiardOffset.z - 0.1f * Mathf.Sqrt(value) * 0.3f;
     }
 
     public void HitWithCue()
     {
-        _hitWithCueRoutine = StartCoroutine(HitWithCueRoutine());
+        hitWithCueRoutine = StartCoroutine(HitWithCueRoutine());
     }
 
     private IEnumerator HitWithCueRoutine()
@@ -78,32 +78,32 @@ public class PlayerAnimations : NetworkBehaviour
         float target = 1;
         float elapsedTime = 0;
         float waitTime = 0.3f;
-        float current = _handController.DesiredPosition.z;
+        float current = handController.desiredPosition.z;
 
         while (elapsedTime < waitTime)
         {
-            _handController.DesiredPosition.z = Mathf.Lerp(current, target, (elapsedTime / waitTime));
+            handController.desiredPosition.z = Mathf.Lerp(current, target, (elapsedTime / waitTime));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        _handController.DesiredPosition.z = target;
+        handController.desiredPosition.z = target;
         yield return ReturnCueToUsualPosition();
     }
 
     private IEnumerator ReturnCueToUsualPosition()
     {
-        float target = _gunOffset.z;
+        float target = gunOffset.z;
         float elapsedTime = 0;
         float waitTime = 0.2f;
-        float current = _handController.DesiredPosition.z;
+        float current = handController.desiredPosition.z;
 
         while (elapsedTime < waitTime)
         {
-            _handController.DesiredPosition.z = Mathf.Lerp(current, target, (elapsedTime / waitTime));
+            handController.desiredPosition.z = Mathf.Lerp(current, target, (elapsedTime / waitTime));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        _handController.DesiredPosition.z = target;
+        handController.desiredPosition.z = target;
         yield return null;
     }
 }

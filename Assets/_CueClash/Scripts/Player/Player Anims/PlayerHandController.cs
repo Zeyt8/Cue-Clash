@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class PlayerHandController : MonoBehaviour
 {
-    public Vector3 DesiredPosition;
-    public Quaternion DesiredRotation;
+    public Vector3 desiredPosition;
+    public Quaternion desiredRotation;
 
     private void LateUpdate()
     {
-        transform.localPosition = DesiredPosition;
-        transform.localRotation = DesiredRotation;
+        transform.localPosition = desiredPosition;
+        transform.localRotation = desiredRotation;
     }
 }
