@@ -52,10 +52,11 @@ public class PlayerAnimations : NetworkBehaviour
     {
         handController.desiredPosition.x = pos.x + billiardOffset.x;
         handController.desiredPosition.y = pos.y + billiardOffset.y;
-        Debug.DrawRay(transform.TransformPoint(billiardOffset + new Vector3(0, 0, 2)), Vector3.up, Color.red);
-        handController.desiredRotation = Quaternion.LookRotation(
-            transform.TransformPoint(billiardOffset + new Vector3(0, 0, 2)) - transform.TransformPoint(handController.desiredPosition)
-            );
+        Debug.DrawRay(transform.TransformPoint(billiardOffset + new Vector3(0, 0, 2.1f)), Vector3.up, Color.red);
+        Vector3 dir = transform.TransformPoint(billiardOffset + new Vector3(0, 0, 2.1f)) -
+                      transform.TransformPoint(handController.desiredPosition);
+        handController.desiredRotation = Quaternion.LookRotation(dir);
+        handController.desiredPosition += handController.transform.forward * (dir.magnitude - 2.1f);
     }
 
     public void ChargeCue(float value)
