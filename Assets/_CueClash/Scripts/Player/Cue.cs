@@ -9,8 +9,15 @@ public class Cue : MonoBehaviour
     [SerializeField] private Transform cueTop;
     [SerializeField] private float maxPower = 1000;
 
-    private Ball ball;
     private Vector3 hitPoint;
+
+    private bool isActive;
+    private LineRenderer lineRenderer;
+
+    private void Awake()
+    {
+        lineRenderer = GetComponent<LineRenderer>();
+    }
 
     private void Update()
     {
@@ -21,7 +28,18 @@ public class Cue : MonoBehaviour
             {
                 cueForce = maxPower;
             }
-            ShootRay();
+        }
+        if (isActive) 
+        {
+            lineRenderer.SetPosition(0, cueTop.position);
+            if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 10))
+            {
+                lineRenderer.SetPosition(1, hit.point);
+            }
+            else
+            {
+                lineRenderer.SetPosition(1, cueTop.position);
+            }
         }
     }
 
@@ -30,32 +48,32 @@ public class Cue : MonoBehaviour
         StartCoroutine(ShootCoroutine());
     }
 
-    private void ShootRay()
-    {
-        this.ball = null;
-        if (!Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.1f)) return;
-        if (!hit.collider.gameObject.TryGetComponent(out Ball ball)) return;
-        this.ball = ball;
-        hitPoint = hit.point;
-    }
-
     private IEnumerator ShootCoroutine()
     {
         yield return new WaitForSeconds(0.3f);
-        if (ball)
+        if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.1f))
         {
-            ball.AddForce(cueTop.transform.forward * cueForce, hitPoint);
+            if (hit.collider.gameObject.TryGetComponent(out Ball ball))
+            {
+                hitPoint = hit.point;
+                if (ball)
+                {
+                    ball.AddForce(cueTop.transform.forward * cueForce, hitPoint);
+                }
+            }
         }
         cueForce = 0;
     }
 
     public void Activate()
     {
-
+        isActive = true;
+        lineRenderer.enabled = true;
     }
 
     public void Deactivate()
     {
-
+        isActive = false;
+        lineRenderer.enabled = false;
     }
 }

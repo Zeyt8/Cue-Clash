@@ -56,6 +56,7 @@ public class PlayerObject : NetworkBehaviour
         playerMovement.pov = pov;
         headLookAt.followTransform = camera.transform;
         playerAnimations.camera = camera;
+        cue.Activate();
     }
 
     private void OnEnable()
@@ -161,7 +162,7 @@ public class PlayerObject : NetworkBehaviour
 
     private void AimCueChangedState(bool state)
     {
-        if (state == true)
+        if (state)
         {
             Cursor.lockState = CursorLockMode.Confined;
             pov.enabled = false;

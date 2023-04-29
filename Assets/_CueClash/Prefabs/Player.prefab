@@ -268,7 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e44c090a2b1d6b4a831d2406350f90d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pov: {fileID: 0}
+  pov: {fileID: 0}
   rigidbody: {fileID: 3708542918496989591}
   bottom: {fileID: 4286077963596668474}
   acceleration: 50
@@ -276,7 +276,6 @@ MonoBehaviour:
   maxSpeed: 5
   jumpForce: 5
   fallAcceleration: 2.5
-  pov: {fileID: 0}
 --- !u!54 &3708542918496989591
 Rigidbody:
   m_ObjectHideFlags: 0
