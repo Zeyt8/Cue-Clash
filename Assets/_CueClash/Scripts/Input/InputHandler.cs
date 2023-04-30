@@ -10,7 +10,7 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     public Vector2 Look { get; private set; }
     public bool Cue { get; private set; }
     public UnityEvent OnCueRelease = new UnityEvent();
-    public bool Attack { get; private set; }
+    public bool Swing { get; private set; }
     public UnityEvent OnShootWeapon = new UnityEvent();
     public bool Parry { get; private set; }
     public UnityEvent OnSwitchedWeapons = new UnityEvent();
@@ -92,11 +92,11 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     {
         if (context.performed)
         {
-            Attack = true;
+            Swing = true;
         }
         else if (context.canceled)
         {
-            Attack = false;
+            Swing = false;
         }
     }
 

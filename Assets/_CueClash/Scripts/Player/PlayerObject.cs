@@ -101,6 +101,8 @@ public class PlayerObject : NetworkBehaviour
                 gun.Deactivate();
                 cue.Activate();
                 playerAnimations.PlayerState = PlayerState.Billiard;
+                playerAnimations.AlignBilliardAim(new Vector2(0, 0));
+                Cursor.lockState = CursorLockMode.Locked;
             }
         }
         
@@ -118,8 +120,17 @@ public class PlayerObject : NetworkBehaviour
                     inputHandler.MousePosition.x.Remap(0, Screen.width, -1, 1),
                     inputHandler.MousePosition.y.Remap(0, Screen.height, -1, 1)
                 );
+                pos.y = Mathf.Clamp(pos.y, 0, 1);
                 playerAnimations.AlignBilliardAim(pos);
             }
+        }
+        else if (playerState == PlayerState.Sword)
+        {
+            Vector2 pos = new Vector2(
+                inputHandler.MousePosition.x.Remap(0, Screen.width, -0.8f, 0.8f),
+                inputHandler.MousePosition.y.Remap(0, Screen.height, -0.8f, 0.8f)
+            );
+            playerAnimations.AlignSwordPosition(pos);
         }
     }
 
@@ -145,6 +156,8 @@ public class PlayerObject : NetworkBehaviour
             gun.Deactivate();
             sword.Activate();
             playerAnimations.PlayerState = PlayerState.Sword;
+            playerAnimations.SetSword();
+            Cursor.lockState = CursorLockMode.Confined;
         }
         else if (playerState == PlayerState.Sword)
         {
@@ -152,6 +165,7 @@ public class PlayerObject : NetworkBehaviour
             gun.Activate();
             sword.Deactivate();
             playerAnimations.PlayerState = PlayerState.Gun;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
