@@ -56,7 +56,7 @@ public class PlayerObject : NetworkBehaviour
 
     private bool aimCue;
 
-    private readonly float maxDurationOfBattle = 20;
+    private readonly float maxDurationOfBattle = 60;
     private float battleTimer = 0;
 
     private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);

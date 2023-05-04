@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class Sword : MonoBehaviour
@@ -60,6 +61,7 @@ public class Sword : MonoBehaviour
         if (other.TryGetComponent(out Bullet bullet))
         {
             Destroy(bullet);
+            bullet.GetComponent<NetworkObject>().Despawn();
         }
         else if (other.TryGetComponent(out Sword sword))
         {
