@@ -62,6 +62,8 @@ public class PlayerObject : NetworkBehaviour
         playerMovement.pov = pov;
         headLookAt.followTransform = camera.transform;
         playerAnimations.camera = camera;
+
+        gun.GetPlayerCamera(camera);
     }
 
     private void OnEnable()
