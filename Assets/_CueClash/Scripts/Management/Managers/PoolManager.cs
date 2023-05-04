@@ -23,17 +23,27 @@ public class PoolManager : Singleton<PoolManager>
         //swap to fighting
         if (numberOfHits > 2)
         {
-            for (int i = 0; i < LevelManager.Instance.players.Count; i++)
-            {
-                LevelManager.Instance.players[i].transform.position = LevelManager.Instance.spawnPoints[i].position;
-                LevelManager.Instance.players[i].SwitchToFight();
-            }
+            StartFight();
         }
     }
 
     private void StartFight()
     {
-
+        for (int i = 0; i < LevelManager.Instance.players.Count; i++)
+        {
+            LevelManager.Instance.players[i].transform.position = LevelManager.Instance.spawnPoints[i].position;
+            LevelManager.Instance.players[i].SwitchToFight();
+        }
+        foreach (Ball ball in player1SinkedBalls)
+        {
+            LevelManager.Instance.players[0].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+        }
+        foreach (Ball ball in player2SinkedBalls)
+        {
+            // TODO: change this
+            if (LevelManager.Instance.players.Count > 1)
+            LevelManager.Instance.players[1].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+        }
     }
     
     public void SaveBallPositions()
