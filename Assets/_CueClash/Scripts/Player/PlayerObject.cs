@@ -118,28 +118,6 @@ public class PlayerObject : NetworkBehaviour
         animator.SetBool("Walking", inputHandler.Movement != Vector3.zero);
         playerMovement.Move(inputHandler);
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (playerState == PlayerState.Billiard)
-            {
-                playerState = PlayerState.Gun;
-                animator.SetInteger("Phase", 1);
-                gun.Activate();
-                cue.Deactivate();
-                playerAnimations.PlayerState = PlayerState.Gun;
-            }
-            else
-            {
-                playerState = PlayerState.Billiard;
-                animator.SetInteger("Phase", 0);
-                gun.Deactivate();
-                cue.Activate();
-                playerAnimations.PlayerState = PlayerState.Billiard;
-                playerAnimations.AlignBilliardAim(new Vector2(0, 0));
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-        }
-        
         // Start charging cue
         if (playerState == PlayerState.Billiard)
         {
@@ -172,6 +150,13 @@ public class PlayerObject : NetworkBehaviour
             if (battleTimer > maxDurationOfBattle)
             {
                 playerState = PlayerState.Billiard;
+                animator.SetInteger("Phase", 0);
+                gun.Deactivate();
+                sword.Deactivate();
+                cue.Activate();
+                playerAnimations.PlayerState = PlayerState.Billiard;
+                playerAnimations.AlignBilliardAim(new Vector2(0, 0));
+                Cursor.lockState = CursorLockMode.Locked;
                 battleTimer = 0;
             }
         }
@@ -200,6 +185,18 @@ public class PlayerObject : NetworkBehaviour
     public void BecomeInvincibleServerRpc(float time)
     {
         invincibleTime.Value = time;
+    }
+
+    public void SwitchToFight()
+    {
+        if (playerState == PlayerState.Billiard)
+        {
+            playerState = PlayerState.Gun;
+            animator.SetInteger("Phase", 1);
+            gun.Activate();
+            cue.Deactivate();
+            playerAnimations.PlayerState = PlayerState.Gun;
+        }
     }
 
     private void HitWithCue()

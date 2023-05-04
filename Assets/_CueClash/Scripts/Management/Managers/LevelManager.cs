@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class LevelManager : NetworkSingleton<LevelManager>
 {
     [SerializeField] private NetworkObject playerPrefab;
-    [SerializeField] private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
+    public List<PlayerObject> players = new List<PlayerObject>();
 
     [Header("UI")]
     public AmmoText ammoText;
@@ -35,5 +37,6 @@ public class LevelManager : NetworkSingleton<LevelManager>
     {
         NetworkObject no = Instantiate(playerPrefab, spawnPoints[clientId % (ulong)spawnPoints.Length].position, Quaternion.identity);
         no.SpawnWithOwnership(clientId);
+        players.Add(no.GetComponent<PlayerObject>());
     }
 }

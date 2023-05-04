@@ -17,15 +17,25 @@ public class PoolManager : Singleton<PoolManager>
         // Fault
         if (ball.ballNumber != 0)
         {
-
+            
         }
 
         //swap to fighting
         if (numberOfHits > 2)
         {
-
+            for (int i = 0; i < LevelManager.Instance.players.Count; i++)
+            {
+                LevelManager.Instance.players[i].transform.position = LevelManager.Instance.spawnPoints[i].position;
+                LevelManager.Instance.players[i].SwitchToFight();
+            }
         }
     }
+
+    private void StartFight()
+    {
+
+    }
+    
     public void SaveBallPositions()
     {
         numberOfHits = 0;
