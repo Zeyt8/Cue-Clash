@@ -56,6 +56,12 @@ public class PlayerObject : NetworkBehaviour
 
     private bool aimCue;
 
+    private readonly int maxNrOfPoolShots = 3;
+    private int nrOfPoolShotsBeforeBattle = 3;
+
+    private readonly float maxDurationOfBattle = 6;
+    private float battleTimer = 0;
+
     private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0);
 
     private void Awake()
@@ -151,7 +157,7 @@ public class PlayerObject : NetworkBehaviour
                 pos.y = Mathf.Clamp(pos.y, 0, 1);
                 playerAnimations.AlignBilliardAim(pos);
             }
-        }
+        }    
         else if (playerState == PlayerState.Sword)
         {
             Vector2 pos = new Vector2(
@@ -160,7 +166,15 @@ public class PlayerObject : NetworkBehaviour
             );
             playerAnimations.AlignSwordPosition(pos);
         }
-
+        if (playerState != PlayerState.Billiard)
+        {
+            battleTimer += Time.deltaTime;
+            if (battleTimer > maxDurationOfBattle)
+            {
+                playerState = PlayerState.Billiard;
+                battleTimer = 0;
+            }
+        }
         invincibleTime.Value -= Time.deltaTime;
     }
 
@@ -192,6 +206,13 @@ public class PlayerObject : NetworkBehaviour
     {
         if (!IsOwner || playerState != PlayerState.Billiard) return;
         cue.Shoot();
+        nrOfPoolShotsBeforeBattle--;
+        if (nrOfPoolShotsBeforeBattle == 0)
+        {
+            playerState = PlayerState.Gun;
+            nrOfPoolShotsBeforeBattle = maxNrOfPoolShots;
+            battleTimer = 0;
+        }
         playerAnimations.HitWithCue();
     }
 
@@ -199,6 +220,10 @@ public class PlayerObject : NetworkBehaviour
     {
         if (!IsOwner || playerState != PlayerState.Gun) return;
         gun.Shoot();
+
+        /// TODO: For when Sword is implemented
+        // if (gun.nrOfBullets.Value < 1)
+        //     SwitchWeapons();
     }
 
     private void SwitchWeapons()
