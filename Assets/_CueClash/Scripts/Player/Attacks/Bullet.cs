@@ -1,9 +1,13 @@
 using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 public class Bullet : NetworkBehaviour
 {
     public float life = 3;
+    public int damage = 30;
+    public float bulletSpeed = 20f;
+    public Player player;
 
     private void Awake()
     {
@@ -13,10 +17,9 @@ public class Bullet : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         GameObject collisionObject = other.gameObject;
-        int damageGiven = 30;
         if (collisionObject.TryGetComponent<Limb>(out Limb limb))
         {
-            limb.TakeDamage(damageGiven);
+            limb.TakeDamage(damage);
         }
         Destroy(gameObject);
     }

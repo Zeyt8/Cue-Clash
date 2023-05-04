@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class Ball3and11Red : Bullet
 {
-
+    private void Awake()
+    {
+        damage *= 2;
+    }
 }
