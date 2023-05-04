@@ -5,7 +5,6 @@ public class Gun : NetworkBehaviour
 {
     public Transform bulletSpawnPoint;
     public NetworkObject bulletPrefab;
-    public float bulletSpeed = 20;
     public NetworkVariable<int> nrOfBullets = new NetworkVariable<int>(10, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     public void Shoot()
@@ -21,7 +20,7 @@ public class Gun : NetworkBehaviour
         {
             NetworkObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
             bullet.Spawn();
-            bullet.GetComponent<Rigidbody>().AddForce(bulletSpawnPoint.forward * bulletSpeed, ForceMode.VelocityChange);
+            bullet.GetComponent<Rigidbody>().AddForce(bulletSpawnPoint.forward * 20f, ForceMode.VelocityChange);
             nrOfBullets.Value--;
         }
     }
