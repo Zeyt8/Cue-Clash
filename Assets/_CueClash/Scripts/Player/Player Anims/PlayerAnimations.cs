@@ -31,6 +31,7 @@ public class PlayerAnimations : NetworkBehaviour
 
     private readonly Vector3 gunOffset = new Vector3(0.3f, -0.4f, 0.2f);
     private readonly Vector3 swordOffset = new Vector3(0.3f, -0.6f, 0.6f);
+    private readonly Vector3 parryOffset = new Vector3(0.4f, -0.2f, 0.6f);
     private readonly Vector3 billiardOffset = new Vector3(0.2f, 1.45f, 0.2f);
     private readonly Vector3 billiardPivot = new Vector3(0.2f, 1.45f, 0.1f) + new Vector3(0, 0, 1.8f);
 
@@ -56,7 +57,17 @@ public class PlayerAnimations : NetworkBehaviour
         {
             if (parrying)
             {
-
+                Vector3 pos = transform.InverseTransformPoint(
+                    camera.transform.position +
+                    camera.transform.forward * parryOffset.z +
+                    camera.transform.up * parryOffset.y +
+                    camera.transform.right * parryOffset.x
+                );
+                handController.desiredPosition = pos;
+                Quaternion rot = Quaternion.Inverse(transform.rotation) * camera.transform.rotation;
+                rot *= Quaternion.Euler(-90, 0, 0);
+                rot *= Quaternion.Euler(0, -90, 0);
+                handController.desiredRotation = rot;
             }
             else
             {

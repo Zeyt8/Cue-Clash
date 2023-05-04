@@ -56,6 +56,8 @@ public class PlayerObject : NetworkBehaviour
 
     private bool aimCue;
 
+    private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0);
+
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
@@ -153,16 +155,19 @@ public class PlayerObject : NetworkBehaviour
         else if (playerState == PlayerState.Sword)
         {
             Vector2 pos = new Vector2(
-                inputHandler.MousePosition.x.Remap(0, Screen.width, -0.8f, 0.8f),
-                inputHandler.MousePosition.y.Remap(0, Screen.height, -0.8f, 0.8f)
+                inputHandler.MousePosition.x.Remap(0, Screen.width, -0.75f, 0.75f),
+                inputHandler.MousePosition.y.Remap(0, Screen.height, -0.75f, 0.75f)
             );
             playerAnimations.AlignSwordPosition(pos);
         }
+
+        invincibleTime.Value -= Time.deltaTime;
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(int damage, Limbs limb)
     {
+        if (invincibleTime.Value > 0) return;
         TakeDamageClientRpc(damage, limb);
     }
 
@@ -175,6 +180,12 @@ public class PlayerObject : NetworkBehaviour
         {
             //Die();
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void BecomeInvincibleServerRpc(float time)
+    {
+        invincibleTime.Value = time;
     }
 
     private void HitWithCue()

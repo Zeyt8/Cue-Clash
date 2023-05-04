@@ -202,6 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeb1ad62d79eee346ac57dbe8d2a9ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerObject: {fileID: 0}
+  parrying: 0
+  blocking: 0
 --- !u!136 &4428826313299107627
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -221,10 +224,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
-  m_Height: 2.2
+  m_Radius: 0.04
+  m_Height: 1.8
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0.2}
 --- !u!120 &6204693618658054408
 LineRenderer:
   serializedVersion: 2
