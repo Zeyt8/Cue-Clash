@@ -12,6 +12,8 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     public UnityEvent OnCueRelease = new UnityEvent();
     public bool Swing { get; private set; }
     public UnityEvent OnShootWeapon = new UnityEvent();
+    public UnityEvent OnSwingBegin = new UnityEvent();
+    public UnityEvent OnSwingEnd = new UnityEvent();
     public UnityEvent OnParryBegin = new UnityEvent();
     public UnityEvent OnParryEnd = new UnityEvent();
     public UnityEvent OnSwitchedWeapons = new UnityEvent();
@@ -94,10 +96,12 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
         if (context.performed)
         {
             Swing = true;
+            OnSwingBegin?.Invoke();
         }
         else if (context.canceled)
         {
             Swing = false;
+            OnSwingEnd?.Invoke();
         }
     }
 

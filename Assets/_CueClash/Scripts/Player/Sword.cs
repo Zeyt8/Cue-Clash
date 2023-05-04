@@ -4,17 +4,18 @@ using UnityEngine;
 public class Sword : MonoBehaviour
 {
     [SerializeField] private PlayerObject playerObject;
+    public bool swinging;
     public bool parrying;
     public bool blocking;
 
     private float timer = 0;
-    private CapsuleCollider collider;
+    private CapsuleCollider _collider;
 
     private void Awake()
     {
-        collider = GetComponent<CapsuleCollider>();
+        _collider = GetComponent<CapsuleCollider>();
     }
-    
+
     public void Activate()
     {
 
@@ -37,12 +38,23 @@ public class Sword : MonoBehaviour
         }
     }
 
+    public void StartSwing()
+    {
+        EndParryForced();
+        swinging = true;
+    }
+
+    public void EndSwing()
+    {
+        swinging = false;
+    }
+
     public void StartParry()
     {
         parrying = true;
         blocking = true;
         timer = 0.5f;
-        collider.radius = 0.05f;
+        _collider.radius = 0.05f;
         gameObject.layer = LayerMask.NameToLayer("Hurtbox");
     }
 
@@ -50,8 +62,15 @@ public class Sword : MonoBehaviour
     {
         parrying = false;
         blocking = false;
-        collider.radius = 0.04f;
+        _collider.radius = 0.04f;
         gameObject.layer = LayerMask.NameToLayer("Hitbox");
+    }
+
+    public void EndParryForced()
+    {
+        EndParry();
+        parrying = false;
+        timer = 0.0f;
     }
 
     public void OnTriggerEnter(Collider other)
