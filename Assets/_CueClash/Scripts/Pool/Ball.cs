@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : NetworkBehaviour
 {
     public int ballNumber;
-    public bool showAim;
+    private bool showAim;
 
     protected Rigidbody body;
 
@@ -30,9 +28,10 @@ public class Ball : MonoBehaviour
     private void AddForceClientRpc(Vector3 force, Vector3 position)
     {
         body.AddForceAtPosition(force, position);
+        PoolManager.Instance.IncrementNumberOfHits(this);
     }
 
-    void AimAssist()
+    protected void AimAssist()
     {
         /*aimAssist.transform.position = whiteBall.transform.position;
 

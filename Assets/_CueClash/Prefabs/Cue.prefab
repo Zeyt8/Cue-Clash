@@ -168,10 +168,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f68f3dc990e4a2488377e5f9dad297b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullets: 
+  bulletDatabase: {fileID: 11400000, guid: e677bf68ac8f4104296442c79fc0e2fb, type: 2}
   bulletSpawnPoint: {fileID: 5321926215105968284}
-  bulletPrefab: {fileID: 1315421115605165064, guid: 166f6851dbaa431439438ed2eb690b94,
-    type: 3}
   bulletSpeed: 30
+  playerCamera: {fileID: 0}
+  maxDistance: 100
   nrOfBullets:
     m_InternalValue: 10
 --- !u!114 &556824433392414989

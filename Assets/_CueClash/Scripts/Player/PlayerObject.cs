@@ -55,7 +55,10 @@ public class PlayerObject : NetworkBehaviour
 
     private bool aimCue;
 
-    private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0);
+    private readonly float maxDurationOfBattle = 60;
+    private float battleTimer = 0;
+
+    private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     private void Awake()
     {
@@ -67,6 +70,11 @@ public class PlayerObject : NetworkBehaviour
         sword = cueTransform.GetComponent<Sword>();
         playerAnimations.PlayerState = PlayerState.Billiard;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void Start()
+    {
+        LevelManager.Instance.players.Add(this);
     }
 
     public override void OnNetworkSpawn()
@@ -113,27 +121,6 @@ public class PlayerObject : NetworkBehaviour
         animator.SetBool("Walking", inputHandler.Movement != Vector3.zero);
         playerMovement.Move(inputHandler);
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (playerState == PlayerState.Billiard)
-            {
-                playerState = PlayerState.Gun;
-                animator.SetInteger("Phase", 1);
-                gun.Activate();
-                cue.Deactivate();
-                playerAnimations.PlayerState = PlayerState.Gun;
-            }
-            else
-            {
-                playerState = PlayerState.Billiard;
-                animator.SetInteger("Phase", 0);
-                gun.Deactivate();
-                cue.Activate();
-                playerAnimations.PlayerState = PlayerState.Billiard;
-                playerAnimations.AlignBilliardAim(new Vector2(0, 0));
-            }
-        }
-
         // Start charging cue
         if (playerState == PlayerState.Billiard)
         {
@@ -161,7 +148,22 @@ public class PlayerObject : NetworkBehaviour
             );
             playerAnimations.AlignSwordPosition(pos);
         }
-
+        if (playerState != PlayerState.Billiard)
+        {
+            battleTimer += Time.deltaTime;
+            if (battleTimer > maxDurationOfBattle)
+            {
+                playerState = PlayerState.Billiard;
+                animator.SetInteger("Phase", 0);
+                gun.Deactivate();
+                sword.Deactivate();
+                cue.Activate();
+                playerAnimations.PlayerState = PlayerState.Billiard;
+                playerAnimations.AlignBilliardAim(new Vector2(0, 0));
+                Cursor.lockState = CursorLockMode.Locked;
+                battleTimer = 0;
+            }
+        }
         invincibleTime.Value -= Time.deltaTime;
     }
 
@@ -189,6 +191,23 @@ public class PlayerObject : NetworkBehaviour
         invincibleTime.Value = time;
     }
 
+    public void SwitchToFight()
+    {
+        if (playerState == PlayerState.Billiard)
+        {
+            playerState = PlayerState.Gun;
+            animator.SetInteger("Phase", 1);
+            gun.Activate();
+            cue.Deactivate();
+            playerAnimations.PlayerState = PlayerState.Gun;
+        }
+    }
+
+    public void AddBullet(int bullet)
+    {
+        gun.bullets.Add(bullet);
+    }
+
     private void HitWithCue()
     {
         if (!IsOwner || playerState != PlayerState.Billiard) return;
@@ -200,6 +219,12 @@ public class PlayerObject : NetworkBehaviour
     {
         if (!IsOwner || playerState != PlayerState.Gun) return;
         gun.Shoot();
+
+        /// TODO: For when Sword is implemented
+        if (gun.nrOfBullets.Value < 1)
+        {
+            SwitchWeapons();
+        }
     }
 
     private void SwitchWeapons()

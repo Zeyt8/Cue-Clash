@@ -402,7 +402,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -427,8 +427,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.27714694, y: 0, z: 0, w: 0.9608276}
-  m_LocalPosition: {x: 0, y: 2.436, z: -3.232}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.017526746, z: 1.299}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2102,7 +2102,7 @@ PrefabInstance:
     - target: {fileID: 4080596994732303655, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.169
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 4080596994732303655, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
@@ -2144,26 +2144,6 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      propertyPath: _ballNumber
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      propertyPath: _8BallColor.b
-      value: 0.9811321
-      objectReference: {fileID: 0}
-    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      propertyPath: _8BallColor.g
-      value: 0.9811321
-      objectReference: {fileID: 0}
-    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      propertyPath: _8BallColor.r
-      value: 0.9811321
-      objectReference: {fileID: 0}
     - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: GlobalObjectIdHash
@@ -2185,7 +2165,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: WhiteBall
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8336122170180403199, guid: b09508bcba3949743ad25db8eb51bec9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3064,6 +3045,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9,
+        type: 3}
       propertyPath: BallNumber
       value: 1
       objectReference: {fileID: 0}
@@ -3175,6 +3161,7 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 577968533}
   - {fileID: 817358766}
+  players: []
   ammoText: {fileID: 587686749}
 --- !u!114 &1901579901
 MonoBehaviour:
@@ -3189,6 +3176,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balls: []
+  numberOfHits: 0
+  currentPoolPlayer: 1
 --- !u!1001 &2141795694
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lobbyUIHandler: {fileID: 0}
-  image: {fileID: 0}
+  image: {fileID: 5885121392653797040}
   sessionNameText: {fileID: 5885121391598694982}
   sessionPlayersText: {fileID: 6610955469722410815}
 --- !u!114 &7315620067494333424
