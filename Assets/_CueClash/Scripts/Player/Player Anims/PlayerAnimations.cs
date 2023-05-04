@@ -22,16 +22,22 @@ public class PlayerAnimations : NetworkBehaviour
     }
 
     public bool parrying;
+    public bool swinging;
+    public float swingTimer = 0.0f;
+    public float swingDuration = 0.25f;
+    public Vector2 swingDirection = Vector2.zero;
+    private Vector3 posOffset = Vector3.zero;
+    private Quaternion rotOffset = Quaternion.identity;
 
-    [HideInInspector] public CinemachineVirtualCamera camera;
+    [HideInInspector] public CinemachineVirtualCamera cinemachine;
 
     [SerializeField] private PlayerHandController handController;
 
     private Coroutine hitWithCueRoutine;
 
     private readonly Vector3 gunOffset = new Vector3(0.3f, -0.4f, 0.2f);
-    private readonly Vector3 swordOffset = new Vector3(0.3f, -0.6f, 0.6f);
-    private readonly Vector3 parryOffset = new Vector3(0.4f, -0.2f, 0.6f);
+    private readonly Vector3 swordOffset = new Vector3(0.1f, -0.2f, 0.6f);
+    private readonly Vector3 parryOffset = new Vector3(0.4f, -0.05f, 0.6f);
     private readonly Vector3 billiardOffset = new Vector3(0.2f, 1.45f, 0.2f);
     private readonly Vector3 billiardPivot = new Vector3(0.2f, 1.45f, 0.1f) + new Vector3(0, 0, 1.8f);
 
@@ -41,40 +47,18 @@ public class PlayerAnimations : NetworkBehaviour
     private void LateUpdate()
     {
         if (!IsOwner) return;
+
         if (PlayerState == PlayerState.Gun)
         {
             Vector3 pos = transform.InverseTransformPoint(
-                camera.transform.position +
-                camera.transform.forward * gunOffset.z +
-                camera.transform.up * gunOffset.y +
-                camera.transform.right * gunOffset.x
+                cinemachine.transform.position +
+                cinemachine.transform.forward * gunOffset.z +
+                cinemachine.transform.up * gunOffset.y +
+                cinemachine.transform.right * gunOffset.x
             );
             handController.desiredPosition = pos;
-            Quaternion rot = Quaternion.Inverse(transform.rotation) * camera.transform.rotation;
+            Quaternion rot = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation;
             handController.desiredRotation = rot;
-        }
-        else if (PlayerState == PlayerState.Sword)
-        {
-            if (parrying)
-            {
-                Vector3 pos = transform.InverseTransformPoint(
-                    camera.transform.position +
-                    camera.transform.forward * parryOffset.z +
-                    camera.transform.up * parryOffset.y +
-                    camera.transform.right * parryOffset.x
-                );
-                handController.desiredPosition = pos;
-                Quaternion rot = Quaternion.Inverse(transform.rotation) * camera.transform.rotation;
-                rot *= Quaternion.Euler(-90, 0, 0);
-                rot *= Quaternion.Euler(0, -90, 0);
-                handController.desiredRotation = rot;
-            }
-            else
-            {
-                Quaternion rot = Quaternion.Inverse(transform.rotation) * camera.transform.rotation;
-                rot *= Quaternion.Euler(-90, 0, 0);
-                handController.desiredRotation = rot;
-            }
         }
     }
 
@@ -82,19 +66,66 @@ public class PlayerAnimations : NetworkBehaviour
 
     public void SetSword()
     {
-        AlignSwordPosition((Vector2)swordOffset);
+        AlignSwordPosition(swordOffset);
     }
-    public void AlignSwordPosition(Vector3 position)
+
+    public void AlignSwordPosition(Vector3 mousePos)
     {
-        Vector3 pos = transform.InverseTransformPoint(
-            camera.transform.position +
-            camera.transform.forward * swordOffset.z +
-            camera.transform.up * position.y +
-            camera.transform.right * position.x
-        );
-        handController.desiredPosition = pos;
+        if (swinging)
+        {
+            posOffset = new Vector3(Mathf.Clamp(mousePos.x * 0.5f, -0.5f, 0.5f), 0, 0);
+            handController.desiredPosition = transform.InverseTransformPoint(
+                cinemachine.transform.position +
+                cinemachine.transform.forward * swordOffset.z +
+                cinemachine.transform.up * swordOffset.y +
+                cinemachine.transform.right * swordOffset.x
+            ) + posOffset;
+
+            rotOffset = Quaternion.Euler(-120, 0, 0) * Quaternion.Euler(0, Mathf.Clamp((-mousePos.x) * 270, -135, 135), 0);
+            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation * rotOffset;
+        }
+        else if (swingTimer > 0.0f)
+        {
+            handController.desiredPosition = transform.InverseTransformPoint(
+                cinemachine.transform.position +
+                cinemachine.transform.forward * swordOffset.z +
+                cinemachine.transform.up * swordOffset.y +
+                cinemachine.transform.right * swordOffset.x
+            ) + posOffset + Vector3.ClampMagnitude(transform.InverseTransformVector(cinemachine.transform.up * swingDirection.y
+                                        + cinemachine.transform.right * swingDirection.x) * (swingDuration - swingTimer) * 4.0f, 1.0f);
+
+            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation * rotOffset
+                * Quaternion.Euler(Mathf.Clamp((swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f),
+                                    Mathf.Clamp(-swingDirection.x * (swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f), 0);
+
+            swingTimer -= Time.deltaTime;
+        }
+        else if (parrying)
+        {
+            handController.desiredPosition = transform.InverseTransformPoint(
+                cinemachine.transform.position +
+                cinemachine.transform.forward * parryOffset.z +
+                cinemachine.transform.up * parryOffset.y +
+                cinemachine.transform.right * parryOffset.x
+            );
+
+            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation
+                * Quaternion.Euler(-90, 0, 0) * Quaternion.Euler(0, -90, 0);
+        }
+        else
+        {
+            handController.desiredPosition = transform.InverseTransformPoint(
+                cinemachine.transform.position +
+                cinemachine.transform.forward * swordOffset.z +
+                cinemachine.transform.up * swordOffset.y +
+                cinemachine.transform.right * swordOffset.x
+            );
+
+            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation
+                * Quaternion.Euler(-120, 0, 0);
+        }
     }
-#endregion
+    #endregion
 
     #region Cue
     public void AlignBilliardAim(Vector2 pos)
@@ -156,5 +187,5 @@ public class PlayerAnimations : NetworkBehaviour
         billiardShootStartPosition = null;
         yield return null;
     }
-#endregion
+    #endregion
 }

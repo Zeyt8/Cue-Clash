@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public enum PlayerState
 {
@@ -79,7 +78,7 @@ public class PlayerObject : NetworkBehaviour
         pov = camera.GetCinemachineComponent<CinemachinePOV>();
         playerMovement.pov = pov;
         headLookAt.followTransform = camera.transform;
-        playerAnimations.camera = camera;
+        playerAnimations.cinemachine = camera;
         cue.Activate();
     }
 
@@ -90,6 +89,8 @@ public class PlayerObject : NetworkBehaviour
         inputHandler.OnSwitchedWeapons.AddListener(SwitchWeapons);
         inputHandler.OnSwitchedAmmo.AddListener(SwitchAmmo);
         inputHandler.AimCueStateChanged.AddListener(AimCueChangedState);
+        inputHandler.OnSwingBegin.AddListener(StartSwing);
+        inputHandler.OnSwingEnd.AddListener(EndSwing);
         inputHandler.OnParryBegin.AddListener(StartParry);
         inputHandler.OnParryEnd.AddListener(EndParry);
     }
@@ -130,10 +131,9 @@ public class PlayerObject : NetworkBehaviour
                 cue.Activate();
                 playerAnimations.PlayerState = PlayerState.Billiard;
                 playerAnimations.AlignBilliardAim(new Vector2(0, 0));
-                Cursor.lockState = CursorLockMode.Locked;
             }
         }
-        
+
         // Start charging cue
         if (playerState == PlayerState.Billiard)
         {
@@ -152,6 +152,7 @@ public class PlayerObject : NetworkBehaviour
                 playerAnimations.AlignBilliardAim(pos);
             }
         }
+        // Sword aiming
         else if (playerState == PlayerState.Sword)
         {
             Vector2 pos = new Vector2(
@@ -211,7 +212,6 @@ public class PlayerObject : NetworkBehaviour
             sword.Activate();
             playerAnimations.PlayerState = PlayerState.Sword;
             playerAnimations.SetSword();
-            Cursor.lockState = CursorLockMode.Confined;
         }
         else if (playerState == PlayerState.Sword)
         {
@@ -219,7 +219,6 @@ public class PlayerObject : NetworkBehaviour
             gun.Activate();
             sword.Deactivate();
             playerAnimations.PlayerState = PlayerState.Gun;
-            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
@@ -241,12 +240,32 @@ public class PlayerObject : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             pov.enabled = true;
         }
+
         aimCue = state;
+    }
+
+    private void StartSwing()
+    {
+        if (!IsOwner || playerState != PlayerState.Sword || playerAnimations.parrying) return;
+        sword.StartSwing();
+        playerAnimations.parrying = false;
+        playerAnimations.swinging = true;
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    private void EndSwing()
+    {
+        if (!IsOwner || playerState != PlayerState.Sword) return;
+        sword.EndSwing();
+        playerAnimations.swinging = false;
+        playerAnimations.swingTimer = playerAnimations.swingDuration;
+        playerAnimations.swingDirection = inputHandler.Look.normalized;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void StartParry()
     {
-        if (!IsOwner || playerState != PlayerState.Sword) return;
+        if (!IsOwner || playerState != PlayerState.Sword || playerAnimations.swinging || playerAnimations.swingTimer > 0.0f) return;
         sword.StartParry();
         playerAnimations.parrying = true;
     }

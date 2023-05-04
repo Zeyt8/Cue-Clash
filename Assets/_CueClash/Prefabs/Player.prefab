@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pov: {fileID: 0}
-  rigidbody: {fileID: 3708542918496989591}
+  rb: {fileID: 3708542918496989591}
   bottom: {fileID: 4286077963596668474}
   acceleration: 40
   accelerationAir: 20
@@ -1315,7 +1315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parrying: 0
-  camera: {fileID: 0}
+  cinemachine: {fileID: 0}
   handController: {fileID: 8753615738069100776}
 --- !u!1 &6422780793127611420 stripped
 GameObject:
