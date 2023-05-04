@@ -47,6 +47,7 @@ public class Sword : MonoBehaviour
 
     public void EndParry()
     {
+        parrying = false;
         blocking = false;
         collider.radius = 0.04f;
         gameObject.layer = LayerMask.NameToLayer("Hitbox");

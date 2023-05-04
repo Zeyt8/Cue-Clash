@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PoolManager : Singleton<PoolManager>
+public class PoolManager : NetworkSingleton<PoolManager>
 {
     [SerializeField] private Ball[] balls;
     [SerializeField] private int numberOfHits = 0;
@@ -23,11 +24,15 @@ public class PoolManager : Singleton<PoolManager>
         //swap to fighting
         if (numberOfHits > 2)
         {
-            StartFight();
+            if (IsServer)
+            {
+                StartFightClientRpc();
+            }
         }
     }
 
-    private void StartFight()
+    [ClientRpc]
+    private void StartFightClientRpc()
     {
         for (int i = 0; i < LevelManager.Instance.players.Count; i++)
         {
@@ -42,7 +47,7 @@ public class PoolManager : Singleton<PoolManager>
         {
             // TODO: change this
             if (LevelManager.Instance.players.Count > 1)
-            LevelManager.Instance.players[1].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+                LevelManager.Instance.players[1].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
     }
     

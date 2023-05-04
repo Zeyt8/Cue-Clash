@@ -37,6 +37,5 @@ public class LevelManager : NetworkSingleton<LevelManager>
     {
         NetworkObject no = Instantiate(playerPrefab, spawnPoints[clientId % (ulong)spawnPoints.Length].position, Quaternion.identity);
         no.SpawnWithOwnership(clientId);
-        players.Add(no.GetComponent<PlayerObject>());
     }
 }

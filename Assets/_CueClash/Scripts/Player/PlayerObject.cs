@@ -56,8 +56,6 @@ public class PlayerObject : NetworkBehaviour
 
     private bool aimCue;
 
-    private readonly int maxNrOfPoolShots = 3;
-
     private readonly float maxDurationOfBattle = 20;
     private float battleTimer = 0;
 
@@ -73,6 +71,11 @@ public class PlayerObject : NetworkBehaviour
         sword = cueTransform.GetComponent<Sword>();
         playerAnimations.PlayerState = PlayerState.Billiard;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void Start()
+    {
+        LevelManager.Instance.players.Add(this);
     }
 
     public override void OnNetworkSpawn()
@@ -188,7 +191,6 @@ public class PlayerObject : NetworkBehaviour
 
     public void SwitchToFight()
     {
-        print("here");
         if (playerState == PlayerState.Billiard)
         {
             playerState = PlayerState.Gun;

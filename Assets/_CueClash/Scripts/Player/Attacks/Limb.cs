@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Limb : NetworkBehaviour
+public class Limb : MonoBehaviour
 {
     [SerializeField] private Limbs limb;
     [SerializeField] private PlayerObject playerObject;
