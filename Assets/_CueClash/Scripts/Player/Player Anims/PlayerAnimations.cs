@@ -21,6 +21,8 @@ public class PlayerAnimations : NetworkBehaviour
         }
     }
 
+    public bool parrying;
+
     [HideInInspector] public CinemachineVirtualCamera camera;
 
     [SerializeField] private PlayerHandController handController;
@@ -52,9 +54,16 @@ public class PlayerAnimations : NetworkBehaviour
         }
         else if (PlayerState == PlayerState.Sword)
         {
-            Quaternion rot = Quaternion.Inverse(transform.rotation) * camera.transform.rotation;
-            rot *= Quaternion.Euler(-90, 0, 0);
-            handController.desiredRotation = rot;
+            if (parrying)
+            {
+
+            }
+            else
+            {
+                Quaternion rot = Quaternion.Inverse(transform.rotation) * camera.transform.rotation;
+                rot *= Quaternion.Euler(-90, 0, 0);
+                handController.desiredRotation = rot;
+            }
         }
     }
 
@@ -81,9 +90,9 @@ public class PlayerAnimations : NetworkBehaviour
     {
         handController.desiredPosition.x = pos.x + billiardOffset.x;
         handController.desiredPosition.y = pos.y + billiardOffset.y;
-        Vector3 dir = transform.TransformPoint(billiardPivot) - transform.TransformPoint(handController.desiredPosition);
+        Vector3 dir = billiardPivot - handController.desiredPosition;
         handController.desiredRotation = Quaternion.LookRotation(dir);
-        handController.desiredPosition += handController.transform.forward * (dir.magnitude - 1.8f);
+        handController.desiredPosition += transform.InverseTransformVector(handController.transform.forward) * (dir.magnitude - 1.8f);
     }
 
     public void ChargeCue(float value)

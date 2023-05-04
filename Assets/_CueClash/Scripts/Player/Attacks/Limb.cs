@@ -3,27 +3,11 @@ using UnityEngine;
 
 public class Limb : NetworkBehaviour
 {
-    [SerializeField]
-    private int health = 100;
+    [SerializeField] private Limbs limb;
+    [SerializeField] private PlayerObject playerObject;
 
     public void TakeDamage(int damage)
     {
-        TakeDamageServerRpc(damage);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void TakeDamageServerRpc(int damage)
-    {
-        TakeDamageClientRpc(damage);
-    }
-
-    [ClientRpc]
-    private void TakeDamageClientRpc(int damage)
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-            //Destroy(gameObject);
-        }
+        playerObject.TakeDamageServerRpc(damage, limb);
     }
 }

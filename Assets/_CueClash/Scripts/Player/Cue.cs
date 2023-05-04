@@ -58,7 +58,7 @@ public class Cue : MonoBehaviour
                 hitPoint = hit.point;
                 if (ball)
                 {
-                    ball.AddForce(cueTop.transform.forward * cueForce, hitPoint);
+                    ball.AddForceServerRpc(cueTop.transform.forward * cueForce, hitPoint);
                 }
             }
         }
