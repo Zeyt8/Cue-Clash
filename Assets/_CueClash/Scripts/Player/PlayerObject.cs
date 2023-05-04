@@ -34,6 +34,14 @@ public class PlayerObject : NetworkBehaviour
 
     private bool aimCue;
 
+    private readonly int maxNrOfPoolShots = 3;
+    private int nrOfPoolShotsBeforeBattle = 3;
+
+    private readonly float maxDurationOfBattle = 6;
+    private float battleTimer = 0;
+
+    private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0);
+
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
