@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,6 +11,16 @@ public enum PlayerState
     Gun
 }
 
+public enum Limbs
+{
+    Head,
+    LeftHand,
+    LeftLeg,
+    RightHand,
+    RightLeg,
+    Torso
+}
+
 public class PlayerObject : NetworkBehaviour
 {
     [SerializeField] private InputHandler inputHandler;
@@ -18,8 +29,19 @@ public class PlayerObject : NetworkBehaviour
     [SerializeField] private Transform head;
     [SerializeField] private Transform animatorTransform;
     [SerializeField] private FollowTransform headLookAt;
+    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
     [Header("Prefabs")]
     [SerializeField] private CinemachineVirtualCamera cameraPrefab;
+
+    private Dictionary<Limbs, int> limbHealth = new Dictionary<Limbs, int>()
+    {
+        { Limbs.Head, 100 },
+        { Limbs.LeftHand, 100 },
+        { Limbs.LeftLeg, 100 },
+        { Limbs.RightHand, 100 },
+        { Limbs.RightLeg, 100 },
+        { Limbs.Torso, 100 }
+    };
 
     private PlayerMovement playerMovement;
     private PlayerState playerState = PlayerState.Billiard;
@@ -39,6 +61,8 @@ public class PlayerObject : NetworkBehaviour
 
     private readonly float maxDurationOfBattle = 6;
     private float battleTimer = 0;
+
+    private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0);
 
     private void Awake()
     {
@@ -62,8 +86,7 @@ public class PlayerObject : NetworkBehaviour
         playerMovement.pov = pov;
         headLookAt.followTransform = camera.transform;
         playerAnimations.camera = camera;
-
-        gun.GetPlayerCamera(camera);
+        cue.Activate();
     }
 
     private void OnEnable()
@@ -73,6 +96,8 @@ public class PlayerObject : NetworkBehaviour
         inputHandler.OnSwitchedWeapons.AddListener(SwitchWeapons);
         inputHandler.OnSwitchedAmmo.AddListener(SwitchAmmo);
         inputHandler.AimCueStateChanged.AddListener(AimCueChangedState);
+        inputHandler.OnParryBegin.AddListener(StartParry);
+        inputHandler.OnParryEnd.AddListener(EndParry);
     }
 
     private void OnDisable()
@@ -82,6 +107,8 @@ public class PlayerObject : NetworkBehaviour
         inputHandler.OnSwitchedWeapons.RemoveListener(SwitchWeapons);
         inputHandler.OnSwitchedAmmo.RemoveListener(SwitchAmmo);
         inputHandler.AimCueStateChanged.RemoveListener(AimCueChangedState);
+        inputHandler.OnParryBegin.RemoveListener(StartParry);
+        inputHandler.OnParryEnd.RemoveListener(EndParry);
     }
 
     private void Update()
@@ -108,6 +135,8 @@ public class PlayerObject : NetworkBehaviour
                 gun.Deactivate();
                 cue.Activate();
                 playerAnimations.PlayerState = PlayerState.Billiard;
+                playerAnimations.AlignBilliardAim(new Vector2(0, 0));
+                Cursor.lockState = CursorLockMode.Locked;
             }
         }
         
@@ -125,11 +154,19 @@ public class PlayerObject : NetworkBehaviour
                     inputHandler.MousePosition.x.Remap(0, Screen.width, -1, 1),
                     inputHandler.MousePosition.y.Remap(0, Screen.height, -1, 1)
                 );
+                pos.y = Mathf.Clamp(pos.y, 0, 1);
                 playerAnimations.AlignBilliardAim(pos);
             }
+        }    
+        else if (playerState == PlayerState.Sword)
+        {
+            Vector2 pos = new Vector2(
+                inputHandler.MousePosition.x.Remap(0, Screen.width, -0.75f, 0.75f),
+                inputHandler.MousePosition.y.Remap(0, Screen.height, -0.75f, 0.75f)
+            );
+            playerAnimations.AlignSwordPosition(pos);
         }
-
-        else
+        if (playerState != PlayerState.Billiard)
         {
             battleTimer += Time.deltaTime;
             if (battleTimer > maxDurationOfBattle)
@@ -138,6 +175,31 @@ public class PlayerObject : NetworkBehaviour
                 battleTimer = 0;
             }
         }
+        invincibleTime.Value -= Time.deltaTime;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void TakeDamageServerRpc(int damage, Limbs limb)
+    {
+        if (invincibleTime.Value > 0) return;
+        TakeDamageClientRpc(damage, limb);
+    }
+
+    [ClientRpc]
+    private void TakeDamageClientRpc(int damage, Limbs limb)
+    {
+        limbHealth[limb] -= damage;
+        skinnedMeshRenderer.materials[(int)limb].color = Color.Lerp(Color.red, Color.white, limbHealth[limb] / 100f);
+        if (limbHealth[limb] <= 0)
+        {
+            //Die();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void BecomeInvincibleServerRpc(float time)
+    {
+        invincibleTime.Value = time;
     }
 
     private void HitWithCue()
@@ -173,6 +235,8 @@ public class PlayerObject : NetworkBehaviour
             gun.Deactivate();
             sword.Activate();
             playerAnimations.PlayerState = PlayerState.Sword;
+            playerAnimations.SetSword();
+            Cursor.lockState = CursorLockMode.Confined;
         }
         else if (playerState == PlayerState.Sword)
         {
@@ -180,6 +244,7 @@ public class PlayerObject : NetworkBehaviour
             gun.Activate();
             sword.Deactivate();
             playerAnimations.PlayerState = PlayerState.Gun;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
@@ -190,7 +255,8 @@ public class PlayerObject : NetworkBehaviour
 
     private void AimCueChangedState(bool state)
     {
-        if (state == true)
+        if (!IsOwner || playerState != PlayerState.Billiard) return;
+        if (state)
         {
             Cursor.lockState = CursorLockMode.Confined;
             pov.enabled = false;
@@ -201,5 +267,19 @@ public class PlayerObject : NetworkBehaviour
             pov.enabled = true;
         }
         aimCue = state;
+    }
+
+    private void StartParry()
+    {
+        if (!IsOwner || playerState != PlayerState.Sword) return;
+        sword.StartParry();
+        playerAnimations.parrying = true;
+    }
+
+    private void EndParry()
+    {
+        if (!IsOwner || playerState != PlayerState.Sword) return;
+        sword.EndParry();
+        playerAnimations.parrying = false;
     }
 }
