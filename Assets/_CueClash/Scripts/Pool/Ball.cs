@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public int ballNumber;
-    public bool showAim;
+    private bool showAim;
 
     protected Rigidbody body;
 
@@ -21,10 +21,11 @@ public class Ball : MonoBehaviour
 
     public void AddForce(Vector3 force, Vector3 position)
     {
+        PoolManager.Instance.IncrementNumberOfHits(this);
         body.AddForceAtPosition(force, position);
     }
 
-    void AimAssist()
+    protected void AimAssist()
     {
         /*aimAssist.transform.position = whiteBall.transform.position;
 

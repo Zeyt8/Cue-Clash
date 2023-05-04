@@ -7,5 +7,6 @@ public class BallPocket : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         print(other.name);
+        PoolManager.Instance.AddSinkedBall(other.GetComponent<Ball>());
     }
 }
