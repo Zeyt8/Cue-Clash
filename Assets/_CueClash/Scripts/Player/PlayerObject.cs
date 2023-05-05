@@ -271,7 +271,8 @@ public class PlayerObject : NetworkBehaviour
 
     private void StartSwing()
     {
-        if (!IsOwner || playerState != PlayerState.Sword || playerAnimations.parrying) return;
+        if (!IsOwner || playerState != PlayerState.Sword || playerAnimations.parrying
+            || playerAnimations.swinging || playerAnimations.swingTimer > 0.0f) return;
         sword.StartSwing();
         playerAnimations.parrying = false;
         playerAnimations.swinging = true;

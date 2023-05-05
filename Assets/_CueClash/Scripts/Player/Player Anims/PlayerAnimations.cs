@@ -73,7 +73,7 @@ public class PlayerAnimations : NetworkBehaviour
     {
         if (swinging)
         {
-            posOffset = new Vector3(Mathf.Clamp(mousePos.x * 0.5f, -0.5f, 0.5f), 0, 0);
+            posOffset = new Vector3(Mathf.Clamp(mousePos.x * 1.0f, -0.5f, 0.5f), 0, 0);
             handController.desiredPosition = transform.InverseTransformPoint(
                 cinemachine.transform.position +
                 cinemachine.transform.forward * swordOffset.z +
@@ -81,7 +81,7 @@ public class PlayerAnimations : NetworkBehaviour
                 cinemachine.transform.right * swordOffset.x
             ) + posOffset;
 
-            rotOffset = Quaternion.Euler(-120, 0, 0) * Quaternion.Euler(0, Mathf.Clamp((-mousePos.x) * 270, -135, 135), 0);
+            rotOffset = Quaternion.Euler(-120, 0, 0) * Quaternion.Euler(0, Mathf.Clamp((-mousePos.x) * 540, -120, 120), 0);
             handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation * rotOffset;
         }
         else if (swingTimer > 0.0f)
