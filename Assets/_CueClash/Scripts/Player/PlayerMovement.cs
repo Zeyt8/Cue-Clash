@@ -11,9 +11,10 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private Transform bottom;
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float accelerationAir = 25f;
-    [SerializeField] private float maxSpeed = 5f;  // max speed along XZ plane
+    public float maxSpeed = 5f;  // max speed along XZ plane
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float fallAcceleration = 2.5f;
+    [SerializeField] private Animator animator;
 
     private bool isGrounded = true;
     private bool needsToJump;
@@ -43,6 +44,7 @@ public class PlayerMovement : NetworkBehaviour
         if (!IsOwner) return;
         // apply movement
         isGrounded = Physics.Raycast(bottom.position, Vector3.down, 0.1f);
+        animator.SetBool("Jumping", !isGrounded);
         CharacterMove(movement, !isGrounded);
 
         // apply jump

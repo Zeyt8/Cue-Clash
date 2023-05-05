@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Cinemachine;
+using Newtonsoft.Json.Bson;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 public enum PlayerState
@@ -14,9 +16,8 @@ public enum Limbs
 {
     Head,
     LeftHand,
-    LeftLeg,
+    Legs,
     RightHand,
-    RightLeg,
     Torso
 }
 
@@ -36,9 +37,8 @@ public class PlayerObject : NetworkBehaviour
     {
         { Limbs.Head, 100 },
         { Limbs.LeftHand, 100 },
-        { Limbs.LeftLeg, 100 },
+        { Limbs.Legs, 100 },
         { Limbs.RightHand, 100 },
-        { Limbs.RightLeg, 100 },
         { Limbs.Torso, 100 }
     };
 
@@ -50,6 +50,7 @@ public class PlayerObject : NetworkBehaviour
     private Sword sword;
 
     private Animator animator;
+    private NetworkAnimator networkAnimator;
     private PlayerAnimations playerAnimations;
     private CinemachinePOV pov;
 
@@ -64,6 +65,7 @@ public class PlayerObject : NetworkBehaviour
     {
         playerMovement = GetComponent<PlayerMovement>();
         animator = animatorTransform.GetComponent<Animator>();
+        networkAnimator = animatorTransform.GetComponent<NetworkAnimator>();
         playerAnimations = animatorTransform.GetComponent<PlayerAnimations>();
         cue = cueTransform.GetComponent<Cue>();
         gun = cueTransform.GetComponent<Gun>();
@@ -118,7 +120,10 @@ public class PlayerObject : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        animator.SetBool("Walking", inputHandler.Movement != Vector3.zero);
+        animator.SetFloat("Speed", playerMovement.maxSpeed);
+        animator.SetFloat("MoveX", inputHandler.Movement.x);
+        animator.SetFloat("MoveZ", inputHandler.Movement.z);
+        animator.SetBool("Moving", inputHandler.Movement != Vector3.zero);
         playerMovement.Move(inputHandler);
 
         // Start charging cue
@@ -132,8 +137,8 @@ public class PlayerObject : NetworkBehaviour
             else if (aimCue)
             {
                 Vector2 pos = new Vector2(
-                    inputHandler.MousePosition.x.Remap(0, Screen.width, -1, 1),
-                    inputHandler.MousePosition.y.Remap(0, Screen.height, -1, 1)
+                    inputHandler.MousePosition.x.Remap(0, Screen.width, -0.9f, 0.9f),
+                    inputHandler.MousePosition.y.Remap(0, Screen.height, -0.5f, 1)
                 );
                 pos.y = Mathf.Clamp(pos.y, 0, 1);
                 playerAnimations.AlignBilliardAim(pos);
@@ -153,14 +158,7 @@ public class PlayerObject : NetworkBehaviour
             battleTimer += Time.deltaTime;
             if (battleTimer > maxDurationOfBattle)
             {
-                playerState = PlayerState.Billiard;
-                animator.SetInteger("Phase", 0);
-                gun.Deactivate();
-                sword.Deactivate();
-                cue.Activate();
-                playerAnimations.PlayerState = PlayerState.Billiard;
-                playerAnimations.AlignBilliardAim(new Vector2(0, 0));
-                Cursor.lockState = CursorLockMode.Locked;
+                SwitchToBilliard();
                 battleTimer = 0;
             }
         }
@@ -171,6 +169,7 @@ public class PlayerObject : NetworkBehaviour
     public void TakeDamageServerRpc(int damage, Limbs limb)
     {
         if (invincibleTime.Value > 0) return;
+        networkAnimator.SetTrigger("Hit");
         TakeDamageClientRpc(damage, limb);
     }
 
@@ -200,7 +199,21 @@ public class PlayerObject : NetworkBehaviour
             gun.Activate();
             cue.Deactivate();
             playerAnimations.PlayerState = PlayerState.Gun;
+            playerMovement.maxSpeed = 6;
         }
+    }
+
+    public void SwitchToBilliard()
+    {
+        playerState = PlayerState.Billiard;
+        animator.SetInteger("Phase", 0);
+        gun.Deactivate();
+        sword.Deactivate();
+        cue.Activate();
+        playerAnimations.PlayerState = PlayerState.Billiard;
+        playerAnimations.AlignBilliardAim(new Vector2(0, 0));
+        Cursor.lockState = CursorLockMode.Locked;
+        playerMovement.maxSpeed = 4;
     }
 
     public void AddBullet(int bullet)
@@ -218,9 +231,9 @@ public class PlayerObject : NetworkBehaviour
     private void Shoot()
     {
         if (!IsOwner || playerState != PlayerState.Gun) return;
+        networkAnimator.SetTrigger("Fire");
         gun.Shoot();
 
-        /// TODO: For when Sword is implemented
         if (gun.nrOfBullets.Value < 1)
         {
             SwitchWeapons();
