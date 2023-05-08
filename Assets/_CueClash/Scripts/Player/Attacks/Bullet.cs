@@ -21,11 +21,10 @@ public class Bullet : NetworkBehaviour
         {
             limb.TakeDamage(damage);
         }
-        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Destroy(gameObject);
+        GetComponent<NetworkObject>().Despawn();
     }
 }

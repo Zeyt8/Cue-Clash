@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -341,26 +341,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b09508bcba3949743ad25db8eb51bec9, type: 3}
---- !u!1 &156665404 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8583831218643583677, guid: b09508bcba3949743ad25db8eb51bec9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1845972225}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &156665414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156665404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed417535b96690f4784bc089f78ed91a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ballNumber: 1
-  showAim: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2122,7 +2102,7 @@ PrefabInstance:
     - target: {fileID: 4080596994732303655, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.169
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 4080596994732303655, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
@@ -2164,26 +2144,6 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      propertyPath: _ballNumber
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      propertyPath: _8BallColor.b
-      value: 0.9811321
-      objectReference: {fileID: 0}
-    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      propertyPath: _8BallColor.g
-      value: 0.9811321
-      objectReference: {fileID: 0}
-    - target: {fileID: 5880082411298705766, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      propertyPath: _8BallColor.r
-      value: 0.9811321
-      objectReference: {fileID: 0}
     - target: {fileID: 5917553672916501497, guid: b09508bcba3949743ad25db8eb51bec9,
         type: 3}
       propertyPath: GlobalObjectIdHash
@@ -2209,33 +2169,8 @@ PrefabInstance:
     - {fileID: 8336122170180403199, guid: b09508bcba3949743ad25db8eb51bec9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8583831218643583677, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      insertIndex: 6
-      addedObject: {fileID: 1128185657}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b09508bcba3949743ad25db8eb51bec9, type: 3}
---- !u!1 &1128185647 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8583831218643583677, guid: b09508bcba3949743ad25db8eb51bec9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1066813147}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1128185657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1128185647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8369236fcda765418800570c071167b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ballNumber: 0
-  showAim: 0
-  LevelManager: {fileID: 1901579900}
 --- !u!1 &1174986158
 GameObject:
   m_ObjectHideFlags: 0
@@ -3154,15 +3089,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ball 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5205204465471911127, guid: b09508bcba3949743ad25db8eb51bec9, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8583831218643583677, guid: b09508bcba3949743ad25db8eb51bec9,
-        type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 156665414}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b09508bcba3949743ad25db8eb51bec9, type: 3}
 --- !u!1 &1901579897
 GameObject:
@@ -3231,6 +3161,7 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 577968533}
   - {fileID: 817358766}
+  players: []
   ammoText: {fileID: 587686749}
 --- !u!114 &1901579901
 MonoBehaviour:

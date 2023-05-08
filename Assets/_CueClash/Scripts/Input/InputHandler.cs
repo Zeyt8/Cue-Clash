@@ -10,9 +10,12 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     public Vector2 Look { get; private set; }
     public bool Cue { get; private set; }
     public UnityEvent OnCueRelease = new UnityEvent();
-    public bool Attack { get; private set; }
+    public bool Swing { get; private set; }
     public UnityEvent OnShootWeapon = new UnityEvent();
-    public bool Parry { get; private set; }
+    public UnityEvent OnSwingBegin = new UnityEvent();
+    public UnityEvent OnSwingEnd = new UnityEvent();
+    public UnityEvent OnParryBegin = new UnityEvent();
+    public UnityEvent OnParryEnd = new UnityEvent();
     public UnityEvent OnSwitchedWeapons = new UnityEvent();
     public UnityEvent OnSwitchedAmmo = new UnityEvent();
     public Vector2 MousePosition { get; private set; }
@@ -92,11 +95,13 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     {
         if (context.performed)
         {
-            Attack = true;
+            Swing = true;
+            OnSwingBegin?.Invoke();
         }
         else if (context.canceled)
         {
-            Attack = false;
+            Swing = false;
+            OnSwingEnd?.Invoke();
         }
     }
 
@@ -112,11 +117,11 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     {
         if (context.performed)
         {
-            Parry = true;
+            OnParryBegin?.Invoke();
         }
         else if (context.canceled)
         {
-            Parry = false;
+            OnParryEnd?.Invoke();
         }
     }
 

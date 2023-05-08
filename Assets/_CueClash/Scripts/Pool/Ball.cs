@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : NetworkBehaviour
 {
     public int ballNumber;
     private bool showAim;
@@ -19,10 +18,17 @@ public class Ball : MonoBehaviour
         AimAssist();
     }
 
-    public void AddForce(Vector3 force, Vector3 position)
+    [ServerRpc(RequireOwnership = false)]
+    public void AddForceServerRpc(Vector3 force, Vector3 position)
     {
-        PoolManager.Instance.IncrementNumberOfHits(this);
+        AddForceClientRpc(force, position);
+    }
+
+    [ClientRpc]
+    private void AddForceClientRpc(Vector3 force, Vector3 position)
+    {
         body.AddForceAtPosition(force, position);
+        PoolManager.Instance.IncrementNumberOfHits(this);
     }
 
     protected void AimAssist()
