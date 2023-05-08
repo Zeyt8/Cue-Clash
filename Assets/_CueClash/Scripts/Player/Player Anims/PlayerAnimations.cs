@@ -29,7 +29,7 @@ public class PlayerAnimations : NetworkBehaviour
     private Vector3 posOffset = Vector3.zero;
     private Quaternion rotOffset = Quaternion.identity;
 
-    [HideInInspector] public CinemachineVirtualCamera cinemachine;
+    [HideInInspector] public CinemachineVirtualCamera virtualCamera;
 
     [SerializeField] private PlayerHandController handController;
 
@@ -50,14 +50,13 @@ public class PlayerAnimations : NetworkBehaviour
 
         if (PlayerState == PlayerState.Gun)
         {
-            Vector3 pos = transform.InverseTransformPoint(
-                cinemachine.transform.position +
-                cinemachine.transform.forward * gunOffset.z +
-                cinemachine.transform.up * gunOffset.y +
-                cinemachine.transform.right * gunOffset.x
-            );
+            Vector3 pos = virtualCamera.transform.position +
+                          virtualCamera.transform.forward * gunOffset.z +
+                          virtualCamera.transform.up * gunOffset.y +
+                          virtualCamera.transform.right * gunOffset.x;
+            pos = transform.parent.InverseTransformPoint(pos);
             handController.desiredPosition = pos;
-            Quaternion rot = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation;
+            Quaternion rot = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation;
             handController.desiredRotation = rot;
         }
     }
@@ -74,27 +73,27 @@ public class PlayerAnimations : NetworkBehaviour
         if (swinging)
         {
             posOffset = new Vector3(Mathf.Clamp(mousePos.x * 1.0f, -0.5f, 0.5f), 0, 0);
-            handController.desiredPosition = transform.InverseTransformPoint(
-                cinemachine.transform.position +
-                cinemachine.transform.forward * swordOffset.z +
-                cinemachine.transform.up * swordOffset.y +
-                cinemachine.transform.right * swordOffset.x
+            handController.desiredPosition = transform.parent.InverseTransformPoint(
+                virtualCamera.transform.position +
+                virtualCamera.transform.forward * swordOffset.z +
+                virtualCamera.transform.up * swordOffset.y +
+                virtualCamera.transform.right * swordOffset.x
             ) + posOffset;
 
             rotOffset = Quaternion.Euler(-120, 0, 0) * Quaternion.Euler(0, Mathf.Clamp((-mousePos.x) * 540, -120, 120), 0);
-            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation * rotOffset;
+            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset;
         }
         else if (swingTimer > 0.0f)
         {
-            handController.desiredPosition = transform.InverseTransformPoint(
-                cinemachine.transform.position +
-                cinemachine.transform.forward * swordOffset.z +
-                cinemachine.transform.up * swordOffset.y +
-                cinemachine.transform.right * swordOffset.x
-            ) + posOffset + Vector3.ClampMagnitude(transform.InverseTransformVector(cinemachine.transform.up * swingDirection.y
-                                        + cinemachine.transform.right * swingDirection.x) * (swingDuration - swingTimer) * 4.0f, 1.0f);
+            handController.desiredPosition = transform.parent.InverseTransformPoint(
+                virtualCamera.transform.position +
+                virtualCamera.transform.forward * swordOffset.z +
+                virtualCamera.transform.up * swordOffset.y +
+                virtualCamera.transform.right * swordOffset.x
+            ) + posOffset + Vector3.ClampMagnitude(transform.parent.InverseTransformVector(virtualCamera.transform.up * swingDirection.y
+                                        + virtualCamera.transform.right * swingDirection.x) * (swingDuration - swingTimer) * 4.0f, 1.0f);
 
-            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation * rotOffset
+            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
                 * Quaternion.Euler(Mathf.Clamp((swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f),
                                     Mathf.Clamp(-swingDirection.x * (swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f), 0);
 
@@ -102,26 +101,26 @@ public class PlayerAnimations : NetworkBehaviour
         }
         else if (parrying)
         {
-            handController.desiredPosition = transform.InverseTransformPoint(
-                cinemachine.transform.position +
-                cinemachine.transform.forward * parryOffset.z +
-                cinemachine.transform.up * parryOffset.y +
-                cinemachine.transform.right * parryOffset.x
+            handController.desiredPosition = transform.parent.InverseTransformPoint(
+                virtualCamera.transform.position +
+                virtualCamera.transform.forward * parryOffset.z +
+                virtualCamera.transform.up * parryOffset.y +
+                virtualCamera.transform.right * parryOffset.x
             );
 
-            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation
+            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation
                 * Quaternion.Euler(-90, 0, 0) * Quaternion.Euler(0, -90, 0);
         }
         else
         {
-            handController.desiredPosition = transform.InverseTransformPoint(
-                cinemachine.transform.position +
-                cinemachine.transform.forward * swordOffset.z +
-                cinemachine.transform.up * swordOffset.y +
-                cinemachine.transform.right * swordOffset.x
+            handController.desiredPosition = transform.parent.InverseTransformPoint(
+                virtualCamera.transform.position +
+                virtualCamera.transform.forward * swordOffset.z +
+                virtualCamera.transform.up * swordOffset.y +
+                virtualCamera.transform.right * swordOffset.x
             );
 
-            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * cinemachine.transform.rotation
+            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation
                 * Quaternion.Euler(-120, 0, 0);
         }
     }
@@ -134,7 +133,7 @@ public class PlayerAnimations : NetworkBehaviour
         handController.desiredPosition.y = pos.y + billiardOffset.y;
         Vector3 dir = billiardPivot - handController.desiredPosition;
         handController.desiredRotation = Quaternion.LookRotation(dir);
-        handController.desiredPosition += transform.InverseTransformVector(handController.transform.forward) * (dir.magnitude - 1.8f);
+        handController.desiredPosition += transform.parent.InverseTransformVector(handController.transform.forward) * (dir.magnitude - 1.8f);
     }
 
     public void ChargeCue(float value)
