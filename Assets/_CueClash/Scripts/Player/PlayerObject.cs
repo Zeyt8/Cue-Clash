@@ -56,7 +56,7 @@ public class PlayerObject : NetworkBehaviour
 
     private bool aimCue;
 
-    private readonly float maxDurationOfBattle = 60;
+    private readonly float maxDurationOfBattle = 120;
     private float battleTimer = 0;
 
     private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -88,7 +88,7 @@ public class PlayerObject : NetworkBehaviour
         pov = camera.GetCinemachineComponent<CinemachinePOV>();
         playerMovement.pov = pov;
         headLookAt.followTransform = camera.transform;
-        playerAnimations.cinemachine = camera;
+        playerAnimations.virtualCamera = camera;
         cue.Activate();
     }
 
