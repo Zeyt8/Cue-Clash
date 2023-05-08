@@ -18,11 +18,11 @@ public class PoolManager : NetworkSingleton<PoolManager>
         // Fault
         if (ball.ballNumber != 0)
         {
-            
+
         }
 
         //swap to fighting
-        if (numberOfHits > 2)
+        if (numberOfHits > 20)
         {
             if (IsServer)
             {
@@ -50,7 +50,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 LevelManager.Instance.players[1].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
     }
-    
+
     public void SaveBallPositions()
     {
         numberOfHits = 0;
@@ -84,7 +84,32 @@ public class PoolManager : NetworkSingleton<PoolManager>
         //supreme showdown
         if (ball.ballNumber == 8)
         {
+            if (currentPoolPlayer == 1)
+            {
+                if (player1SinkedBalls.Count == 7)
+                {
+                    //final battle
 
+                }
+                else
+                {
+                    //mega fault, ending the game here would not be fun
+
+                }
+            }
+            else
+            {
+                if (player2SinkedBalls.Count == 7)
+                {
+                    //final battle
+
+                }
+                else
+                {
+                    //mega fault, ending the game here would not be fun
+
+                }
+            }
         }
     }
 
@@ -107,5 +132,21 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 ball.transform.position = pos;
             }
         }
+    }
+
+    public bool BallsMoving()
+    {
+        bool stillMoving = false;
+
+        foreach (Ball ball in balls)
+        {
+            if (ball.transform.hasChanged)
+            {
+                transform.hasChanged = false;
+                stillMoving = true;
+            }
+        }
+
+        return stillMoving;
     }
 }
