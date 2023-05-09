@@ -6,6 +6,7 @@ public class Bullet : NetworkBehaviour
 {
     public float life = 3;
     public int damage = 30;
+    public int ballNumber = -1;
     public float bulletSpeed = 20f;
     public Player player;
 

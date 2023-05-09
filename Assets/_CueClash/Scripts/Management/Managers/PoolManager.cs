@@ -5,7 +5,6 @@ using UnityEngine;
 public class PoolManager : NetworkSingleton<PoolManager>
 {
     [SerializeField] private Ball[] balls;
-    [SerializeField] private Ball firstBallStruck = null;
     [SerializeField] private int numberOfHits = 0;
     [SerializeField] private bool whiteBallStruck = false, p1sinked = false, p2sinked = false;
     public int currentPoolPlayer = 1;
@@ -22,6 +21,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             {
                 whiteBallStruck = false;
 
+                // Keep going if the current player has sunk a ball, otherwise swap
                 if ((currentPoolPlayer == 1 && !p1sinked) || (currentPoolPlayer == 2 && !p2sinked))
                 {
                     SwapPlayer();
@@ -104,7 +104,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             return;
         }
 
-        //TODO: fault fight
+        //TODO: fault
         if (ball.ballNumber == 0)
         {
 
