@@ -91,7 +91,7 @@ public class PlayerAnimations : NetworkBehaviour
                 virtualCamera.transform.up * swordOffset.y +
                 virtualCamera.transform.right * swordOffset.x
             ) + posOffset + Vector3.ClampMagnitude(transform.parent.InverseTransformVector(virtualCamera.transform.up * swingDirection.y
-                                        + virtualCamera.transform.right * swingDirection.x) * (swingDuration - swingTimer) * 4.0f, 1.0f);
+                + virtualCamera.transform.right * swingDirection.x) * ((swingDuration - swingTimer) * 4.0f), 1.0f);
 
             handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
                 * Quaternion.Euler(Mathf.Clamp((swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f),
