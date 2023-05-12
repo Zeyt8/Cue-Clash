@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PoolManager : NetworkSingleton<PoolManager>
 {
@@ -11,6 +12,10 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
     private readonly List<Ball> player1SinkedBalls = new();
     private readonly List<Ball> player2SinkedBalls = new();
+
+    private readonly float maxDurationOfBattle = 120;
+    private float battleTimer = 0;
+    bool isFight = false;
 
     // Decide whose turn it is based on if the current player has sunk a ball. TODO: disable hitting balls until none are moving
     private void Update()
@@ -28,13 +33,23 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 }
 
                 //swap to fighting
-                if (numberOfHits > 20)
+                if (numberOfHits > 2)
                 {
                     if (IsServer)
                     {
+                        isFight = true;
                         StartFightClientRpc();
                     }
                 }
+            }
+        }
+        if (IsServer && isFight)
+        {
+            battleTimer += Time.deltaTime;
+            if (battleTimer > maxDurationOfBattle)
+            {
+                StopFightClientRpc();
+                battleTimer = 0;
             }
         }
     }
@@ -78,6 +93,17 @@ public class PoolManager : NetworkSingleton<PoolManager>
             if (LevelManager.Instance.players.Count > 1)
                 LevelManager.Instance.players[1].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
+    }
+
+    [ClientRpc]
+    private void StopFightClientRpc()
+    {
+        for (int i = 0; i < LevelManager.Instance.players.Count; i++)
+        {
+            LevelManager.Instance.players[i].SwitchToBilliard();
+        }
+
+        numberOfHits = 0;
     }
 
     public void SaveBallPositions()

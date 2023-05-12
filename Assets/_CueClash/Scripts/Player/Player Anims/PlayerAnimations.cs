@@ -38,8 +38,8 @@ public class PlayerAnimations : NetworkBehaviour
     private readonly Vector3 gunOffset = new Vector3(0.3f, -0.4f, 0.2f);
     private readonly Vector3 swordOffset = new Vector3(0.1f, -0.2f, 0.6f);
     private readonly Vector3 parryOffset = new Vector3(0.4f, -0.05f, 0.6f);
-    private readonly Vector3 billiardOffset = new Vector3(0.2f, 1.43f, 0.2f);
-    private readonly Vector3 billiardPivot = new Vector3(0.2f, 1.45f, 0.1f) + new Vector3(0, 0, 1.8f);
+    private readonly Vector3 billiardOffset = new Vector3(0.15f, 1.32f, 0.2f);
+    private readonly Vector3 billiardPivot = new Vector3(0.15f, 1.32f, 0.1f) + new Vector3(0, 0, 1.8f);
 
     private PlayerState playerState = PlayerState.Billiard;
     private Vector3? billiardShootStartPosition = null;

@@ -56,9 +56,6 @@ public class PlayerObject : NetworkBehaviour
 
     private bool aimCue;
 
-    private readonly float maxDurationOfBattle = 120;
-    private float battleTimer = 0;
-
     private NetworkVariable<float> invincibleTime = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     private void Awake()
@@ -152,15 +149,6 @@ public class PlayerObject : NetworkBehaviour
                 inputHandler.MousePosition.y.Remap(0, Screen.height, -0.75f, 0.75f)
             );
             playerAnimations.AlignSwordPosition(pos);
-        }
-        if (playerState != PlayerState.Billiard)
-        {
-            battleTimer += Time.deltaTime;
-            if (battleTimer > maxDurationOfBattle)
-            {
-                SwitchToBilliard();
-                battleTimer = 0;
-            }
         }
         invincibleTime.Value -= Time.deltaTime;
     }

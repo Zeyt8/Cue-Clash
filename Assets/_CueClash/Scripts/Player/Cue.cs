@@ -32,7 +32,7 @@ public class Cue : MonoBehaviour
         if (isActive) 
         {
             lineRenderer.SetPosition(0, cueTop.position);
-            if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.5f))
+            if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.7f))
             {
                 lineRenderer.SetPosition(1, hit.point);
             }
