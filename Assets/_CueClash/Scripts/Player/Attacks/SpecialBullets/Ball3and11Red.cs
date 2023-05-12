@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class Ball3and11Red : Bullet
 {
-
+    private void Awake()
+    {
+        ballNumber = 3;
+        damage *= 2;
+    }
 }

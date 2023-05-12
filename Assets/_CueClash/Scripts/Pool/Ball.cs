@@ -28,7 +28,7 @@ public class Ball : NetworkBehaviour
     private void AddForceClientRpc(Vector3 force, Vector3 position)
     {
         body.AddForceAtPosition(force, position);
-        PoolManager.Instance.IncrementNumberOfHits(this);
+        PoolManager.Instance.HitBall(this);
     }
 
     protected void AimAssist()
