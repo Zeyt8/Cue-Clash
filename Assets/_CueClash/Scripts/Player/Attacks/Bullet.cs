@@ -3,19 +3,15 @@ using UnityEngine;
 
 public class Bullet : NetworkBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        GameObject collisionObject = other.gameObject;
+        print(collision.gameObject.name);
+        GameObject collisionObject = collision.gameObject;
         int damageGiven = 30;
         if (collisionObject.TryGetComponent(out Limb limb))
         {
             limb.TakeDamage(damageGiven);
-            GetComponent<NetworkObject>().Despawn();
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
         GetComponent<NetworkObject>().Despawn();
     }
 }

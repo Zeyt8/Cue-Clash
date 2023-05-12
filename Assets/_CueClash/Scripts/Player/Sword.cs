@@ -18,12 +18,12 @@ public class Sword : MonoBehaviour
 
     public void Activate()
     {
-
+        gameObject.layer = LayerMask.NameToLayer("Hitbox");
     }
 
     public void Deactivate()
     {
-
+        gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     private void Update()
@@ -66,7 +66,7 @@ public class Sword : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Hitbox");
     }
 
-    public void EndParryForced()
+    private void EndParryForced()
     {
         EndParry();
         parrying = false;
@@ -75,16 +75,24 @@ public class Sword : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!parrying) return;
-        if (!other.CompareTag("HitBox")) return;
-        if (other.TryGetComponent(out Bullet bullet))
+        if (parrying)
         {
-            Destroy(bullet);
-            bullet.GetComponent<NetworkObject>().Despawn();
+            if (other.TryGetComponent(out Bullet bullet))
+            {
+                Destroy(bullet);
+                bullet.GetComponent<NetworkObject>().Despawn();
+            }
+            else if (other.TryGetComponent(out Sword sword))
+            {
+                playerObject.BecomeInvincibleServerRpc(0.5f);
+            }
         }
-        else if (other.TryGetComponent(out Sword sword))
+        else if (swinging)
         {
-            playerObject.BecomeInvincibleServerRpc(0.5f);
+            if (other.TryGetComponent(out Limb limb) && playerObject.team != limb.GetTeam())
+            {
+                limb.TakeDamage(30);
+            }
         }
     }
 }
