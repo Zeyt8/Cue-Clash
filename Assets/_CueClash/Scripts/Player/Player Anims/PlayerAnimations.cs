@@ -38,7 +38,7 @@ public class PlayerAnimations : NetworkBehaviour
     private readonly Vector3 gunOffset = new Vector3(0.3f, -0.4f, 0.2f);
     private readonly Vector3 swordOffset = new Vector3(0.1f, -0.2f, 0.6f);
     private readonly Vector3 parryOffset = new Vector3(0.4f, -0.05f, 0.6f);
-    private readonly Vector3 billiardOffset = new Vector3(0.2f, 1.45f, 0.2f);
+    private readonly Vector3 billiardOffset = new Vector3(0.2f, 1.43f, 0.2f);
     private readonly Vector3 billiardPivot = new Vector3(0.2f, 1.45f, 0.1f) + new Vector3(0, 0, 1.8f);
 
     private PlayerState playerState = PlayerState.Billiard;
@@ -91,7 +91,7 @@ public class PlayerAnimations : NetworkBehaviour
                 virtualCamera.transform.up * swordOffset.y +
                 virtualCamera.transform.right * swordOffset.x
             ) + posOffset + Vector3.ClampMagnitude(transform.parent.InverseTransformVector(virtualCamera.transform.up * swingDirection.y
-                                        + virtualCamera.transform.right * swingDirection.x) * (swingDuration - swingTimer) * 4.0f, 1.0f);
+                + virtualCamera.transform.right * swingDirection.x) * ((swingDuration - swingTimer) * 4.0f), 1.0f);
 
             handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
                 * Quaternion.Euler(Mathf.Clamp((swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f),

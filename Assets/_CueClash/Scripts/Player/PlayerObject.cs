@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Cinemachine;
-using Newtonsoft.Json.Bson;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -14,15 +13,16 @@ public enum PlayerState
 
 public enum Limbs
 {
-    Head,
-    LeftHand,
     Legs,
+    Torso,
+    LeftHand,
     RightHand,
-    Torso
+    Head
 }
 
 public class PlayerObject : NetworkBehaviour
 {
+    public int team = 0;
     [SerializeField] private InputHandler inputHandler;
     [Header("Children")]
     [SerializeField] private Transform cueTransform;
