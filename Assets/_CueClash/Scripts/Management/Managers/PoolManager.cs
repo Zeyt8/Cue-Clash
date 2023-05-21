@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 public class PoolManager : NetworkSingleton<PoolManager>
 {
     [SerializeField] private Ball[] balls;
-    [SerializeField] private int numberOfHits = 0;
+    [SerializeField] private int numberOfHits = 0, currentPlayerFault = -1, player1permanentSinked = 0, player2PermanentSinked = 0; // Fault: -1 default, 0 false, 1 true
     [SerializeField] private bool whiteBallStruck = false, p1sinked = false, p2sinked = false;
     public int currentPoolPlayer = 1;
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
@@ -41,6 +41,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
                         StartFightClientRpc();
                     }
                 }
+
+                currentPlayerFault = -1;
             }
         }
         if (IsServer && isFight)
@@ -199,6 +201,23 @@ public class PoolManager : NetworkSingleton<PoolManager>
             {
                 transform.hasChanged = false;
                 stillMoving = true;
+
+                // detect if the player has commited a fault
+                if (currentPlayerFault == -1)
+                {
+                    if (ball.ballNumber != 0)
+                    {
+                        if ((currentPoolPlayer == 1 && (ball.ballNumber > 0 && ball.ballNumber < 8)) ||
+                            (currentPoolPlayer == 2 && (ball.ballNumber > 8 && ball.ballNumber < 16)) ||
+                            (currentPoolPlayer == 1 && ball.ballNumber == 8 && player1SinkedBalls.Count == 7) ||
+                            (currentPoolPlayer == 2 && ball.ballNumber == 8 && player2SinkedBalls.Count == 7))
+                        {
+                            currentPlayerFault = 0;
+                        }
+                        else currentPlayerFault = 1;
+                    }
+                }
+
             }
         }
 
@@ -208,7 +227,6 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public void SwapPlayer()
     {
         currentPoolPlayer = currentPoolPlayer == 1 ? 2 : 1;
-        
     }
 
 }
