@@ -9,6 +9,4 @@ public class Ball0White : Bullet
         damage = 10;
         bulletSpeed = 10f;
     }
-
-
 }

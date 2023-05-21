@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BulletDatabase
   m_EditorClassIdentifier: 
   bullets:
-  - {fileID: 7033707013407201450, guid: 166f6851dbaa431439438ed2eb690b94, type: 3}
+  - {fileID: 615318187459326373, guid: 166f6851dbaa431439438ed2eb690b94, type: 3}
