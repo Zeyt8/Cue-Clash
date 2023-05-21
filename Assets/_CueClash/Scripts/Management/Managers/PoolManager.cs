@@ -239,5 +239,6 @@ public class PoolManager : NetworkSingleton<PoolManager>
     {
         PutBallsBackForPlayer(player);
         SwapPlayer();
+        LevelManager.Instance.players[3 - player].AddBullet(0);
     }
 }

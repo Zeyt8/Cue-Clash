@@ -38,7 +38,7 @@ public class PlayerAnimations : NetworkBehaviour
     private readonly Vector3 gunOffset = new Vector3(0.3f, -0.4f, 0.2f);
     private readonly Vector3 swordOffset = new Vector3(0.1f, -0.2f, 0.6f);
     private readonly Vector3 parryOffset = new Vector3(0.4f, -0.05f, 0.6f);
-    private readonly Vector3 billiardOffset = new Vector3(0.15f, 1.32f, 0.2f);
+    private readonly Vector3 billiardOffset = new Vector3(0.15f, 1.3f, 0.2f);
     private readonly Vector3 billiardPivot = new Vector3(0.15f, 1.32f, 0.1f) + new Vector3(0, 0, 1.8f);
 
     private PlayerState playerState = PlayerState.Billiard;
@@ -144,7 +144,7 @@ public class PlayerAnimations : NetworkBehaviour
             StopCoroutine(hitWithCueRoutine);
             hitWithCueRoutine = null;
         }
-        handController.desiredPosition = billiardShootStartPosition.Value - Mathf.Sqrt(value) * 0.02f * (billiardPivot - billiardShootStartPosition.Value).normalized;
+        handController.desiredPosition = billiardShootStartPosition.Value - Mathf.Sqrt(value) * 0.03f * (billiardPivot - billiardShootStartPosition.Value).normalized;
     }
 
     public void HitWithCue()
@@ -154,7 +154,7 @@ public class PlayerAnimations : NetworkBehaviour
 
     private IEnumerator HitWithCueRoutine()
     {
-        Vector3 target = billiardShootStartPosition.Value + (billiardPivot - billiardShootStartPosition.Value).normalized * 0.1f;
+        Vector3 target = billiardShootStartPosition.Value + (billiardPivot - billiardShootStartPosition.Value).normalized * 0.2f;
         float elapsedTime = 0;
         float waitTime = 0.3f;
         Vector3 current = handController.desiredPosition;

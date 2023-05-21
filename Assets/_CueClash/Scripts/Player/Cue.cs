@@ -7,7 +7,7 @@ public class Cue : MonoBehaviour
     public float cueForce = 0;
 
     [SerializeField] private Transform cueTop;
-    [SerializeField] private float maxPower = 1000;
+    [SerializeField] private float maxPower = 750;
 
     private Vector3 hitPoint;
 
@@ -23,7 +23,7 @@ public class Cue : MonoBehaviour
     {
         if (charging)
         {
-            cueForce += 300 * Time.deltaTime;
+            cueForce += 250 * Time.deltaTime;
             if (cueForce > maxPower)
             {
                 cueForce = maxPower;
@@ -32,7 +32,7 @@ public class Cue : MonoBehaviour
         if (isActive) 
         {
             lineRenderer.SetPosition(0, cueTop.position);
-            if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.7f))
+            if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 1.4f))
             {
                 lineRenderer.SetPosition(1, hit.point);
             }
