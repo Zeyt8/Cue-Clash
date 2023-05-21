@@ -74,6 +74,9 @@ public class PlayerObject : NetworkBehaviour
     private void Start()
     {
         LevelManager.Instance.players.Add(this);
+        AddBullet(1);
+        AddBullet(2);
+        AddBullet(6);
     }
 
     public override void OnNetworkSpawn()
@@ -206,7 +209,7 @@ public class PlayerObject : NetworkBehaviour
 
     public void AddBullet(int bullet)
     {
-        gun.bullets.Add(bullet);
+        gun.bullets[bullet]++;
     }
 
     private void HitWithCue()
@@ -221,11 +224,6 @@ public class PlayerObject : NetworkBehaviour
         if (!IsOwner || playerState != PlayerState.Gun) return;
         networkAnimator.SetTrigger("Fire");
         gun.Shoot();
-
-        if (gun.nrOfBullets.Value < 1)
-        {
-            SwitchWeapons();
-        }
     }
 
     private void SwitchWeapons()
@@ -248,9 +246,9 @@ public class PlayerObject : NetworkBehaviour
         }
     }
 
-    private void SwitchAmmo()
+    private void SwitchAmmo(bool up)
     {
-
+        gun.SwitchBullet(up);
     }
 
     private void AimCueChangedState(bool state)

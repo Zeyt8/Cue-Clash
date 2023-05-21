@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class PoolManager : NetworkSingleton<PoolManager>
 {
@@ -53,6 +52,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             }
         }
     }
+
     public void HitBall(Ball ball)
     {
         p1sinked = false;
@@ -60,6 +60,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
 
         IncrementNumberOfHits(ball);
     }
+
     public void IncrementNumberOfHits(Ball ball)
     {
         numberOfHits++;
@@ -68,10 +69,10 @@ public class PoolManager : NetworkSingleton<PoolManager>
         {
             whiteBallStruck = true;
         }
-        // TODO: Fault
         else
         {
-
+            SwapPlayer();
+            LevelManager.Instance.players[currentPoolPlayer].AddBullet(0);
         }
     }
 
@@ -130,10 +131,10 @@ public class PoolManager : NetworkSingleton<PoolManager>
             return;
         }
 
-        //TODO: fault
         if (ball.ballNumber == 0)
         {
-
+            SwapPlayer();
+            LevelManager.Instance.players[currentPoolPlayer].AddBullet(0);
         }
 
         //TODO: supreme showdown
@@ -208,7 +209,5 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public void SwapPlayer()
     {
         currentPoolPlayer = currentPoolPlayer == 1 ? 2 : 1;
-        
     }
-
 }

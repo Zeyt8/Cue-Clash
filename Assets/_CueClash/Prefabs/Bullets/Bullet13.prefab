@@ -130,8 +130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballNumber: 13
-  cueBallMeshFilter: {fileID: 0}
-  cueBallRenderer: {fileID: 0}
+  cueBallMeshFilter: {fileID: 583145275284419038}
+  cueBallRenderer: {fileID: 6999355380359768635}
   cueBallMesh: {fileID: 4300000, guid: ab3b6f09d53fb2944a87698f0b0ec580, type: 2}
   _8BallMesh: {fileID: 4300000, guid: 2f40e5bfa8d97bd498666f710e6a5ede, type: 2}
   fullBallMesh: {fileID: 4300000, guid: bf1bdf1bf5ad69d4fa675f5e126e46b7, type: 2}
