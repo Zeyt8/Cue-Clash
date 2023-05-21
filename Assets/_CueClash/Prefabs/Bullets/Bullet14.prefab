@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 1315421115605165064}
   - component: {fileID: 3554521347696144052}
   - component: {fileID: 4646996212729595904}
-  - component: {fileID: 615318187459326373}
+  - component: {fileID: -3148850694096544083}
   - component: {fileID: 5107983949861274978}
   - component: {fileID: -636314956665993645}
   - component: {fileID: 3976869091922886067}
   m_Layer: 8
-  m_Name: Bullet
+  m_Name: Bullet14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &615318187459326373
+--- !u!114 &-3148850694096544083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,11 +112,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2853251532623805836}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8369236fcda765418800570c071167b, type: 3}
+  m_Script: {fileID: 11500000, guid: f473aece6ab486a469fcc4990ff178e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 30
-  ballNumber: 0
   bulletSpeed: 20
 --- !u!114 &5107983949861274978
 MonoBehaviour:
@@ -130,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65c050494c48fb4094da40872375b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballNumber: 0
+  ballNumber: 14
   cueBallMeshFilter: {fileID: 0}
   cueBallRenderer: {fileID: 0}
   cueBallMesh: {fileID: 4300000, guid: ab3b6f09d53fb2944a87698f0b0ec580, type: 2}
