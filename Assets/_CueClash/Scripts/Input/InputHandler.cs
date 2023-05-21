@@ -17,7 +17,7 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     public UnityEvent OnParryBegin = new UnityEvent();
     public UnityEvent OnParryEnd = new UnityEvent();
     public UnityEvent OnSwitchedWeapons = new UnityEvent();
-    public UnityEvent OnSwitchedAmmo = new UnityEvent();
+    public UnityEvent<bool> OnSwitchedAmmo = new UnityEvent<bool>();
     public Vector2 MousePosition { get; private set; }
     public UnityEvent<bool> AimCueStateChanged = new UnityEvent<bool>();
 
@@ -137,7 +137,8 @@ public class InputHandler : ScriptableObject, ControlSchemes.IPlayerActions
     {
         if (context.performed)
         {
-            OnSwitchedAmmo.Invoke();
+            bool up = context.ReadValue<float>() > 0;
+            OnSwitchedAmmo.Invoke(up);
         }
     }
 }

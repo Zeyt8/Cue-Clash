@@ -67,8 +67,6 @@ public class PlayerObject : NetworkBehaviour
         cue = cueTransform.GetComponent<Cue>();
         gun = cueTransform.GetComponent<Gun>();
         sword = cueTransform.GetComponent<Sword>();
-        playerAnimations.PlayerState = PlayerState.Billiard;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Start()
@@ -87,6 +85,7 @@ public class PlayerObject : NetworkBehaviour
         headLookAt.followTransform = camera.transform;
         playerAnimations.virtualCamera = camera;
         cue.Activate();
+        SwitchToBilliard();
     }
 
     private void OnEnable()
@@ -134,10 +133,9 @@ public class PlayerObject : NetworkBehaviour
             else if (aimCue)
             {
                 Vector2 pos = new Vector2(
-                    inputHandler.MousePosition.x.Remap(0, Screen.width, -0.9f, 0.9f),
-                    inputHandler.MousePosition.y.Remap(0, Screen.height, -0.5f, 1)
+                    inputHandler.MousePosition.x.Remap(0, Screen.width, -0.5f, 0.5f),
+                    inputHandler.MousePosition.y.Remap(0, Screen.height, 0.2f, 1)
                 );
-                pos.y = Mathf.Clamp(pos.y, 0, 1);
                 playerAnimations.AlignBilliardAim(pos);
             }
         }
@@ -187,7 +185,7 @@ public class PlayerObject : NetworkBehaviour
             gun.Activate();
             cue.Deactivate();
             playerAnimations.PlayerState = PlayerState.Gun;
-            playerMovement.maxSpeed = 6;
+            playerMovement.maxSpeed = 5;
         }
     }
 
@@ -199,14 +197,14 @@ public class PlayerObject : NetworkBehaviour
         sword.Deactivate();
         cue.Activate();
         playerAnimations.PlayerState = PlayerState.Billiard;
-        playerAnimations.AlignBilliardAim(new Vector2(0, 0));
+        playerAnimations.AlignBilliardAim(new Vector2(0, 0.2f));
         Cursor.lockState = CursorLockMode.Locked;
-        playerMovement.maxSpeed = 4;
+        playerMovement.maxSpeed = 3;
     }
 
     public void AddBullet(int bullet)
     {
-        gun.bullets.Add(bullet);
+        gun.bullets[bullet]++;
     }
 
     private void HitWithCue()
@@ -221,11 +219,6 @@ public class PlayerObject : NetworkBehaviour
         if (!IsOwner || playerState != PlayerState.Gun) return;
         networkAnimator.SetTrigger("Fire");
         gun.Shoot();
-
-        if (gun.nrOfBullets.Value < 1)
-        {
-            SwitchWeapons();
-        }
     }
 
     private void SwitchWeapons()
@@ -248,9 +241,9 @@ public class PlayerObject : NetworkBehaviour
         }
     }
 
-    private void SwitchAmmo()
+    private void SwitchAmmo(bool up)
     {
-
+        gun.SwitchBullet(up);
     }
 
     private void AimCueChangedState(bool state)

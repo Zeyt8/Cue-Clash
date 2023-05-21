@@ -92,12 +92,12 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Switch Ammo"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""d0d86a67-92d7-48d9-a544-50012cf3e6e0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Jump"",
@@ -218,17 +218,6 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""195faa74-8660-4f60-8431-82f743a709dc"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""K&M"",
-                    ""action"": ""Switch Ammo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f716af0c-63b5-4b0a-88ed-c3f73800a163"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
@@ -292,6 +281,39 @@ public partial class @ControlSchemes: IInputActionCollection2, IDisposable
                     ""action"": ""Aim Cue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""b2766401-0e69-43a8-b75b-071ac8ee2732"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Ammo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""65cb82ea-b869-44a6-a1a8-ceaf85f8332a"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K&M"",
+                    ""action"": ""Switch Ammo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""86513d98-b3f6-4698-9783-d8b2d5fc9fd1"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""K&M"",
+                    ""action"": ""Switch Ammo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
