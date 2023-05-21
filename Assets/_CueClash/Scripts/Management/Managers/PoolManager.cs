@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 public class PoolManager : NetworkSingleton<PoolManager>
 {
     [SerializeField] private Ball[] balls;
-    [SerializeField] private int numberOfHits = 0, currentPlayerFault = -1, player1permanentSinked = 0, player2PermanentSinked = 0; // Fault: -1 default, 0 false, 1 true
+    [SerializeField] private int numberOfHits = 0, currentPlayerFault = -1, player1PermanentSinked = 0, player2PermanentSinked = 0; // Fault: -1 default, 0 false, 1 true
     [SerializeField] private bool whiteBallStruck = false, p1sinked = false, p2sinked = false;
     public int currentPoolPlayer = 1;
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
@@ -25,6 +25,11 @@ public class PoolManager : NetworkSingleton<PoolManager>
             if (!BallsMoving())
             {
                 whiteBallStruck = false;
+
+                if (currentPlayerFault == 1)
+                {
+                    Fault(currentPoolPlayer);
+                }
 
                 // Keep going if the current player has sunk a ball, otherwise swap
                 if ((currentPoolPlayer == 1 && !p1sinked) || (currentPoolPlayer == 2 && !p2sinked))
@@ -73,7 +78,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         // TODO: Fault
         else
         {
-
+            currentPlayerFault = 1;
         }
     }
 
@@ -135,7 +140,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         //TODO: fault
         if (ball.ballNumber == 0)
         {
-
+            currentPlayerFault = 1;
         }
 
         //TODO: supreme showdown
@@ -170,7 +175,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         }
     }
 
-    // Puts the balls back to their original positions, with y += 1 in case a new ball is at the same position
+    // Puts the balls back to their original positions, with y += 1 in case a new ball is at that position. Also does += sank_balls for other player.
     public void PutBallsBackForPlayer(int player)
     {
         if (player == 1)
@@ -179,6 +184,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             {
                 ball.transform.position = ballPositions[ball];
             }
+            player2PermanentSinked += player2SinkedBalls.Count;
         }
         else
         {
@@ -188,6 +194,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 pos.y += 1;
                 ball.transform.position = pos;
             }
+            player1PermanentSinked += player1SinkedBalls.Count;
         }
     }
 
@@ -227,6 +234,12 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public void SwapPlayer()
     {
         currentPoolPlayer = currentPoolPlayer == 1 ? 2 : 1;
+    }
+
+    public void Fault(int player)
+    {
+        PutBallsBackForPlayer(player);
+        SwapPlayer();
     }
 
 }
