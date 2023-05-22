@@ -228,6 +228,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             }
         }
 
+        print("Moving: " + stillMoving);
         return stillMoving;
     }
     // TODO: Enable hitting balls for the current player
