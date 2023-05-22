@@ -204,9 +204,9 @@ public class PoolManager : NetworkSingleton<PoolManager>
 
         foreach (Ball ball in balls)
         {
-            if (ball.transform.hasChanged)
+
+            if (ball.GetComponent<Rigidbody>().velocity != Vector3.zero)
             {
-                ball.transform.hasChanged = false;
                 stillMoving = true;
 
                 // detect if the player has commited a fault
