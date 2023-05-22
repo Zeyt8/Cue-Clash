@@ -4,6 +4,7 @@ using UnityEngine;
 public class Ball : NetworkBehaviour
 {
     public int ballNumber;
+    public bool sinked = false;
     private bool showAim;
 
     protected Rigidbody body;
