@@ -5,8 +5,9 @@ using UnityEngine;
 public class PoolManager : NetworkSingleton<PoolManager>
 {
     [SerializeField] private Ball[] balls;
-    [SerializeField] private int numberOfHits = 0, currentPlayerFault = -1, player1PermanentSinked = 0, player2PermanentSinked = 0; // Fault: -1 default, 0 false, 1 true
-    [SerializeField] private bool whiteBallStruck = false, p1sinked = false, p2sinked = false;
+    private int numberOfHits = 0, currentPlayerFault = -1, player1PermanentSinked = 0, player2PermanentSinked = 0; // Fault: -1 default, 0 false, 1 true
+    private bool whiteBallStruck = false, p1sinked = false, p2sinked = false;
+    [SerializeField] private InfoText infoText;
     public int currentPoolPlayer = 1;
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
     private readonly List<Ball> player1SinkedBalls = new();
@@ -19,43 +20,39 @@ public class PoolManager : NetworkSingleton<PoolManager>
     // Decide whose turn it is based on if the current player has sunk a ball. TODO: disable hitting balls until none are moving
     private void Update()
     {
-        if (whiteBallStruck)
+        if (whiteBallStruck && !BallsMoving())
         {
-            if (!BallsMoving())
-            {
-                whiteBallStruck = false;
+            whiteBallStruck = false;
 
-                if (currentPlayerFault == 1)
-                {
-                    Fault(currentPoolPlayer);
-                }
-
-                // Keep going if the current player has sunk a ball, otherwise swap
-                if ((currentPoolPlayer == 1 && !p1sinked) || (currentPoolPlayer == 2 && !p2sinked))
-                {
-                    SwapPlayer();
-                }
-
-                //swap to fighting
-                if (numberOfHits > 2)
-                {
-                    if (IsServer)
-                    {
-                        isFight = true;
-                        StartFightClientRpc();
-                    }
-                }
-
-                currentPlayerFault = -1;
+            if (currentPlayerFault == 1)
+            { 
+                Fault(currentPoolPlayer);
             }
+
+            // Keep going if the current player has sunk a ball, otherwise swap
+            if ((currentPoolPlayer == 1 && !p1sinked) || (currentPoolPlayer == 2 && !p2sinked))
+            {
+                SwapPlayer();
+            }
+
+            currentPlayerFault = -1;
         }
+
+        if (IsServer && !isFight && !BallsMoving() && numberOfHits > 2)
+        {
+            //swap to fighting
+            isFight = true;
+            battleTimer = maxDurationOfBattle;
+            StartFightClientRpc();
+        }
+
         if (IsServer && isFight)
         {
-            battleTimer += Time.deltaTime;
-            if (battleTimer > maxDurationOfBattle)
+            battleTimer -= Time.deltaTime;
+            infoText.timeLeft.Value = (int)battleTimer;
+            if (battleTimer < 0)
             {
                 StopFightClientRpc();
-                battleTimer = 0;
             }
         }
     }
@@ -71,6 +68,10 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public void IncrementNumberOfHits(Ball ball)
     {
         numberOfHits++;
+        if (IsServer)
+        {
+            infoText.shotsLeft.Value = 3 - numberOfHits;
+        }
 
         if (ball.ballNumber == 0)
         {
@@ -205,7 +206,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         {
             if (ball.transform.hasChanged)
             {
-                transform.hasChanged = false;
+                ball.transform.hasChanged = false;
                 stillMoving = true;
 
                 // detect if the player has commited a fault

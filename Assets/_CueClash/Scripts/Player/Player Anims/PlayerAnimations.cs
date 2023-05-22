@@ -2,7 +2,6 @@ using Cinemachine;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerAnimations : NetworkBehaviour
 {

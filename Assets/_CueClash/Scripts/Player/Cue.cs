@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Cue : MonoBehaviour
 {
@@ -32,7 +33,8 @@ public class Cue : MonoBehaviour
         if (isActive) 
         {
             lineRenderer.SetPosition(0, cueTop.position);
-            if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 1.4f))
+            float distance = Mathf.Sqrt(cueForce) * 0.03f;
+            if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, distance + 0.3f))
             {
                 lineRenderer.SetPosition(1, hit.point);
             }
@@ -50,17 +52,24 @@ public class Cue : MonoBehaviour
 
     private IEnumerator ShootCoroutine()
     {
-        yield return new WaitForSeconds(0.25f);
-        if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.2f))
+        float time = 0.3f;
+        while (time > 0)
         {
-            if (hit.collider.gameObject.TryGetComponent(out Ball ball))
+            if (Physics.Raycast(cueTop.transform.position, cueTop.transform.forward, out RaycastHit hit, 0.1f))
             {
-                hitPoint = hit.point;
-                if (ball)
+                if (hit.collider.gameObject.TryGetComponent(out Ball ball))
                 {
-                    ball.AddForceServerRpc(cueTop.transform.forward * cueForce, hitPoint);
+                    hitPoint = hit.point;
+                    if (ball)
+                    {
+                        ball.AddForceServerRpc(cueTop.transform.forward * cueForce, hitPoint);
+                        cueForce = 0;
+                        yield break;
+                    }
                 }
             }
+            time -= Time.deltaTime;
+            yield return null;
         }
         cueForce = 0;
     }
