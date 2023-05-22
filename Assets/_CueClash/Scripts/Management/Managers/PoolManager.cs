@@ -12,7 +12,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
     private readonly List<Ball> player1SinkedBalls = new();
     private readonly List<Ball> player2SinkedBalls = new();
-    int recentlyStruck = 0;
+    private float recentlyStruck = 0;
 
     private readonly float maxDurationOfBattle = 120;
     private float battleTimer = 0;
@@ -30,9 +30,9 @@ public class PoolManager : NetworkSingleton<PoolManager>
     {
         if (recentlyStruck > 0)
         {
-            recentlyStruck--;
+            recentlyStruck -= Time.deltaTime;
         }
-        if (whiteBallStruck && !BallsMoving() && recentlyStruck == 0)
+        if (whiteBallStruck && !BallsMoving() && recentlyStruck <= 0)
         {
             print("End of current hit");
             whiteBallStruck = false;
@@ -52,7 +52,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             currentPlayerFault = -1;
         }
 
-        if (IsServer && !isFight && !BallsMoving() && numberOfHits > 20)
+        if (IsServer && !isFight && !BallsMoving() && numberOfHits > 2)
         {
             //swap to fighting
             isFight = true;
@@ -90,7 +90,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         if (ball.ballNumber == 0)
         {
             whiteBallStruck = true;
-            recentlyStruck = 60;
+            recentlyStruck = 1;
         }
         else
         {
@@ -142,9 +142,11 @@ public class PoolManager : NetworkSingleton<PoolManager>
     // Check if the current player has thrown balls off the table and fix it. Also, FAULT! This also fixes white ball in pocket issues.
     public void PlaceFallenBalls()
     {
+        Vector3 fallen;
         foreach (Ball ball in balls)
         {
-            if (ball.transform.position.y < 1 && ball.sinked == false)
+            fallen = ball.transform.position;
+            if ((fallen.y < 1 || (fallen.z < -2.5 || fallen.z > 2.5) || (fallen.x < -1.5 || fallen.x > 1.5)) && ball.sinked == false)
             {
                 currentPlayerFault = 1;
                 Vector3 pos = ballPositions[ball];
@@ -270,7 +272,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         currentPoolPlayer = currentPoolPlayer == 1 ? 2 : 1;
     }
 
-    // Current player has commited a fault
+    // Current player has commited a fault. Do not call this directly, set fault to 1.
     public void Fault(int player)
     {
         PutBallsBackForPlayer(player);
