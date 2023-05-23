@@ -169,12 +169,14 @@ public class PoolManager : NetworkSingleton<PoolManager>
         if (ball.ballNumber > 0 && ball.ballNumber < 8)
         {
             ball.sinked = true;
+            p1Sinked = true;
             player1SinkedBalls.Add(ball);
             return;
         }
         if (ball.ballNumber > 8 && ball.ballNumber < 16)
         {
             ball.sinked = true;
+            p2Sinked = true;
             player2SinkedBalls.Add(ball);
             return;
         }
@@ -189,7 +191,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         {
             if (currentPoolPlayer == 0)
             {
-                if (CountSinkedBalls(1) == 7)
+                if (CountSinkedBalls(0) == 7)
                 {
                     //TODO: final battle
 
@@ -202,7 +204,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             }
             else
             {
-                if (CountSinkedBalls(2) == 7)
+                if (CountSinkedBalls(1) == 7)
                 {
                     //TODO: final battle
 
