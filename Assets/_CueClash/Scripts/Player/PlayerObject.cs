@@ -86,6 +86,7 @@ public class PlayerObject : NetworkBehaviour
         playerAnimations.virtualCamera = camera;
         cue.Activate();
         SwitchToBilliard();
+        print(team);
     }
 
     private void OnEnable()
@@ -126,7 +127,7 @@ public class PlayerObject : NetworkBehaviour
         if (playerState == PlayerState.Billiard)
         {
             cue.charging = inputHandler.Cue;
-            if (inputHandler.Cue)
+            if (inputHandler.Cue && PoolManager.Instance.currentPoolPlayer == team)
             {
                 playerAnimations.ChargeCue(cue.cueForce);
             }
@@ -209,7 +210,7 @@ public class PlayerObject : NetworkBehaviour
 
     private void HitWithCue()
     {
-        if (!IsOwner || playerState != PlayerState.Billiard) return;
+        if (!IsOwner || playerState != PlayerState.Billiard || PoolManager.Instance.currentPoolPlayer != team) return;
         cue.Shoot();
         playerAnimations.HitWithCue();
     }
