@@ -7,7 +7,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
 {
     [SerializeField] private Ball[] balls;
     private int numberOfHits = 0, currentPlayerFault = -1; // Fault: -1 default, 0 false, 1 true
-    private bool whiteBallStruck = false, p1Sinked = false, p2Sinked = false;
+    private bool whiteBallStruck = false, otherBallStruck = false, p1Sinked = false, p2Sinked = false;
     [SerializeField] private InfoText infoText;
     [SerializeField] private BallsMovingUI ballsMovingUI;
     [SerializeField] private TextMeshProUGUI endScreen;
@@ -17,7 +17,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
     private readonly List<Ball> player1SinkedBalls = new();
     private readonly List<Ball> player2SinkedBalls = new();
-    private float recentlyStruck = 0;
+    private float recentlyStruck = 1;
 
     private readonly float maxDurationOfBattle = 40;
     private float battleTimer = 0;
@@ -65,8 +65,9 @@ public class PoolManager : NetworkSingleton<PoolManager>
             }
 
             // if player didn't hit the white ball with the stick (and therefore fault is not 0), do this instead of the above
-            if(!ballsMoving && currentPlayerFault != 0 && recentlyStruck <= 0)
+            if(!ballsMoving && otherBallStruck && recentlyStruck <= 0)
             {
+                otherBallStruck = false;
                 PlaceFallenBalls();
                 Fault(currentPoolPlayer);
                 currentPlayerFault = -1;
@@ -111,6 +112,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         }
         else
         {
+            otherBallStruck = true;
             currentPlayerFault = 1;
         }
     }
