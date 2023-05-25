@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using Unity.Netcode;
@@ -7,6 +6,7 @@ using UnityEngine;
 public class Gun : NetworkBehaviour
 {
     public int[] bullets = new int[16];
+    public float sway;
     [SerializeField] private BulletDatabase bulletDatabase;
     [SerializeField] Transform bulletSpawnPoint;
     [SerializeField] float bulletSpeed = 20;
@@ -20,7 +20,7 @@ public class Gun : NetworkBehaviour
     public void Shoot()
     {
         Camera camera = Camera.main;
-        Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray = camera.ViewportPointToRay(new Vector3(0.5f + Random.Range(-sway, sway), 0.5f, 0));
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, maxDistance) && bullets[currentSelectedBullet] > 0)
         {

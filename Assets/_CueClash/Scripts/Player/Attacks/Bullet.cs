@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : NetworkBehaviour
 {
-    public int damage = 30;
+    public int damage = 20;
     public float bulletSpeed = 20f;
     public Player player;
 

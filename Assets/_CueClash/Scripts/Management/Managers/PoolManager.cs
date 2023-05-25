@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PoolManager : NetworkSingleton<PoolManager>
@@ -8,15 +10,20 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private int numberOfHits = 0, currentPlayerFault = -1; // Fault: -1 default, 0 false, 1 true
     private bool whiteBallStruck = false, p1Sinked = false, p2Sinked = false;
     [SerializeField] private InfoText infoText;
+    [SerializeField] private BallsMovingUI ballsMovingUI;
+    [SerializeField] private TextMeshProUGUI endScreen;
     public int currentPoolPlayer = 0;
+    public float[] damageTaken = new float[2];
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
     private readonly List<Ball> player1SinkedBalls = new();
     private readonly List<Ball> player2SinkedBalls = new();
     private float recentlyStruck = 0;
 
-    private readonly float maxDurationOfBattle = 120;
+    private readonly float maxDurationOfBattle = 60;
     private float battleTimer = 0;
     bool isFight = false;
+    private bool finalBattle = false;
+    public bool ballsMoving;
 
     public override void Awake()
     {
@@ -30,56 +37,56 @@ public class PoolManager : NetworkSingleton<PoolManager>
         infoText.shotsLeft.Value = 3;
     }
 
-    // Decide whose turn it is based on if the current player has sunk a ball. TODO: disable hitting balls until none are moving
     private void Update()
     {
         if (recentlyStruck > 0)
         {
             recentlyStruck -= Time.deltaTime;
         }
-        if (whiteBallStruck && !BallsMoving() && recentlyStruck <= 0)
+        ballsMoving = BallsMoving();
+        if (IsServer)
         {
-            print("End of current hit");
-            whiteBallStruck = false;
-            PlaceFallenBalls();
-
-            // Keep going if the current player has sunk a ball and didn't commit a fault, otherwise swap
-            if (currentPlayerFault == 1)
+            ballsMovingUI.isActive.Value = ballsMoving;
+            if (whiteBallStruck && !ballsMoving && recentlyStruck <= 0)
             {
-                SwapPlayer();
-                Fault(currentPoolPlayer);
-            }
-            else if (!(currentPoolPlayer == 0 && p1Sinked) && !(currentPoolPlayer == 1 && p2Sinked))
-            {
-                SwapPlayer();
-            }
+                print("End of current hit");
+                whiteBallStruck = false;
+                PlaceFallenBalls();
 
-            currentPlayerFault = -1;
-
-            if (IsServer)
-            {
+                // Keep going if the current player has sunk a ball and didn't commit a fault, otherwise swap
+                if (currentPlayerFault == 1)
+                {
+                    SwapPlayerClientRpc();
+                    Fault(currentPoolPlayer);
+                }
+                else if (!(currentPoolPlayer == 0 && p1Sinked) && !(currentPoolPlayer == 1 && p2Sinked))
+                {
+                    SwapPlayerClientRpc();
+                }
+                currentPlayerFault = -1;
                 infoText.shotsLeft.Value = 3 - numberOfHits;
             }
-        }
 
-        if (IsServer && !isFight && !BallsMoving() && numberOfHits > 2)
-        {
-            //swap to fighting
-            isFight = true;
-            battleTimer = maxDurationOfBattle;
-            StartFightClientRpc();
-        }
-
-        if (IsServer && isFight)
-        {
-            battleTimer -= Time.deltaTime;
-            infoText.timeLeft.Value = (int)battleTimer;
-            if (battleTimer < 0)
+            if (!isFight && !ballsMoving && numberOfHits > 2)
             {
-                StopFightClientRpc();
+                //swap to fighting
+                isFight = true;
+                battleTimer = maxDurationOfBattle;
+                StartFightClientRpc();
+            }
+
+            if (isFight)
+            {
+                battleTimer -= Time.deltaTime;
+                infoText.timeLeft.Value = (int)battleTimer;
+                if (battleTimer < 0)
+                {
+                    StopFightClientRpc();
+                }
             }
         }
 
+        // TODO: Remove
         if (Input.GetKeyDown(KeyCode.O) && IsServer)
         {
             StartFightClientRpc();
@@ -119,25 +126,52 @@ public class PoolManager : NetworkSingleton<PoolManager>
         }
         foreach (Ball ball in player1SinkedBalls)
         {
-            LevelManager.Instance.players[0].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+            LevelManager.Instance.players[0].AddBulletClientRpc(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
         foreach (Ball ball in player2SinkedBalls)
         {
             // TODO: change this
             if (LevelManager.Instance.players.Count > 1)
-                LevelManager.Instance.players[1].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+                LevelManager.Instance.players[1].AddBulletClientRpc(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
     }
 
     [ClientRpc]
     private void StopFightClientRpc()
     {
+        isFight = false;
         for (int i = 0; i < LevelManager.Instance.players.Count; i++)
         {
             LevelManager.Instance.players[i].SwitchToBilliard();
         }
 
         numberOfHits = 0;
+
+        if (damageTaken[0] > damageTaken[1])
+        {
+            currentPoolPlayer = 1;
+        }
+        else if (damageTaken[0] < damageTaken[1])
+        {
+            currentPoolPlayer = 0;
+        }
+        else
+        {
+            currentPoolPlayer = Random.Range(0, 2);
+        }
+
+        damageTaken[0] = 0;
+        damageTaken[1] = 0;
+
+        infoText.shotsLeft.Value = 3;
+
+        if (finalBattle)
+        {
+            endScreen.gameObject.SetActive(true);
+            endScreen.text = "Player " + (currentPoolPlayer + 1) + " wins!";
+            infoText.gameObject.SetActive(false);
+            ballsMovingUI.gameObject.SetActive(false);
+        }
     }
 
     private void SaveBallPositions()
@@ -198,8 +232,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             {
                 if (CountSinkedBalls(0) == 7)
                 {
-                    //TODO: final battle
-
+                    finalBattle = true;
                 }
                 else
                 {
@@ -211,8 +244,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             {
                 if (CountSinkedBalls(1) == 7)
                 {
-                    //TODO: final battle
-
+                    finalBattle = true;
                 }
                 else
                 {
@@ -279,8 +311,9 @@ public class PoolManager : NetworkSingleton<PoolManager>
 
         return stillMoving;
     }
-    
-    private void SwapPlayer()
+
+    [ClientRpc]
+    private void SwapPlayerClientRpc()
     {
         currentPoolPlayer = currentPoolPlayer == 0 ? 1 : 0;
     }
@@ -289,8 +322,15 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private void Fault(int player)
     {
         PutBallsBackForPlayer(player);
-        SwapPlayer();
-        LevelManager.Instance.players[currentPoolPlayer].AddBullet(0);
+        SwapPlayerClientRpc();
+        ClientRpcParams clientRpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new ulong[] { (ulong)LevelManager.Instance.players[currentPoolPlayer].team.Value }
+            }
+        };
+        LevelManager.Instance.players[currentPoolPlayer].AddBulletClientRpc(0, clientRpcParams);
     }
 
     // Returns the number of balls that have been sinked by the player
