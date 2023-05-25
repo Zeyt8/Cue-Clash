@@ -99,7 +99,7 @@ public class PlayerAnimations : NetworkBehaviour
 
                 lastDesiredRotation = handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
                     * Quaternion.Euler(Mathf.Clamp(coef * 150.0f, -150.0f, 150.0f),
-                                        Mathf.Clamp(-swingDirection.x * coef * 500.0f, -100.0f, 100.0f), 0);
+                                        Mathf.Clamp(-swingDirection.x * coef * 0.0f, -100.0f, 100.0f), 0);
             }
             else
             {
