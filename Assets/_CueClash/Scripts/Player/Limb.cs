@@ -7,7 +7,7 @@ public class Limb : MonoBehaviour
 
     public int GetTeam()
     {
-        return playerObject.team;
+        return playerObject.team.Value;
     }
 
     public void TakeDamage(int damage)
