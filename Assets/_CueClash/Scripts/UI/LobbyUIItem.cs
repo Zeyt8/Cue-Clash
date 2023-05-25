@@ -6,11 +6,16 @@ using UnityEngine.UI;
 public class LobbyUIItem : MonoBehaviour
 {
     [HideInInspector] public LobbyUIHandler lobbyUIHandler;
-    [SerializeField] private Image image;
+    private Image image;
     [SerializeField] private TextMeshProUGUI sessionNameText;
     [SerializeField] private TextMeshProUGUI sessionPlayersText;
 
     private Lobby lobby;
+
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+    }
 
     public void SetInformation(Lobby lobby)
     {
@@ -23,11 +28,11 @@ public class LobbyUIItem : MonoBehaviour
     {
         lobbyUIHandler.DeselectAll();
         MainMenuManager.Instance.SetCurrentSelectedLobby(lobby);
-        image.color = new Color(image.color.r, image.color.g, image.color.b, 255);
+        image.color = new Color(image.color.r, image.color.g, image.color.b, 1);
     }
 
     public void DeselectSession()
     {
-        image.color = new Color(image.color.r, image.color.g, image.color.b, 150);
+        image.color = new Color(image.color.r, image.color.g, image.color.b, 0.6f);
     }
 }

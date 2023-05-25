@@ -66,7 +66,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 infoText.shotsLeft.Value = 3 - numberOfHits;
             }
 
-            if (!isFight && !ballsMoving && numberOfHits > 2)
+            if (!isFight && !ballsMoving && recentlyStruck <= 0 && numberOfHits > 2)
             {
                 //swap to fighting
                 isFight = true;
