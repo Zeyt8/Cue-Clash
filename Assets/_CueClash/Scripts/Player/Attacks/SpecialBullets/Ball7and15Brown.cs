@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class Ball7and15Brown : Bullet
 {
-    //TODO: Opponent's screen goes brown for a bit.
+    private void Awake()
+    {
+        damage = damage * 2;
+        bulletSpeed *= 1.1f;
+    }
 }

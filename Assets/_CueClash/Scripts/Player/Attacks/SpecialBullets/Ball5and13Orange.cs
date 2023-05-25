@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class Ball5and13Orange : Bullet
 {
-    //TODO: Sets the opponent on fire. Deals damage for x seconds or stop drop and roll (crouch x5)
+    private void Awake()
+    {
+        damage = damage * 2 + damage / 2;
+        bulletSpeed *= 0.9f;
+    }
 }

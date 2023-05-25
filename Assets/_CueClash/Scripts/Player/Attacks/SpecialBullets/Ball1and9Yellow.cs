@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Ball1and9Yellow : Bullet
 {
-    // TODO: slows enemy, maybe
-
+    private void Awake()
+    {
+        damage *= 2;
+    }
 }
