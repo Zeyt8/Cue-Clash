@@ -23,7 +23,7 @@ public enum Limbs
 
 public class PlayerObject : NetworkBehaviour
 {
-    public int team = 0;
+    public NetworkVariable<int> team = new NetworkVariable<int>();
     [SerializeField] private InputHandler inputHandler;
     [Header("Children")]
     [SerializeField] private Transform cueTransform;
@@ -126,7 +126,7 @@ public class PlayerObject : NetworkBehaviour
         if (playerState == PlayerState.Billiard)
         {
             cue.charging = inputHandler.Cue;
-            if (inputHandler.Cue && PoolManager.Instance.currentPoolPlayer == team)
+            if (inputHandler.Cue && PoolManager.Instance.currentPoolPlayer == team.Value)
             {
                 playerAnimations.ChargeCue(cue.cueForce);
             }
@@ -168,7 +168,7 @@ public class PlayerObject : NetworkBehaviour
         AudioManager.PlaySound(Sounds.Hit);
         playerMovement.speedDebuff = (100.0f / limbHealth[Limbs.Legs]).Remap(0, 1, 0.5f, 1);
         gun.sway = (200.0f / (limbHealth[Limbs.LeftHand] + limbHealth[Limbs.RightHand])).Remap(0, 1, 0, 0.1f);
-        PoolManager.Instance.damageTaken[team] += damage;
+        PoolManager.Instance.damageTaken[team.Value] += damage;
         if (limbHealth[limb] <= 0)
         {
             //Die();
@@ -207,14 +207,15 @@ public class PlayerObject : NetworkBehaviour
         playerMovement.Swap(MovementState.Walking);
     }
 
-    public void AddBullet(int bullet)
+    [ClientRpc]
+    public void AddBulletClientRpc(int bullet, ClientRpcParams clientRpcParams = default)
     {
         gun.bullets[bullet]++;
     }
 
     private void HitWithCue()
     {
-        if (!IsOwner || playerState != PlayerState.Billiard || PoolManager.Instance.currentPoolPlayer != team) return;
+        if (!IsOwner || playerState != PlayerState.Billiard || PoolManager.Instance.currentPoolPlayer != team.Value) return;
         cue.Shoot();
         playerAnimations.HitWithCue();
     }
@@ -249,6 +250,7 @@ public class PlayerObject : NetworkBehaviour
 
     private void SwitchAmmo(bool up)
     {
+        if (!IsOwner || playerState != PlayerState.Gun) return;
         gun.SwitchBullet(up);
         AudioManager.PlaySound(Sounds.Reload);
     }

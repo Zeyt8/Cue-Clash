@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PoolManager : NetworkSingleton<PoolManager>
@@ -18,6 +19,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private readonly float maxDurationOfBattle = 120;
     private float battleTimer = 0;
     bool isFight = false;
+    private bool finalBattle = false;
 
     public override void Awake()
     {
@@ -38,7 +40,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         {
             recentlyStruck -= Time.deltaTime;
         }
-        if (whiteBallStruck && !BallsMoving() && recentlyStruck <= 0)
+        if (IsServer && whiteBallStruck && !BallsMoving() && recentlyStruck <= 0)
         {
             print("End of current hit");
             whiteBallStruck = false;
@@ -47,20 +49,15 @@ public class PoolManager : NetworkSingleton<PoolManager>
             // Keep going if the current player has sunk a ball and didn't commit a fault, otherwise swap
             if (currentPlayerFault == 1)
             {
-                SwapPlayer();
+                SwapPlayerClientRpc();
                 Fault(currentPoolPlayer);
             }
             else if (!(currentPoolPlayer == 0 && p1Sinked) && !(currentPoolPlayer == 1 && p2Sinked))
             {
-                SwapPlayer();
+                SwapPlayerClientRpc();
             }
-
             currentPlayerFault = -1;
-
-            if (IsServer)
-            {
-                infoText.shotsLeft.Value = 3 - numberOfHits;
-            }
+            infoText.shotsLeft.Value = 3 - numberOfHits;
         }
 
         if (IsServer && !isFight && !BallsMoving() && numberOfHits > 2)
@@ -120,13 +117,13 @@ public class PoolManager : NetworkSingleton<PoolManager>
         }
         foreach (Ball ball in player1SinkedBalls)
         {
-            LevelManager.Instance.players[0].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+            LevelManager.Instance.players[0].AddBulletClientRpc(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
         foreach (Ball ball in player2SinkedBalls)
         {
             // TODO: change this
             if (LevelManager.Instance.players.Count > 1)
-                LevelManager.Instance.players[1].AddBullet(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+                LevelManager.Instance.players[1].AddBulletClientRpc(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
     }
 
@@ -155,6 +152,11 @@ public class PoolManager : NetworkSingleton<PoolManager>
 
         damageTaken[0] = 0;
         damageTaken[1] = 0;
+
+        if (finalBattle)
+        {
+
+        }
     }
 
     private void SaveBallPositions()
@@ -215,8 +217,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             {
                 if (CountSinkedBalls(0) == 7)
                 {
-                    //TODO: final battle
-
+                    finalBattle = true;
                 }
                 else
                 {
@@ -228,8 +229,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             {
                 if (CountSinkedBalls(1) == 7)
                 {
-                    //TODO: final battle
-
+                    finalBattle = true;
                 }
                 else
                 {
@@ -296,8 +296,9 @@ public class PoolManager : NetworkSingleton<PoolManager>
 
         return stillMoving;
     }
-    
-    private void SwapPlayer()
+
+    [ClientRpc]
+    private void SwapPlayerClientRpc()
     {
         currentPoolPlayer = currentPoolPlayer == 0 ? 1 : 0;
     }
@@ -306,8 +307,15 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private void Fault(int player)
     {
         PutBallsBackForPlayer(player);
-        SwapPlayer();
-        LevelManager.Instance.players[currentPoolPlayer].AddBullet(0);
+        SwapPlayerClientRpc();
+        ClientRpcParams clientRpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new ulong[] { (ulong)LevelManager.Instance.players[currentPoolPlayer].team.Value }
+            }
+        };
+        LevelManager.Instance.players[currentPoolPlayer].AddBulletClientRpc(0, clientRpcParams);
     }
 
     // Returns the number of balls that have been sinked by the player

@@ -218,7 +218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4682058c8e6b72a4eaafd33f7574102d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
+  team:
+    m_InternalValue: 0
   inputHandler: {fileID: 11400000, guid: afac99b334a327642bb34fa5cc8aabd1, type: 2}
   cueTransform: {fileID: 2009906924101774561}
   head: {fileID: 188677728806873645}
@@ -245,6 +246,8 @@ MonoBehaviour:
   acceleration: 40
   accelerationAir: 20
   maxSpeed: 3
+  movementState: 0
+  speedDebuff: 1
   jumpForce: 5
   fallAcceleration: 2.5
   animator: {fileID: 711693925508179803}
@@ -890,6 +893,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 2a6adfa3a6be86249953790792731fe9, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 17f4241913b1ab94c82f3e6db33485ac,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 17f4241913b1ab94c82f3e6db33485ac,
         type: 3}
       propertyPath: m_WarningMessage
