@@ -20,10 +20,7 @@ public class InfoText : NetworkBehaviour
 
     private void ChangeShotsLeft(int previous, int current)
     {
-        string name = "";
-        // The if is for testing in singleplayer
-        if (LobbyManagerCustom.JoinedLobby.Players.Count > 1)
-            name = LobbyManagerCustom.JoinedLobby.Players[PoolManager.Instance.currentPoolPlayer].Data["PlayerName"].Value;
+        string name = LobbyManagerCustom.JoinedLobby.Players[PoolManager.Instance.currentPoolPlayer].Data["PlayerName"].Value;
         text.text = current + " shots left" + "\nTo Strike: " + name;
     }
 

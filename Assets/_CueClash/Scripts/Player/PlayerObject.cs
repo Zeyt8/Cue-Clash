@@ -166,8 +166,8 @@ public class PlayerObject : NetworkBehaviour
         if (limbHealth[limb] <= 0) limbHealth[limb] = 1;
         skinnedMeshRenderer.materials[(int)limb].color = Color.Lerp(Color.red, Color.white, limbHealth[limb] / 100f);
         AudioManager.PlaySound(Sounds.Hit);
-        playerMovement.speedDebuff = (100.0f / limbHealth[Limbs.Legs]).Remap(0, 1, 0.5f, 1);
-        gun.sway = (200.0f / (limbHealth[Limbs.LeftHand] + limbHealth[Limbs.RightHand])).Remap(0, 1, 0, 0.1f);
+        playerMovement.speedDebuff = (limbHealth[Limbs.Legs] / 100.0f).Remap(0, 1, 0.5f, 1);
+        gun.sway = ((limbHealth[Limbs.LeftHand] + limbHealth[Limbs.RightHand]) / 200.0f).Remap(0, 1, 0, 0.1f);
         PoolManager.Instance.damageTaken[team.Value] += damage;
         if (limbHealth[limb] <= 0)
         {
