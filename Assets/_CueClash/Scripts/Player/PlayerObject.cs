@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cinemachine;
+using JSAM;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -86,7 +87,6 @@ public class PlayerObject : NetworkBehaviour
         playerAnimations.virtualCamera = camera;
         cue.Activate();
         SwitchToBilliard();
-        print(team);
     }
 
     private void OnEnable()
@@ -117,7 +117,6 @@ public class PlayerObject : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        animator.SetFloat("Speed", playerMovement.maxSpeed);
         animator.SetFloat("MoveX", inputHandler.Movement.x);
         animator.SetFloat("MoveZ", inputHandler.Movement.z);
         animator.SetBool("Moving", inputHandler.Movement != Vector3.zero);
@@ -165,6 +164,7 @@ public class PlayerObject : NetworkBehaviour
     {
         limbHealth[limb] -= damage;
         skinnedMeshRenderer.materials[(int)limb].color = Color.Lerp(Color.red, Color.white, limbHealth[limb] / 100f);
+        AudioManager.PlaySound(Sounds.Hit);
         if (limbHealth[limb] <= 0)
         {
             //Die();
@@ -186,7 +186,7 @@ public class PlayerObject : NetworkBehaviour
             gun.Activate();
             cue.Deactivate();
             playerAnimations.PlayerState = PlayerState.Gun;
-            playerMovement.maxSpeed = 5;
+            playerMovement.Swap(MovementState.Running);
         }
     }
 
@@ -200,7 +200,7 @@ public class PlayerObject : NetworkBehaviour
         playerAnimations.PlayerState = PlayerState.Billiard;
         playerAnimations.AlignBilliardAim(new Vector2(0, 0.2f));
         Cursor.lockState = CursorLockMode.Locked;
-        playerMovement.maxSpeed = 3;
+        playerMovement.Swap(MovementState.Walking);
     }
 
     public void AddBullet(int bullet)
@@ -220,6 +220,7 @@ public class PlayerObject : NetworkBehaviour
         if (!IsOwner || playerState != PlayerState.Gun) return;
         networkAnimator.SetTrigger("Fire");
         gun.Shoot();
+        AudioManager.PlaySound(Sounds.Shoot);
     }
 
     private void SwitchWeapons()
@@ -245,6 +246,7 @@ public class PlayerObject : NetworkBehaviour
     private void SwitchAmmo(bool up)
     {
         gun.SwitchBullet(up);
+        AudioManager.PlaySound(Sounds.Reload);
     }
 
     private void AimCueChangedState(bool state)
@@ -272,6 +274,7 @@ public class PlayerObject : NetworkBehaviour
         playerAnimations.parrying = false;
         playerAnimations.swinging = true;
         Cursor.lockState = CursorLockMode.Confined;
+        AudioManager.PlaySound(Sounds.Slash);
     }
 
     private void EndSwing()

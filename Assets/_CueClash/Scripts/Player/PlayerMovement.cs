@@ -1,6 +1,13 @@
 using Cinemachine;
+using JSAM;
 using Unity.Netcode;
 using UnityEngine;
+
+public enum MovementState
+{
+    Walking,
+    Running
+}
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -12,6 +19,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float accelerationAir = 25f;
     public float maxSpeed = 5f;  // max speed along XZ plane
+    public MovementState movementState = MovementState.Walking;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float fallAcceleration = 2.5f;
     [SerializeField] private Animator animator;
@@ -21,6 +29,8 @@ public class PlayerMovement : NetworkBehaviour
     private Vector3 movement;
 
     private Vector3 goalVel = Vector3.zero;
+
+    private AudioSource audioSource;
 
     public void Move(InputHandler inputHandler)
     {
@@ -46,6 +56,18 @@ public class PlayerMovement : NetworkBehaviour
         isGrounded = Physics.Raycast(bottom.position, Vector3.down, 0.1f);
         animator.SetBool("Jumping", !isGrounded);
         CharacterMove(movement, !isGrounded);
+        if (movement != Vector3.zero)
+        {
+            if (audioSource == null)
+            {
+                audioSource = AudioManager.PlaySound(movementState == MovementState.Walking ? Sounds.Walk : Sounds.Run, transform.position);
+            }
+        }
+        else if (audioSource != null)
+        {
+            audioSource.Stop();
+            audioSource = null;
+        }
 
         // apply jump
         if (needsToJump)
@@ -59,6 +81,19 @@ public class PlayerMovement : NetworkBehaviour
         {
             rb.AddForce(Vector3.down * fallAcceleration, ForceMode.Force);
         }
+    }
+
+    public void Swap(MovementState state)
+    {
+        if (state == MovementState.Walking)
+        {
+            maxSpeed = 3f;
+        }
+        else
+        {
+            maxSpeed = 5f;
+        }
+        animator.SetFloat("Speed", maxSpeed);
     }
 
     private void CharacterMove(Vector3 moveInput, bool inAir)
