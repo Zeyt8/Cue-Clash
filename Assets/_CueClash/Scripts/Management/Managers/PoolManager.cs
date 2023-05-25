@@ -47,6 +47,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
         if (IsServer)
         {
             ballsMovingUI.isActive.Value = ballsMoving;
+
+            // if player hit the white ball with the stick, do this
             if (whiteBallStruck && !ballsMoving && recentlyStruck <= 0)
             {
                 print("End of current hit");
@@ -66,7 +68,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 infoText.shotsLeft.Value = 3 - numberOfHits;
             }
 
-            // if player didn't hit the white ball with the stick, do this instead of the above
+            // if player didn't hit the white ball with the stick (and therefore fault is not 0), do this instead of the above
             if(!ballsMoving && currentPlayerFault != 0 && recentlyStruck <= 0)
             {
                 PlaceFallenBalls();
