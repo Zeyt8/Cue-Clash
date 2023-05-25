@@ -276,19 +276,18 @@ public class PlayerObject : NetworkBehaviour
         playerAnimations.parrying = false;
         playerAnimations.swinging = true;
         Cursor.lockState = CursorLockMode.Confined;
-        AudioManager.PlaySound(Sounds.Slash);
-        Debug.Log("Swinging");
     }
 
     private void EndSwing()
     {
-        if (!IsOwner || playerState != PlayerState.Sword || playerAnimations.swingTimer > 0.0f) return;
+        if (!IsOwner || playerState != PlayerState.Sword || !playerAnimations.swinging
+            || playerAnimations.swingTimer > 0.0f || playerAnimations.parrying) return;
         sword.EndSwing();
         playerAnimations.swinging = false;
-        playerAnimations.swingTimer = playerAnimations.swingDuration;
+        playerAnimations.swingTimer = PlayerAnimations.swingDuration;
         playerAnimations.swingDirection = inputHandler.Look.normalized;
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log("Stopped swinging");
+        AudioManager.PlaySound(Sounds.Slash);
     }
 
     private void StartParry()
@@ -300,7 +299,7 @@ public class PlayerObject : NetworkBehaviour
 
     private void EndParry()
     {
-        if (!IsOwner || playerState != PlayerState.Sword) return;
+        if (!IsOwner || playerState != PlayerState.Sword || !playerAnimations.parrying) return;
         sword.EndParry();
         playerAnimations.parrying = false;
     }

@@ -23,10 +23,12 @@ public class PlayerAnimations : NetworkBehaviour
     public bool parrying;
     public bool swinging;
     public float swingTimer = 0.0f;
-    public float swingDuration = 1.0f;
+    public const float swingDuration = 0.75f;
     public Vector2 swingDirection = Vector2.zero;
     private Vector3 posOffset = Vector3.zero;
     private Quaternion rotOffset = Quaternion.identity;
+    private Vector3 lastDesiredPosition = Vector3.zero;
+    private Quaternion lastDesiredRotation = Quaternion.identity;
 
     [HideInInspector] public CinemachineVirtualCamera virtualCamera;
 
@@ -86,27 +88,28 @@ public class PlayerAnimations : NetworkBehaviour
         {
             if (swingTimer > swingDuration * 0.5f)
             {
-                float coef = (swingTimer - swingDuration * 0.5f) / (swingDuration * 0.5f);
-                handController.desiredPosition = transform.parent.InverseTransformPoint(
+                float coef = 1.0f - (swingTimer - swingDuration * 0.5f) / (swingDuration * 0.5f);
+                lastDesiredPosition = handController.desiredPosition = transform.parent.InverseTransformPoint(
                     virtualCamera.transform.position +
                     virtualCamera.transform.forward * swordOffset.z +
                     virtualCamera.transform.up * swordOffset.y +
                     virtualCamera.transform.right * swordOffset.x
                 ) + posOffset + Vector3.ClampMagnitude(transform.parent.InverseTransformVector(virtualCamera.transform.up * swingDirection.y
-                    + virtualCamera.transform.right * swingDirection.x) * coef * 4.0f, 1.0f);
+                    + virtualCamera.transform.right * swingDirection.x) * coef, 0.5f);
 
-                handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
-                    * Quaternion.Euler(Mathf.Clamp(coef * 50.0f, -50.0f, 50.0f),
-                                        Mathf.Clamp(-swingDirection.x * coef * 50.0f, -125.0f, 125.0f), 0);
+                lastDesiredRotation = handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
+                    * Quaternion.Euler(Mathf.Clamp(coef * 150.0f, -150.0f, 150.0f),
+                                        Mathf.Clamp(-swingDirection.x * coef * 500.0f, -100.0f, 100.0f), 0);
             }
             else
             {
                 // lerp to default position
-                float coef = swingTimer / (swingDuration * 0.5f);
-                Vector3.Lerp(handController.desiredPosition, transform.parent.InverseTransformPoint(
+                float coef = 1.0f - swingTimer / (swingDuration * 0.5f);
+                handController.desiredPosition = Vector3.Lerp(lastDesiredPosition, transform.parent.InverseTransformPoint(
                                 virtualCamera.transform.position + virtualCamera.transform.forward * swordOffset.z +
                                 virtualCamera.transform.up * swordOffset.y + virtualCamera.transform.right * swordOffset.x), coef);
-                Quaternion.Lerp(handController.desiredRotation, Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * Quaternion.Euler(-120, 0, 0), coef);
+                handController.desiredRotation = Quaternion.Lerp(lastDesiredRotation,
+                                Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * Quaternion.Euler(-120, 0, 0), coef);
             }
 
             swingTimer -= Time.deltaTime;

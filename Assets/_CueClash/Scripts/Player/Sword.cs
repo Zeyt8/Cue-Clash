@@ -69,7 +69,6 @@ public class Sword : MonoBehaviour
     private void EndParryForced()
     {
         EndParry();
-        parrying = false;
         timer = 0.0f;
     }
 
