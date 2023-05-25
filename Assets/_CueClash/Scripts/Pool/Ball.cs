@@ -1,3 +1,4 @@
+using JSAM;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ public class Ball : NetworkBehaviour
     {
         body.AddForceAtPosition(force, position);
         PoolManager.Instance.HitBall(this);
+        AudioManager.PlaySound(Sounds.Billiard, transform);
     }
 
     protected void AimAssist()

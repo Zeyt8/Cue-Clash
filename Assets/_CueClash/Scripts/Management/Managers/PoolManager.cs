@@ -79,6 +79,11 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 StopFightClientRpc();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.O) && IsServer)
+        {
+            StartFightClientRpc();
+        }
     }
 
     public void HitBall(Ball ball)
