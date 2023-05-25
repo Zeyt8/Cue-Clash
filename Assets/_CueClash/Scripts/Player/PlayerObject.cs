@@ -126,7 +126,7 @@ public class PlayerObject : NetworkBehaviour
         if (playerState == PlayerState.Billiard)
         {
             cue.charging = inputHandler.Cue;
-            if (inputHandler.Cue && PoolManager.Instance.currentPoolPlayer == team.Value)
+            if (inputHandler.Cue && PoolManager.Instance.currentPoolPlayer == team.Value && !PoolManager.Instance.ballsMoving)
             {
                 playerAnimations.ChargeCue(cue.cueForce);
             }
@@ -215,7 +215,8 @@ public class PlayerObject : NetworkBehaviour
 
     private void HitWithCue()
     {
-        if (!IsOwner || playerState != PlayerState.Billiard || PoolManager.Instance.currentPoolPlayer != team.Value) return;
+        if (!IsOwner || playerState != PlayerState.Billiard ||
+            PoolManager.Instance.currentPoolPlayer != team.Value || PoolManager.Instance.ballsMoving) return;
         cue.Shoot();
         playerAnimations.HitWithCue();
     }
