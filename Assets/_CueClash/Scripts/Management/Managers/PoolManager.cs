@@ -305,8 +305,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
                     {
                         if ((currentPoolPlayer == 0 && (ball.ballNumber > 0 && ball.ballNumber < 8)) ||
                             (currentPoolPlayer == 1 && (ball.ballNumber > 8 && ball.ballNumber < 16)) ||
-                            (currentPoolPlayer == 0 && ball.ballNumber == 8 && player1SinkedBalls.Count == 7) ||
-                            (currentPoolPlayer == 1 && ball.ballNumber == 8 && player2SinkedBalls.Count == 7))
+                            (currentPoolPlayer == 0 && ball.ballNumber == 8 && CountSinkedBalls(0) == 7) ||
+                            (currentPoolPlayer == 1 && ball.ballNumber == 8 && CountSinkedBalls(1) == 7))
                         {
                             currentPlayerFault = 0;
                         }
