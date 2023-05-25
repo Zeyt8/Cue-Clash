@@ -33,11 +33,6 @@ public class PoolManager : NetworkSingleton<PoolManager>
         SaveBallPositions();
     }
 
-    public override void OnNetworkSpawn()
-    {
-        infoText.shotsLeft.Value = 5;
-    }
-
     private void Update()
     {
         if (recentlyStruck > 0)
