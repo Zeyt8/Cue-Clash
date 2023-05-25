@@ -17,6 +17,7 @@ public class InfoText : NetworkBehaviour
         shotsLeft.OnValueChanged += ChangeShotsLeft;
         timeLeft.OnValueChanged += ChangeTimer;
         shotsLeft.Value = 5;
+        ChangeShotsLeft(0, 5);
     }
 
     private void ChangeShotsLeft(int previous, int current)

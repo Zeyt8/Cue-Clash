@@ -70,11 +70,6 @@ public class PlayerObject : NetworkBehaviour
         sword = cueTransform.GetComponent<Sword>();
     }
 
-    private void Start()
-    {
-        LevelManager.Instance.players.Add(this);
-    }
-
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
@@ -167,7 +162,7 @@ public class PlayerObject : NetworkBehaviour
         skinnedMeshRenderer.materials[(int)limb].color = Color.Lerp(Color.red, Color.white, limbHealth[limb] / 100f);
         AudioManager.PlaySound(Sounds.Hit);
         playerMovement.speedDebuff = (limbHealth[Limbs.Legs] / 100.0f).Remap(0, 1, 0.5f, 1);
-        gun.sway = ((limbHealth[Limbs.LeftHand] + limbHealth[Limbs.RightHand]) / 200.0f).Remap(0, 1, 0, 0.1f);
+        gun.sway = ((limbHealth[Limbs.LeftHand] + limbHealth[Limbs.RightHand]) / 200.0f).Remap(0, 1, 0, 0.05f);
         PoolManager.Instance.damageTaken[team.Value] += damage;
         if (limbHealth[limb] <= 0)
         {

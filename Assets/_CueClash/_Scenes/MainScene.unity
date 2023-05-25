@@ -7997,7 +7997,7 @@ MonoBehaviour:
   masterMuted: 0
   soundVolume: 1
   soundMuted: 0
-  musicVolume: 0.5
+  musicVolume: 0.1
   musicMuted: 0
   spatialSound: 1
   audioSources: 16
@@ -10567,7 +10567,9 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 577968533}
   - {fileID: 817358766}
-  players: []
+  players:
+  - {fileID: 0}
+  - {fileID: 0}
   ammoText: {fileID: 587686749}
 --- !u!114 &1901579901
 MonoBehaviour:

@@ -120,7 +120,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     [ClientRpc]
     private void StartFightClientRpc()
     {
-        for (int i = 0; i < LevelManager.Instance.players.Count; i++)
+        for (int i = 0; i < 2; i++)
         {
             LevelManager.Instance.players[i].transform.position = LevelManager.Instance.spawnPoints[i].position;
             LevelManager.Instance.players[i].SwitchToFight();
@@ -140,7 +140,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private void StopFightClientRpc()
     {
         isFight = false;
-        for (int i = 0; i < LevelManager.Instance.players.Count; i++)
+        for (int i = 0; i < 2; i++)
         {
             LevelManager.Instance.players[i].SwitchToBilliard();
         }

@@ -7,7 +7,7 @@ public class LevelManager : NetworkSingleton<LevelManager>
 {
     [SerializeField] private NetworkObject playerPrefab;
     public Transform[] spawnPoints;
-    public List<PlayerObject> players = new List<PlayerObject>();
+    public PlayerObject[] players = new PlayerObject[2];
 
     [Header("UI")]
     public AmmoText ammoText;
@@ -15,6 +15,18 @@ public class LevelManager : NetworkSingleton<LevelManager>
     private void Start()
     {
         Cursor.visible = false;
+    }
+
+    private void Update()
+    {
+        if (players[0] == null || players[1] == null)
+        {
+            PlayerObject[] p = FindObjectsOfType<PlayerObject>();
+            foreach (PlayerObject player in p)
+            {
+                players[player.team.Value] = player;
+            }
+        }
     }
 
     public override void OnNetworkSpawn()
