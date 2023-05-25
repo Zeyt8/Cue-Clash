@@ -7981,14 +7981,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cf44e4fc5dfe7e641b0c672f212d6d3b, type: 2}
   - {fileID: 11400000, guid: 08e09f20fff42c245932ec88f5b66cd4, type: 2}
   - {fileID: 11400000, guid: ec7d5bd428e204b418f2aca9a737f117, type: 2}
-  audioFileMusicObjects: []
+  audioFileMusicObjects:
+  - {fileID: 11400000, guid: 2f8e52c841886bc4fa48c6bc3417c43e, type: 2}
+  - {fileID: 11400000, guid: b31d4f46345ae954b9210cf756da6e7b, type: 2}
+  - {fileID: 11400000, guid: f00fcae2a6d7832409b7884c4b1b8121, type: 2}
+  - {fileID: 11400000, guid: d32449ae982fa134e9572a5831c334d8, type: 2}
+  - {fileID: 11400000, guid: 8b46e1f3815b98a43af5914cb90b2050, type: 2}
+  - {fileID: 11400000, guid: 3aa3152ed3a0e9d498e2313f0519a101, type: 2}
+  - {fileID: 11400000, guid: 7dac01dd85ec11642a79ca7934cda73f, type: 2}
+  - {fileID: 11400000, guid: 7e2df870173c65b46b04a368546228f3, type: 2}
+  - {fileID: 11400000, guid: e0afd77af3a8fed42be9d1bcb42c5a7b, type: 2}
   sceneSoundEnumName: JSAM.Sounds
   sceneMusicEnumName: JSAM.Music
   masterVolume: 1
   masterMuted: 0
   soundVolume: 1
   soundMuted: 0
-  musicVolume: 1
+  musicVolume: 0.5
   musicMuted: 0
   spatialSound: 1
   audioSources: 16
@@ -10502,6 +10511,7 @@ GameObject:
   - component: {fileID: 1901579900}
   - component: {fileID: 1901579899}
   - component: {fileID: 1901579901}
+  - component: {fileID: 1901579902}
   m_Layer: 0
   m_Name: Level Manager
   m_TagString: Untagged
@@ -10591,11 +10601,24 @@ MonoBehaviour:
   infoText: {fileID: 488228041}
   ballsMovingUI: {fileID: 366147135}
   endScreen: {fileID: 1555067953}
+  soundtrack: {fileID: 0}
   currentPoolPlayer: 0
   damageTaken:
   - 0
   - 0
   ballsMoving: 0
+--- !u!114 &1901579902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901579897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5236d7765335e8f4c8465a0edc4f8afd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1941622340
 GameObject:
   m_ObjectHideFlags: 0

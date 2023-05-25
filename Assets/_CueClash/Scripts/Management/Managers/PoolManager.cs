@@ -1,25 +1,25 @@
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PoolManager : NetworkSingleton<PoolManager>
 {
     [SerializeField] private Ball[] balls;
     private int numberOfHits = 0, currentPlayerFault = -1; // Fault: -1 default, 0 false, 1 true
-    private bool whiteBallStruck = false, p1Sinked = false, p2Sinked = false;
+    private bool whiteBallStruck = false, otherBallStruck = false, p1Sinked = false, p2Sinked = false;
     [SerializeField] private InfoText infoText;
     [SerializeField] private BallsMovingUI ballsMovingUI;
     [SerializeField] private TextMeshProUGUI endScreen;
+    [SerializeField] private Soundtrack soundtrack;
     public int currentPoolPlayer = 0;
     public float[] damageTaken = new float[2];
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
     private readonly List<Ball> player1SinkedBalls = new();
     private readonly List<Ball> player2SinkedBalls = new();
-    private float recentlyStruck = 0;
+    private float recentlyStruck = 1;
 
-    private readonly float maxDurationOfBattle = 60;
+    private readonly float maxDurationOfBattle = 40;
     private float battleTimer = 0;
     bool isFight = false;
     private bool finalBattle = false;
@@ -28,13 +28,9 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public override void Awake()
     {
         base.Awake();
+        soundtrack = GetComponent<Soundtrack>();
         // TODO: Figure out where to put this
         SaveBallPositions();
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        infoText.shotsLeft.Value = 3;
     }
 
     private void Update()
@@ -47,6 +43,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
         if (IsServer)
         {
             ballsMovingUI.isActive.Value = ballsMoving;
+
+            // if player hit the white ball with the stick, do this
             if (whiteBallStruck && !ballsMoving && recentlyStruck <= 0)
             {
                 print("End of current hit");
@@ -54,7 +52,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 PlaceFallenBalls();
 
                 // Keep going if the current player has sunk a ball and didn't commit a fault, otherwise swap
-                if (currentPlayerFault == 1)
+                if (currentPlayerFault != 0)
                 {
                     Fault(currentPoolPlayer);
                 }
@@ -63,10 +61,20 @@ public class PoolManager : NetworkSingleton<PoolManager>
                     SwapPlayerClientRpc();
                 }
                 currentPlayerFault = -1;
-                infoText.shotsLeft.Value = 3 - numberOfHits;
+                infoText.shotsLeft.Value = 5 - numberOfHits;
             }
 
-            if (!isFight && !ballsMoving && recentlyStruck <= 0 && numberOfHits > 2)
+            // if player didn't hit the white ball with the stick (and therefore fault is not 0), do this instead of the above
+            if(!ballsMoving && otherBallStruck && recentlyStruck <= 0)
+            {
+                otherBallStruck = false;
+                PlaceFallenBalls();
+                Fault(currentPoolPlayer);
+                currentPlayerFault = -1;
+                infoText.shotsLeft.Value = 5 - numberOfHits;
+            }
+            
+            if (!isFight && !ballsMoving && recentlyStruck <= 0 && numberOfHits >= 5)
             {
                 //swap to fighting
                 isFight = true;
@@ -84,12 +92,6 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 }
             }
         }
-
-        // TODO: Remove
-        if (Input.GetKeyDown(KeyCode.O) && IsServer)
-        {
-            StartFightClientRpc();
-        }
     }
 
     public void HitBall(Ball ball)
@@ -103,14 +105,14 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public void IncrementNumberOfHits(Ball ball)
     {
         numberOfHits++;
-
+        recentlyStruck = 1;
         if (ball.ballNumber == 0)
         {
             whiteBallStruck = true;
-            recentlyStruck = 1;
         }
         else
         {
+            otherBallStruck = true;
             currentPlayerFault = 1;
         }
     }
@@ -129,10 +131,9 @@ public class PoolManager : NetworkSingleton<PoolManager>
         }
         foreach (Ball ball in player2SinkedBalls)
         {
-            // TODO: change this
-            if (LevelManager.Instance.players.Count > 1)
-                LevelManager.Instance.players[1].AddBulletClientRpc(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+            LevelManager.Instance.players[1].AddBulletClientRpc(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
+        soundtrack.Pool = false;
     }
 
     [ClientRpc]
@@ -162,7 +163,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         damageTaken[0] = 0;
         damageTaken[1] = 0;
 
-        infoText.shotsLeft.Value = 3;
+        infoText.shotsLeft.Value = 5;
 
         if (finalBattle)
         {
@@ -171,6 +172,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
             infoText.gameObject.SetActive(false);
             ballsMovingUI.gameObject.SetActive(false);
         }
+
+        soundtrack.Pool = true;
     }
 
     private void SaveBallPositions()
@@ -297,8 +300,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
                     {
                         if ((currentPoolPlayer == 0 && (ball.ballNumber > 0 && ball.ballNumber < 8)) ||
                             (currentPoolPlayer == 1 && (ball.ballNumber > 8 && ball.ballNumber < 16)) ||
-                            (currentPoolPlayer == 0 && ball.ballNumber == 8 && player1SinkedBalls.Count == 7) ||
-                            (currentPoolPlayer == 1 && ball.ballNumber == 8 && player2SinkedBalls.Count == 7))
+                            (currentPoolPlayer == 0 && ball.ballNumber == 8 && CountSinkedBalls(0) == 7) ||
+                            (currentPoolPlayer == 1 && ball.ballNumber == 8 && CountSinkedBalls(1) == 7))
                         {
                             currentPlayerFault = 0;
                         }
