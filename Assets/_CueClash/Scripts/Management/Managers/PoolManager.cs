@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PoolManager : NetworkSingleton<PoolManager>
@@ -12,6 +11,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     [SerializeField] private InfoText infoText;
     [SerializeField] private BallsMovingUI ballsMovingUI;
     [SerializeField] private TextMeshProUGUI endScreen;
+    [SerializeField] private Soundtrack soundtrack;
     public int currentPoolPlayer = 0;
     public float[] damageTaken = new float[2];
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
@@ -19,7 +19,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private readonly List<Ball> player2SinkedBalls = new();
     private float recentlyStruck = 0;
 
-    private readonly float maxDurationOfBattle = 60;
+    private readonly float maxDurationOfBattle = 40;
     private float battleTimer = 0;
     bool isFight = false;
     private bool finalBattle = false;
@@ -28,13 +28,14 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public override void Awake()
     {
         base.Awake();
+        soundtrack = GetComponent<Soundtrack>();
         // TODO: Figure out where to put this
         SaveBallPositions();
     }
 
     public override void OnNetworkSpawn()
     {
-        infoText.shotsLeft.Value = 3;
+        infoText.shotsLeft.Value = 5;
     }
 
     private void Update()
@@ -63,10 +64,10 @@ public class PoolManager : NetworkSingleton<PoolManager>
                     SwapPlayerClientRpc();
                 }
                 currentPlayerFault = -1;
-                infoText.shotsLeft.Value = 3 - numberOfHits;
+                infoText.shotsLeft.Value = 5 - numberOfHits;
             }
 
-            if (!isFight && !ballsMoving && recentlyStruck <= 0 && numberOfHits > 2)
+            if (!isFight && !ballsMoving && recentlyStruck <= 0 && numberOfHits >= 5)
             {
                 //swap to fighting
                 isFight = true;
@@ -83,12 +84,6 @@ public class PoolManager : NetworkSingleton<PoolManager>
                     StopFightClientRpc();
                 }
             }
-        }
-
-        // TODO: Remove
-        if (Input.GetKeyDown(KeyCode.O) && IsServer)
-        {
-            StartFightClientRpc();
         }
     }
 
@@ -129,10 +124,9 @@ public class PoolManager : NetworkSingleton<PoolManager>
         }
         foreach (Ball ball in player2SinkedBalls)
         {
-            // TODO: change this
-            if (LevelManager.Instance.players.Count > 1)
-                LevelManager.Instance.players[1].AddBulletClientRpc(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
+            LevelManager.Instance.players[1].AddBulletClientRpc(ball.ballNumber > 8 ? ball.ballNumber - 8 : ball.ballNumber);
         }
+        soundtrack.Pool = false;
     }
 
     [ClientRpc]
@@ -162,7 +156,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
         damageTaken[0] = 0;
         damageTaken[1] = 0;
 
-        infoText.shotsLeft.Value = 3;
+        infoText.shotsLeft.Value = 5;
 
         if (finalBattle)
         {
@@ -171,6 +165,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
             infoText.gameObject.SetActive(false);
             ballsMovingUI.gameObject.SetActive(false);
         }
+
+        soundtrack.Pool = true;
     }
 
     private void SaveBallPositions()
