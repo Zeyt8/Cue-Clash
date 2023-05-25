@@ -1745,8 +1745,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 99.99997, y: -50.000015}
-  m_SizeDelta: {x: 200, y: 100}
+  m_AnchoredPosition: {x: 141.23392, y: -80.05188}
+  m_SizeDelta: {x: 282.4679, y: 160.1037}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &488228038
 MonoBehaviour:
@@ -1768,7 +1768,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3 shots left
+  m_text: '3 shots left
+
+    To Strike: Player'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 33efb36534e064d4eb29fc987ab11dd5, type: 2}
   m_sharedMaterial: {fileID: 5243424475926408935, guid: 33efb36534e064d4eb29fc987ab11dd5,
@@ -1804,7 +1806,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -10206,7 +10208,7 @@ MonoBehaviour:
   - {fileID: 811842732}
   - {fileID: 1440265947}
   infoText: {fileID: 488228041}
-  currentPoolPlayer: 1
+  currentPoolPlayer: 0
 --- !u!1 &1941622340
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,8 @@ public class InfoText : NetworkBehaviour
 
     private void ChangeShotsLeft(int previous, int current)
     {
-        text.text = current + " shots left";
+        text.text = current + " shots left" + "\nTo Strike: " + 
+                    LobbyManagerCustom.JoinedLobby.Players[PoolManager.Instance.currentPoolPlayer].Data["PlayerName"].Value;
     }
 
     private void ChangeTimer(int previous, int current)
