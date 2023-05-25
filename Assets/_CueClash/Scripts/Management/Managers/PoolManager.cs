@@ -54,7 +54,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 PlaceFallenBalls();
 
                 // Keep going if the current player has sunk a ball and didn't commit a fault, otherwise swap
-                if (currentPlayerFault == 1)
+                if (currentPlayerFault != 0)
                 {
                     Fault(currentPoolPlayer);
                 }
@@ -62,6 +62,15 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 {
                     SwapPlayerClientRpc();
                 }
+                currentPlayerFault = -1;
+                infoText.shotsLeft.Value = 3 - numberOfHits;
+            }
+
+            // if player didn't hit the white ball with the stick, do this instead of the above
+            if(!ballsMoving && currentPlayerFault != 0 && recentlyStruck <= 0)
+            {
+                PlaceFallenBalls();
+                Fault(currentPoolPlayer);
                 currentPlayerFault = -1;
                 infoText.shotsLeft.Value = 3 - numberOfHits;
             }
@@ -103,11 +112,10 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public void IncrementNumberOfHits(Ball ball)
     {
         numberOfHits++;
-
+        recentlyStruck = 1;
         if (ball.ballNumber == 0)
         {
             whiteBallStruck = true;
-            recentlyStruck = 1;
         }
         else
         {
