@@ -6,6 +6,7 @@ public class Ball3and11Red : Bullet
 {
     private void Awake()
     {
-        damage *= 2;
+        damage *= 3;
+        bulletSpeed *= 0.6f;
     }
 }

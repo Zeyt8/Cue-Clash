@@ -56,7 +56,6 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 // Keep going if the current player has sunk a ball and didn't commit a fault, otherwise swap
                 if (currentPlayerFault == 1)
                 {
-                    SwapPlayerClientRpc();
                     Fault(currentPoolPlayer);
                 }
                 else if (!(currentPoolPlayer == 0 && p1Sinked) && !(currentPoolPlayer == 1 && p2Sinked))
