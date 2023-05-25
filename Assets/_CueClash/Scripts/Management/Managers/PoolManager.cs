@@ -91,6 +91,11 @@ public class PoolManager : NetworkSingleton<PoolManager>
                     StopFightClientRpc();
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                StartFightClientRpc();
+            }
         }
     }
 
