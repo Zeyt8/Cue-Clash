@@ -91,7 +91,7 @@ public class Sword : MonoBehaviour
         {
             if (other.TryGetComponent(out Limb limb) && playerObject.team != limb.GetTeam())
             {
-                limb.TakeDamage(30);
+                limb.TakeDamage(10);
             }
         }
     }

@@ -20,6 +20,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float accelerationAir = 25f;
     public float maxSpeed = 5f;  // max speed along XZ plane
     public MovementState movementState = MovementState.Walking;
+    public float speedDebuff = 1f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float fallAcceleration = 2.5f;
     [SerializeField] private Animator animator;
@@ -93,14 +94,14 @@ public class PlayerMovement : NetworkBehaviour
         {
             maxSpeed = 5f;
         }
-        animator.SetFloat("Speed", maxSpeed);
+        animator.SetFloat("Speed", (maxSpeed * speedDebuff));
     }
 
     private void CharacterMove(Vector3 moveInput, bool inAir)
     {
         if (!inAir)
         {
-            Vector3 goalVel = moveInput * maxSpeed;
+            Vector3 goalVel = moveInput * (maxSpeed * speedDebuff);
             this.goalVel = Vector3.MoveTowards(this.goalVel, goalVel, acceleration * Time.fixedDeltaTime);
             Vector3 neededAccel = (this.goalVel - rb.velocity) / Time.fixedDeltaTime;
             neededAccel = Vector3.ClampMagnitude(neededAccel, 150);
@@ -118,9 +119,9 @@ public class PlayerMovement : NetworkBehaviour
             rb.AddForce(sidewaysComponent * accelerationAir * sideways, ForceMode.Acceleration);
             Vector3 velocity = rb.velocity;
             float yYelocity = rb.velocity.y;
-            if (velocity.magnitude > maxSpeed)
+            if (velocity.magnitude > (maxSpeed * speedDebuff))
             {
-                velocity = velocity.normalized * maxSpeed;
+                velocity = velocity.normalized * (maxSpeed * speedDebuff);
             }
             velocity.y = yYelocity;
             rb.velocity = velocity;

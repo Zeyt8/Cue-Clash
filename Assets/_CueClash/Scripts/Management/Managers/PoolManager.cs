@@ -9,6 +9,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private bool whiteBallStruck = false, p1Sinked = false, p2Sinked = false;
     [SerializeField] private InfoText infoText;
     public int currentPoolPlayer = 0;
+    public float[] damageTaken = new float[2];
     private readonly Dictionary<Ball, Vector3> ballPositions = new();
     private readonly List<Ball> player1SinkedBalls = new();
     private readonly List<Ball> player2SinkedBalls = new();
@@ -138,6 +139,22 @@ public class PoolManager : NetworkSingleton<PoolManager>
         }
 
         numberOfHits = 0;
+
+        if (damageTaken[0] > damageTaken[1])
+        {
+            currentPoolPlayer = 1;
+        }
+        else if (damageTaken[0] < damageTaken[1])
+        {
+            currentPoolPlayer = 0;
+        }
+        else
+        {
+            currentPoolPlayer = Random.Range(0, 2);
+        }
+
+        damageTaken[0] = 0;
+        damageTaken[1] = 0;
     }
 
     private void SaveBallPositions()

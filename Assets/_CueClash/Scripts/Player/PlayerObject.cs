@@ -163,8 +163,12 @@ public class PlayerObject : NetworkBehaviour
     private void TakeDamageClientRpc(int damage, Limbs limb)
     {
         limbHealth[limb] -= damage;
+        if (limbHealth[limb] <= 0) limbHealth[limb] = 1;
         skinnedMeshRenderer.materials[(int)limb].color = Color.Lerp(Color.red, Color.white, limbHealth[limb] / 100f);
         AudioManager.PlaySound(Sounds.Hit);
+        playerMovement.speedDebuff = (100.0f / limbHealth[Limbs.Legs]).Remap(0, 1, 0.5f, 1);
+        gun.sway = (200.0f / (limbHealth[Limbs.LeftHand] + limbHealth[Limbs.RightHand])).Remap(0, 1, 0, 0.1f);
+        PoolManager.Instance.damageTaken[team] += damage;
         if (limbHealth[limb] <= 0)
         {
             //Die();
