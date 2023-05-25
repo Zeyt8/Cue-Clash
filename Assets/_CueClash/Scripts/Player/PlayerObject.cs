@@ -277,16 +277,18 @@ public class PlayerObject : NetworkBehaviour
         playerAnimations.swinging = true;
         Cursor.lockState = CursorLockMode.Confined;
         AudioManager.PlaySound(Sounds.Slash);
+        Debug.Log("Swinging");
     }
 
     private void EndSwing()
     {
-        if (!IsOwner || playerState != PlayerState.Sword) return;
+        if (!IsOwner || playerState != PlayerState.Sword || playerAnimations.swingTimer > 0.0f) return;
         sword.EndSwing();
         playerAnimations.swinging = false;
         playerAnimations.swingTimer = playerAnimations.swingDuration;
         playerAnimations.swingDirection = inputHandler.Look.normalized;
         Cursor.lockState = CursorLockMode.Locked;
+        Debug.Log("Stopped swinging");
     }
 
     private void StartParry()

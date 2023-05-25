@@ -23,7 +23,7 @@ public class PlayerAnimations : NetworkBehaviour
     public bool parrying;
     public bool swinging;
     public float swingTimer = 0.0f;
-    public float swingDuration = 0.25f;
+    public float swingDuration = 1.0f;
     public Vector2 swingDirection = Vector2.zero;
     private Vector3 posOffset = Vector3.zero;
     private Quaternion rotOffset = Quaternion.identity;
@@ -79,22 +79,35 @@ public class PlayerAnimations : NetworkBehaviour
                 virtualCamera.transform.right * swordOffset.x
             ) + posOffset;
 
-            rotOffset = Quaternion.Euler(-120, 0, 0) * Quaternion.Euler(0, Mathf.Clamp((-mousePos.x) * 540, -120, 120), 0);
+            rotOffset = Quaternion.Euler(-120, 0, 0) * Quaternion.Euler(0, Mathf.Clamp((-mousePos.x) * 360, -120, 120), 0);
             handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset;
         }
         else if (swingTimer > 0.0f)
         {
-            handController.desiredPosition = transform.parent.InverseTransformPoint(
-                virtualCamera.transform.position +
-                virtualCamera.transform.forward * swordOffset.z +
-                virtualCamera.transform.up * swordOffset.y +
-                virtualCamera.transform.right * swordOffset.x
-            ) + posOffset + Vector3.ClampMagnitude(transform.parent.InverseTransformVector(virtualCamera.transform.up * swingDirection.y
-                + virtualCamera.transform.right * swingDirection.x) * ((swingDuration - swingTimer) * 4.0f), 1.0f);
+            if (swingTimer > swingDuration * 0.5f)
+            {
+                float coef = (swingTimer - swingDuration * 0.5f) / (swingDuration * 0.5f);
+                handController.desiredPosition = transform.parent.InverseTransformPoint(
+                    virtualCamera.transform.position +
+                    virtualCamera.transform.forward * swordOffset.z +
+                    virtualCamera.transform.up * swordOffset.y +
+                    virtualCamera.transform.right * swordOffset.x
+                ) + posOffset + Vector3.ClampMagnitude(transform.parent.InverseTransformVector(virtualCamera.transform.up * swingDirection.y
+                    + virtualCamera.transform.right * swingDirection.x) * coef * 4.0f, 1.0f);
 
-            handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
-                * Quaternion.Euler(Mathf.Clamp((swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f),
-                                    Mathf.Clamp(-swingDirection.x * (swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f), 0);
+                handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
+                    * Quaternion.Euler(Mathf.Clamp(coef * 50.0f, -50.0f, 50.0f),
+                                        Mathf.Clamp(-swingDirection.x * coef * 50.0f, -125.0f, 125.0f), 0);
+            }
+            else
+            {
+                // lerp to default position
+                float coef = swingTimer / (swingDuration * 0.5f);
+                Vector3.Lerp(handController.desiredPosition, transform.parent.InverseTransformPoint(
+                                virtualCamera.transform.position + virtualCamera.transform.forward * swordOffset.z +
+                                virtualCamera.transform.up * swordOffset.y + virtualCamera.transform.right * swordOffset.x), coef);
+                Quaternion.Lerp(handController.desiredRotation, Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * Quaternion.Euler(-120, 0, 0), coef);
+            }
 
             swingTimer -= Time.deltaTime;
         }
