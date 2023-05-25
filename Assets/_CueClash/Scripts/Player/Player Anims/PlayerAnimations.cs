@@ -23,7 +23,7 @@ public class PlayerAnimations : NetworkBehaviour
     public bool parrying;
     public bool swinging;
     public float swingTimer = 0.0f;
-    public float swingDuration = 0.25f;
+    public float swingDuration = 1.0f;
     public Vector2 swingDirection = Vector2.zero;
     private Vector3 posOffset = Vector3.zero;
     private Quaternion rotOffset = Quaternion.identity;
@@ -79,7 +79,7 @@ public class PlayerAnimations : NetworkBehaviour
                 virtualCamera.transform.right * swordOffset.x
             ) + posOffset;
 
-            rotOffset = Quaternion.Euler(-120, 0, 0) * Quaternion.Euler(0, Mathf.Clamp((-mousePos.x) * 540, -120, 120), 0);
+            rotOffset = Quaternion.Euler(-120, 0, 0) * Quaternion.Euler(0, Mathf.Clamp((-mousePos.x) * 360, -120, 120), 0);
             handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset;
         }
         else if (swingTimer > 0.0f)
@@ -93,8 +93,8 @@ public class PlayerAnimations : NetworkBehaviour
                 + virtualCamera.transform.right * swingDirection.x) * ((swingDuration - swingTimer) * 4.0f), 1.0f);
 
             handController.desiredRotation = Quaternion.Inverse(transform.rotation) * virtualCamera.transform.rotation * rotOffset
-                * Quaternion.Euler(Mathf.Clamp((swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f),
-                                    Mathf.Clamp(-swingDirection.x * (swingDuration - swingTimer) * 500.0f, -125.0f, 125.0f), 0);
+                * Quaternion.Euler(Mathf.Clamp((swingDuration - swingTimer) * 50.0f, -50.0f, 50.0f),
+                                    Mathf.Clamp(-swingDirection.x * (swingDuration - swingTimer) * 50.0f, -125.0f, 125.0f), 0);
 
             swingTimer -= Time.deltaTime;
         }
