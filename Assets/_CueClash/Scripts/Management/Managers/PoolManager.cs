@@ -43,6 +43,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
         if (IsServer)
         {
             ballsMovingUI.isActive.Value = ballsMoving;
+
+            // if player hit the white ball with the stick, do this
             if (whiteBallStruck && !ballsMoving && recentlyStruck <= 0)
             {
                 print("End of current hit");
@@ -50,7 +52,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 PlaceFallenBalls();
 
                 // Keep going if the current player has sunk a ball and didn't commit a fault, otherwise swap
-                if (currentPlayerFault == 1)
+                if (currentPlayerFault != 0)
                 {
                     Fault(currentPoolPlayer);
                 }
@@ -62,6 +64,15 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 infoText.shotsLeft.Value = 5 - numberOfHits;
             }
 
+            // if player didn't hit the white ball with the stick (and therefore fault is not 0), do this instead of the above
+            if(!ballsMoving && currentPlayerFault != 0 && recentlyStruck <= 0)
+            {
+                PlaceFallenBalls();
+                Fault(currentPoolPlayer);
+                currentPlayerFault = -1;
+                infoText.shotsLeft.Value = 5 - numberOfHits;
+            }
+            
             if (!isFight && !ballsMoving && recentlyStruck <= 0 && numberOfHits >= 5)
             {
                 //swap to fighting
@@ -93,11 +104,10 @@ public class PoolManager : NetworkSingleton<PoolManager>
     public void IncrementNumberOfHits(Ball ball)
     {
         numberOfHits++;
-
+        recentlyStruck = 1;
         if (ball.ballNumber == 0)
         {
             whiteBallStruck = true;
-            recentlyStruck = 1;
         }
         else
         {
@@ -288,8 +298,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
                     {
                         if ((currentPoolPlayer == 0 && (ball.ballNumber > 0 && ball.ballNumber < 8)) ||
                             (currentPoolPlayer == 1 && (ball.ballNumber > 8 && ball.ballNumber < 16)) ||
-                            (currentPoolPlayer == 0 && ball.ballNumber == 8 && player1SinkedBalls.Count == 7) ||
-                            (currentPoolPlayer == 1 && ball.ballNumber == 8 && player2SinkedBalls.Count == 7))
+                            (currentPoolPlayer == 0 && ball.ballNumber == 8 && CountSinkedBalls(0) == 7) ||
+                            (currentPoolPlayer == 1 && ball.ballNumber == 8 && CountSinkedBalls(1) == 7))
                         {
                             currentPlayerFault = 0;
                         }
