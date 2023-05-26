@@ -9,3 +9,10 @@ Players can duel using their cue as a sword, by striking, slashing and parrying.
 Whoever deals the most damage wins the duel. Damage is permanent and inflicts debuffs on the player. The winner is the first to strike in the next pool phase.
 
 Reaching the conventional pool win condition and then winning the next dueling rounds crowns you the winner.
+
+## Credits
+
+- Foca Bogdan
+- Cioc Alex Andrei
+- Enășoiu Andrei-Alin
+- Zamfir Radu
