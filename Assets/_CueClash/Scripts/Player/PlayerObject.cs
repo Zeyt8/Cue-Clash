@@ -82,6 +82,7 @@ public class PlayerObject : NetworkBehaviour
         playerAnimations.virtualCamera = camera;
         cue.Activate();
         SwitchToBilliard();
+        gun.bullets[1] = 5;
     }
 
     private void OnEnable()
@@ -121,7 +122,7 @@ public class PlayerObject : NetworkBehaviour
         if (playerState == PlayerState.Billiard)
         {
             cue.charging = inputHandler.Cue;
-            if (inputHandler.Cue && PoolManager.Instance.currentPoolPlayer == team.Value && !PoolManager.Instance.ballsMoving)
+            if (inputHandler.Cue && PoolManager.Instance.currentPoolPlayer == team.Value && !PoolManager.Instance.ballsMoving.Value)
             {
                 playerAnimations.ChargeCue(cue.cueForce);
             }
@@ -211,7 +212,7 @@ public class PlayerObject : NetworkBehaviour
     private void HitWithCue()
     {
         if (!IsOwner || playerState != PlayerState.Billiard ||
-            PoolManager.Instance.currentPoolPlayer != team.Value || PoolManager.Instance.ballsMoving) return;
+            PoolManager.Instance.currentPoolPlayer != team.Value || PoolManager.Instance.ballsMoving.Value) return;
         cue.Shoot();
         playerAnimations.HitWithCue();
     }
@@ -221,7 +222,6 @@ public class PlayerObject : NetworkBehaviour
         if (!IsOwner || playerState != PlayerState.Gun) return;
         networkAnimator.SetTrigger("Fire");
         gun.Shoot();
-        AudioManager.PlaySound(Sounds.Shoot);
     }
 
     private void SwitchWeapons()

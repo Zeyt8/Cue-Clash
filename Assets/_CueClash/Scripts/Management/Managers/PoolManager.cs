@@ -23,7 +23,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
     private float battleTimer = 0;
     bool isFight = false;
     private bool finalBattle = false;
-    public bool ballsMoving;
+    public NetworkVariable<bool> ballsMoving = new NetworkVariable<bool>(false);
 
     public override void Awake()
     {
@@ -39,13 +39,14 @@ public class PoolManager : NetworkSingleton<PoolManager>
         {
             recentlyStruck -= Time.deltaTime;
         }
-        ballsMoving = BallsMoving();
         if (IsServer)
         {
-            ballsMovingUI.isActive.Value = ballsMoving;
+            ballsMoving.Value = BallsMoving();
+
+            ballsMovingUI.isActive.Value = ballsMoving.Value;
 
             // if player hit the white ball with the stick, do this
-            if (whiteBallStruck && !ballsMoving && recentlyStruck <= 0)
+            if (whiteBallStruck && !ballsMoving.Value && recentlyStruck <= 0)
             {
                 print("End of current hit");
                 whiteBallStruck = false;
@@ -65,7 +66,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
             }
 
             // if player didn't hit the white ball with the stick (and therefore fault is not 0), do this instead of the above
-            if(!ballsMoving && otherBallStruck && recentlyStruck <= 0)
+            if(!ballsMoving.Value && otherBallStruck && recentlyStruck <= 0)
             {
                 otherBallStruck = false;
                 PlaceFallenBalls();
@@ -74,7 +75,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 infoText.shotsLeft.Value = 5 - numberOfHits;
             }
             
-            if (!isFight && !ballsMoving && recentlyStruck <= 0 && numberOfHits >= 5)
+            if (!isFight && !ballsMoving.Value && recentlyStruck <= 0 && numberOfHits >= 5)
             {
                 //swap to fighting
                 isFight = true;
@@ -94,6 +95,8 @@ public class PoolManager : NetworkSingleton<PoolManager>
 
             if (Input.GetKeyDown(KeyCode.O))
             {
+                isFight = true;
+                battleTimer = maxDurationOfBattle;
                 StartFightClientRpc();
             }
         }
@@ -168,7 +171,10 @@ public class PoolManager : NetworkSingleton<PoolManager>
         damageTaken[0] = 0;
         damageTaken[1] = 0;
 
-        infoText.shotsLeft.Value = 5;
+        if (IsServer)
+        {
+            infoText.shotsLeft.Value = 5;
+        }
 
         if (finalBattle)
         {

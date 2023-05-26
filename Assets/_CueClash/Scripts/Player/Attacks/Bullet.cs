@@ -8,6 +8,23 @@ public class Bullet : NetworkBehaviour
     public float bulletSpeed = 20f;
     public Player player;
 
+    private bool destroy = false;
+
+    private NetworkObject networkObject;
+
+    public void Start()
+    {
+        networkObject = GetComponent<NetworkObject>();
+    }
+
+    private void Update()
+    {
+        if (networkObject != null && networkObject.IsSpawned && destroy)
+        {
+            networkObject.Despawn();
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         print(collision.gameObject.name);
@@ -17,6 +34,14 @@ public class Bullet : NetworkBehaviour
         {
             limb.TakeDamage(damageGiven);
         }
-        GetComponent<NetworkObject>().Despawn();
+
+        if (networkObject != null && networkObject.IsSpawned)
+        {
+            networkObject.Despawn();
+        }
+        else
+        {
+            destroy = true;
+        }
     }
 }

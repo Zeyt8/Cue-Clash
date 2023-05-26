@@ -1,5 +1,6 @@
 using System.Linq;
 using Cinemachine;
+using JSAM;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -46,9 +47,10 @@ public class Gun : NetworkBehaviour
     private void SpawnBulletServerRpc(Vector3 hit)
     {
         Bullet bullet = Instantiate(bulletDatabase.bullets[currentSelectedBullet], bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        bullet.GetComponent<NetworkObject>().Spawn();
+        bullet.GetComponent<NetworkObject>().Spawn(true);
         Vector3 bulletDirection = (hit - bulletSpawnPoint.position).normalized;
         bullet.GetComponent<Rigidbody>().AddForce(bulletDirection * bulletSpeed, ForceMode.VelocityChange);
+        AudioManager.PlaySound(Sounds.Shoot);
     }
 
     public void Activate()
