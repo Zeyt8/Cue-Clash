@@ -53,7 +53,7 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 PlaceFallenBalls();
 
                 // Keep going if the current player has sunk a ball and didn't commit a fault, otherwise swap
-                if (currentPlayerFault != 0)
+                if (currentPlayerFault == 1)
                 {
                     Fault(currentPoolPlayer);
                 }
@@ -91,13 +91,6 @@ public class PoolManager : NetworkSingleton<PoolManager>
                 {
                     StopFightClientRpc();
                 }
-            }
-
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                isFight = true;
-                battleTimer = maxDurationOfBattle;
-                StartFightClientRpc();
             }
         }
     }

@@ -8,7 +8,7 @@ public class Cue : MonoBehaviour
     public float cueForce = 0;
 
     [SerializeField] private Transform cueTop;
-    [SerializeField] private float maxPower = 750;
+    [SerializeField] private float maxPower = 650;
 
     private Vector3 hitPoint;
 
@@ -24,7 +24,7 @@ public class Cue : MonoBehaviour
     {
         if (charging)
         {
-            cueForce += 250 * Time.deltaTime;
+            cueForce += 200 * Time.deltaTime;
             if (cueForce > maxPower)
             {
                 cueForce = maxPower;
